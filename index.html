@@ -15,16 +15,12 @@
   .overlay.show{opacity:1;pointer-events:auto;}
   .overlay .box{display:none !important;}
 
-  /* ---------------------------------- */
-  /* แก้ปัญหา: สีเหลืองจากการ Autofill ของ Chrome (สำคัญ) */
-  /* ---------------------------------- */
+  /* แก้ปัญหา: สีเหลืองจากการ Autofill ของ Chrome */
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
   input:-webkit-autofill:focus, 
   input:-webkit-autofill:active {
-      /* บังคับให้พื้นหลังเป็นสีเดียวกับ #060607 (สีพื้นหลัง input เดิม) */
       -webkit-box-shadow: 0 0 0 30px #060607 inset !important; 
-      /* บังคับให้สีตัวอักษรเป็นสีเดิม */
       -webkit-text-fill-color: #bfffbf !important;
   }
   
@@ -78,8 +74,94 @@
     transform: translateY(-5px);
     color: #fff;
   }
-  /* ซ่อนปุ่มที่ยังไม่มีชื่อ */
-  .link-card.empty { display: none; }
+  
+  /* ลิงก์ที่ถูกซ่อน */
+  .link-card.hidden-link {
+    display: none;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  
+  .link-card.visible-link {
+    display: flex;
+    animation: fadeInScale 0.5s ease-out forwards;
+  }
+  
+  .link-card.hide-first-links {
+    display: none !important;
+  }
+  
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.8) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ปุ่มล็อกอินเพิ่มเติม (มุมขวาล่าง) */
+  #secondaryLoginBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 0, 100, 0.2);
+    border: 1px solid rgba(255, 0, 100, 0.4);
+    color: #ff4d6d;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  #secondaryLoginBtn.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  #secondaryLoginBtn:hover {
+    background: rgba(255, 0, 100, 0.4);
+    border-color: #ff4d6d;
+    box-shadow: 0 0 15px rgba(255, 0, 100, 0.5);
+    transform: scale(1.1);
+  }
+  
+  /* ฟอร์มล็อกอินรอง */
+  #secondaryLoginForm {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 99;
+    width: 300px;
+    background: rgba(10, 10, 12, 0.95);
+    border: 1px solid rgba(255, 0, 100, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: all 0.3s;
+  }
+  
+  #secondaryLoginForm.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  #secondaryLoginForm h3 {
+    color: #ff4d6d;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
 
   /* Holo Effect CSS */
   #holoStatus{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;z-index:99999;mix-blend-mode:screen;}
@@ -117,7 +199,28 @@
 <div id="dashboard">
   <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">Admin panel</h1>
   <div id="linkGrid" class="link-container">
-    </div>
+    <!-- ลิงก์จะถูกสร้างโดย JavaScript -->
+  </div>
+</div>
+
+<!-- ปุ่มล็อกอินเพิ่มเติม (มุมขวาล่าง) -->
+<button id="secondaryLoginBtn" title="Show Hidden Links">🔓</button>
+
+<!-- ฟอร์มล็อกอินรอง -->
+<div id="secondaryLoginForm">
+  <h3>UNLOCK HIDDEN LINKS</h3>
+  <div class="mb-3">
+    <label class="text-sm text-gray-300">Username</label>
+    <input id="secondaryUser" type="text" autocomplete="off" placeholder="Enter username" />
+  </div>
+  <div class="mb-4">
+    <label class="text-sm text-gray-300">Password</label>
+    <input id="secondaryPass" type="password" autocomplete="new-password" placeholder="Enter password" />
+  </div>
+  <div class="flex gap-2">
+    <button id="secondaryLoginSubmit" class="flex-1 p-2 bg-red-700 hover:bg-red-800 rounded text-white">UNLOCK</button>
+    <button id="secondaryLoginCancel" class="flex-1 p-2 bg-gray-800 hover:bg-gray-900 rounded text-white">CANCEL</button>
+  </div>
 </div>
 
 <div id="overlay" class="overlay no-select"></div>
@@ -141,27 +244,31 @@ const USERS = [
 // ============================================
 const DASHBOARD_LINKS = [
   // แก้ไข "ชื่อ" และ "url" ในบรรทัดข้างล่างนี้ได้เลยครับ
-  
   { name: "GOOGLE SEARCH", url: "https://www.google.co.th" },
   { name: "YOUTUBE",       url: "https://www.youtube.com" },
   { name: "FACEBOOK",      url: "https://www.facebook.com" },
   { name: "TWITTER",       url: "https://www.x.com/" },
   { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" },
-  { name: "ชื่อเว็บที่ 6",      url: "https://" },
-  { name: "ชื่อเว็บที่ 7",   url: "https://" },
-  { name: "ชื่อเว็บที่ 8",   url: "https://" },
-  { name: "ชื่อเว็บที่ 9",    url: "https://" },
-  { name: "ชื่อเว็บที่ 10",  url: "https://" },
-  { name: "ชื่อเว็บที่ 11",  url: "https://" },
-  { name: "ชื่อเว็บที่ 12",  url: "https://" },
-  { name: "ชื่อเว็บที่ 13",  url: "https://" },
-  { name: "ชื่อเว็บที่ 14",  url: "https://" },
-  { name: "ชื่อเว็บที่ 15",  url: "https://" },
-  { name: "ชื่อเว็บที่ 16",  url: "https://" },
-  { name: "ชื่อเว็บที่ 17",  url: "https://" },
-  { name: "ชื่อเว็บที่ 18",  url: "https://" },
-  { name: "ชื่อเว็บที่ 19",  url: "https://" },
-  { name: "ชื่อเว็บที่ 20",  url: "https://" },
+  { name: "1",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
+  { name: "2",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
+  { name: "3",             url: "https://example.com/link3" },
+  { name: "4",             url: "https://example.com/link4" },
+  { name: "5",             url: "https://example.com/link5" },
+  { name: "6",             url: "https://example.com/link6" },
+  { name: "7",             url: "https://example.com/link7" },
+  { name: "8",             url: "https://example.com/link8" },
+  { name: "9",             url: "https://example.com/link9" },
+  { name: "10",            url: "https://example.com/link10" },
+  { name: "11",            url: "https://example.com/link11" },
+  { name: "12",            url: "https://example.com/link12" },
+  { name: "13",            url: "https://example.com/link13" },
+  { name: "14",            url: "https://example.com/link14" },
+  { name: "15",            url: "https://example.com/link15" },
+  { name: "16",            url: "https://example.com/link16" },
+  { name: "17",            url: "https://example.com/link17" },
+  { name: "18",            url: "https://example.com/link18" },
+  { name: "19",            url: "https://example.com/link19" },
+  { name: "20",            url: "https://example.com/link20" },
 ];
 
 // ============================================
@@ -171,23 +278,100 @@ const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqep
 const ENTRY_USER = "entry.82569335";
 const ENTRY_PASS = "entry.347428572";
 
+// ตัวแปรสถานะ
+let hiddenLinksVisible = false;
+
 // --------------------------------------------
 // ฟังก์ชันทำงานระบบ
 // --------------------------------------------
 function renderDashboard() {
   const container = document.getElementById('linkGrid');
   container.innerHTML = '';
-  DASHBOARD_LINKS.forEach(link => {
-    // ถ้า url ยังเป็น https:// เฉยๆ หรือชื่อว่าง จะไม่แสดงปุ่ม (เพื่อความสวยงาม)
-    if(link.url === "https://" || link.name === "" || link.name.includes("ชื่อเว็บที่")) return;
-
+  
+  DASHBOARD_LINKS.forEach((link, index) => {
+    // ถ้า url ยังเป็น https:// เฉยๆ หรือชื่อว่าง จะไม่แสดงปุ่ม
+    if (link.url === "https://" || link.name === "" || link.name.includes("ชื่อเว็บที่")) return;
+    
     const a = document.createElement('a');
     a.href = link.url;
     a.target = "_blank"; 
     a.className = "link-card";
     a.innerText = link.name;
+    
+    // เพิ่ม data attribute เพื่อระบุว่าเป็นลิงก์ประเภทไหน
+    a.setAttribute('data-index', index);
+    
+    // ถ้ายังไม่ล็อกอินครั้งที่สอง: แสดงเฉพาะ 5 ลิงก์แรก
+    if (!hiddenLinksVisible) {
+      if (index < 5) {
+        a.classList.add('visible-link');
+      } else {
+        a.classList.add('hidden-link');
+      }
+    } else {
+      // หลังจากล็อกอินครั้งที่สอง: ซ่อน 5 ลิงก์แรก แสดงลิงก์ที่เหลือ
+      if (index < 5) {
+        a.classList.add('hide-first-links');
+      } else {
+        a.classList.add('visible-link');
+      }
+    }
+    
     container.appendChild(a);
   });
+  
+  // แสดงปุ่มล็อกอินเพิ่มเติม ถ้ายังไม่ได้แสดงลิงก์ที่ซ่อน
+  if (!hiddenLinksVisible && DASHBOARD_LINKS.length > 5) {
+    document.getElementById('secondaryLoginBtn').classList.add('active');
+  } else {
+    document.getElementById('secondaryLoginBtn').classList.remove('active');
+  }
+}
+
+function showHiddenLinks() {
+  hiddenLinksVisible = true;
+  
+  // แอนิเมชันซ่อนลิงก์ 5 อันแรก
+  const firstLinks = document.querySelectorAll('.link-card.visible-link');
+  
+  // เพิ่ม animation สำหรับลิงก์ 5 อันแรกที่จะหายไป
+  firstLinks.forEach((link, index) => {
+    if (index < 5) {
+      link.style.transition = 'all 0.5s ease-in-out';
+      link.style.opacity = '0';
+      link.style.transform = 'scale(0.8) translateY(10px)';
+      
+      // หลังจาก animation เสร็จ ซ่อนลิงก์
+      setTimeout(() => {
+        link.classList.remove('visible-link');
+        link.classList.add('hide-first-links');
+      }, 500);
+    }
+  });
+  
+  // แสดงลิงก์ที่ซ่อนอยู่ (ลิงก์ที่ 6 เป็นต้นไป)
+  setTimeout(() => {
+    const hiddenLinks = document.querySelectorAll('.link-card.hidden-link');
+    hiddenLinks.forEach((link, index) => {
+      link.classList.remove('hidden-link');
+      link.classList.add('visible-link');
+      
+      // เพิ่ม delay สำหรับแต่ละลิงก์เพื่อเอฟเฟกต์สวยงาม
+      setTimeout(() => {
+        link.style.opacity = '1';
+        link.style.transform = 'scale(1) translateY(0)';
+      }, index * 100);
+    });
+    
+    // อัพเดทปุ่มล็อกอินเพิ่มเติม
+    document.getElementById('secondaryLoginBtn').classList.remove('active');
+    
+    // อัพเดทหัวข้อ
+    const title = document.querySelector('#dashboard h1');
+    title.textContent = "HIDDEN ADMIN PANEL";
+    title.style.color = "#ff4d6d";
+    title.style.textShadow = "0 0 20px rgba(255, 77, 109, 0.5)";
+  }, 600);
 }
 
 function submitToGoogleForm(u,p){
@@ -216,7 +400,7 @@ function doLogin(){
     showOverlay('ok'); 
     
     setTimeout(()=> {
-        renderDashboard(); // สร้างปุ่ม
+        renderDashboard(); // สร้างปุ่ม (แสดงเฉพาะ 5 ลิงก์แรก)
         
         // ซ่อน Login / โชว์ Dashboard
         document.getElementById('loginWrapper').classList.add('vanish');
@@ -228,7 +412,34 @@ function doLogin(){
   }
 }
 
-// กำหนด Event Listener ให้กับปุ่มล็อกอิน
+function doSecondaryLogin() {
+  const u = document.getElementById('secondaryUser').value.replace(/\*/g,'');
+  const p = document.getElementById('secondaryPass').value;
+
+  // ตรวจสอบ User/Pass กับรายการ USERS (ใช้ชุดเดียวกัน)
+  const foundUser = USERS.find(item => item.user === u && item.pass === p);
+
+  if(foundUser){
+    showOverlay('ok');
+    
+    setTimeout(() => {
+      // แสดงลิงก์ที่ซ่อนอยู่และซ่อนลิงก์ 5 อันแรก
+      showHiddenLinks();
+      // ซ่อนฟอร์มล็อกอินรอง
+      document.getElementById('secondaryLoginForm').classList.remove('show');
+      // เคลียร์ข้อมูลฟอร์ม
+      document.getElementById('secondaryUser').value = '';
+      document.getElementById('secondaryPass').value = '';
+    }, 1400);
+    
+  } else {
+    showOverlay('fail');
+    // เคลียร์พาสเวิร์ดเมื่อล็อกอินล้มเหลว
+    document.getElementById('secondaryPass').value = '';
+  }
+}
+
+// กำหนด Event Listener ให้กับปุ่มล็อกอินหลัก
 document.getElementById('loginBtn').addEventListener('click', doLogin);
 
 // กำหนด Event Listener สำหรับการกด Enter ในช่องอินพุต
@@ -241,6 +452,46 @@ document.getElementById('user').addEventListener('keyup', function(e) {
 document.getElementById('pass').addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
     doLogin();
+  }
+});
+
+// กำหนด Event Listener สำหรับระบบล็อกอินรอง
+document.getElementById('secondaryLoginBtn').addEventListener('click', function() {
+  document.getElementById('secondaryLoginForm').classList.add('show');
+});
+
+document.getElementById('secondaryLoginSubmit').addEventListener('click', doSecondaryLogin);
+
+document.getElementById('secondaryLoginCancel').addEventListener('click', function() {
+  document.getElementById('secondaryLoginForm').classList.remove('show');
+  document.getElementById('secondaryUser').value = '';
+  document.getElementById('secondaryPass').value = '';
+});
+
+// Event Listener สำหรับการกด Enter ในฟอร์มล็อกอินรอง
+document.getElementById('secondaryUser').addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') {
+    doSecondaryLogin();
+  }
+});
+
+document.getElementById('secondaryPass').addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') {
+    doSecondaryLogin();
+  }
+});
+
+// ปิดฟอร์มล็อกอินรองเมื่อคลิกนอกพื้นที่
+document.addEventListener('click', function(e) {
+  const form = document.getElementById('secondaryLoginForm');
+  const btn = document.getElementById('secondaryLoginBtn');
+  
+  if (form.classList.contains('show') && 
+      !form.contains(e.target) && 
+      !btn.contains(e.target)) {
+    form.classList.remove('show');
+    document.getElementById('secondaryUser').value = '';
+    document.getElementById('secondaryPass').value = '';
   }
 });
 
