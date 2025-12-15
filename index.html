@@ -15,7 +15,6 @@
     .overlay.show{opacity:1;pointer-events:auto;}
     .overlay .box{display:none !important;}
 
-    /* แก้ปัญหา: สีเหลืองจากการ Autofill ของ Chrome */
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus, 
@@ -38,10 +37,8 @@
     }
     @keyframes darkPulse{0%{opacity:0.16}100%{opacity:0.28}}
     
-    /* Class สำหรับซ่อน Login */
     .vanish { opacity: 0 !important; pointer-events: none; transform: scale(0.9); }
 
-    /* CSS สำหรับหน้าเมนู (Dashboard) */
     #dashboard {
         position: fixed; inset: 0; z-index: 10;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -55,7 +52,6 @@
         display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; gap: 15px;
     }
 
-    /* ดีไซน์ปุ่มลิ้งค์ */
     .link-card {
         display: flex; align-items: center; justify-content: center;
         width: 220px; height: 70px;
@@ -75,9 +71,9 @@
         color: #fff;
     }
     
-    /* ลิงก์ที่ถูกซ่อน */
+    /* ลิงก์ที่ถูกซ่อน (รอการปลดล็อก) */
     .link-card.hidden-link {
-        display: none; /* ถูกซ่อนโดย default */
+        display: none; 
         opacity: 0;
         transform: scale(0.8);
     }
@@ -87,16 +83,11 @@
         animation: fadeInScale 0.5s ease-out forwards;
     }
     
-    .link-card.hide-first-links {
-        display: none !important;
-    }
-    
     @keyframes fadeInScale {
         from { opacity: 0; transform: scale(0.8) translateY(10px); }
         to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* ปุ่มล็อกอินเพิ่มเติม (มุมขวาล่าง) */
     #secondaryLoginBtn {
         position: fixed;
         bottom: 20px;
@@ -131,7 +122,6 @@
         transform: scale(1.1);
     }
     
-    /* ฟอร์มล็อกอินรอง */
     #secondaryLoginForm {
         position: fixed;
         bottom: 80px;
@@ -163,7 +153,6 @@
         letter-spacing: 1px;
     }
 
-    /* Holo Effect CSS */
     #holoStatus{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;mix-blend-mode:screen;}
     #holoStatus.show{opacity:1;}
     #holoStatus .main{font:800 54px ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;animation:hPulse 1.8s ease-in-out infinite alternate;}
@@ -242,7 +231,7 @@
 
 <script>
 // ============================================
-// 1. ตั้งค่ารายชื่อผู้ใช้ (เพิ่มคุณสมบัติ accessLevel)
+// 1. ตั้งค่ารายชื่อผู้ใช้
 // ============================================
 const USERS = [
     // ผู้ใช้ Full Access
@@ -253,7 +242,7 @@ const USERS = [
     { user: "test",     pass: "test",     accessLevel: "full" }, 
     
     // ผู้ใช้ Basic Access
-    { user: "1234", pass: "1234",  accessLevel: "basic" }, 
+    { user: "1234",     pass: "1234",     accessLevel: "basic" }, 
     { user: "newuser2", pass: "basic456", accessLevel: "basic" }, 
 ];
 
@@ -290,24 +279,21 @@ const DASHBOARD_LINKS = [
     { name: "20",            url: "" },
 ];
 
-// ============================================
-// 3. ตั้งค่า Google Form
-// ============================================
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
 const ENTRY_USER = "entry.82569335";
 const ENTRY_PASS = "entry.347428572";
 
-// ตัวแปรสถานะ
-let currentUser = null; // เก็บข้อมูลผู้ใช้ที่ล็อกอินสำเร็จ
+let currentUser = null; 
 let hiddenLinksVisible = false;
 
 // --------------------------------------------
-// ฟังก์ชันทำงานระบบ
+// ฟังก์ชันทำงานระบบ (แก้ไขแล้ว)
 // --------------------------------------------
 function renderDashboard() {
     const container = document.getElementById('linkGrid');
     container.innerHTML = '';
     
+    // ตรวจสอบสถานะ: เป็น Admin หรือไม่?
     const hasFullAccess = currentUser && currentUser.accessLevel === 'full';
     
     DASHBOARD_LINKS.forEach((link, index) => {
@@ -315,10 +301,7 @@ function renderDashboard() {
         
         const isBasicLink = index < 5;
         
-        // ถ้าผู้ใช้มีสิทธิ์แค่ 'basic' และเป็น Hidden Link จะไม่แสดง
-        // (ยกเว้นตอนที่ hiddenLinksVisible เป็น true ซึ่งมีแต่ผู้ใช้ Full ที่ทำได้)
-        if (!hasFullAccess && !isBasicLink && !hiddenLinksVisible) return;
-
+        // --- แก้ไข: สร้าง Element เสมอ ไม่มีการ Return ทิ้ง ---
         const a = document.createElement('a');
         a.href = link.url;
         a.target = "_blank"; 
@@ -326,15 +309,17 @@ function renderDashboard() {
         a.innerText = link.name;
         a.setAttribute('data-index', index);
         
-        // ลิงก์ที่ 1-5 (Basic) จะแสดงเสมอ
+        // ลิงก์ที่ 1-5 (Basic) -> แสดงตลอด
         if (isBasicLink) {
             a.classList.add('visible-link');
         } 
-        // ลิงก์ Hidden (ตั้งแต่ลำดับที่ 6 เป็นต้นไป)
+        // ลิงก์ที่ 6+ (Hidden)
         else {
-            if (hiddenLinksVisible) {
+            // ถ้าเป็น Admin หรือ กดปลดล็อกแล้ว -> แสดง
+            if (hasFullAccess || hiddenLinksVisible) {
                 a.classList.add('visible-link');
             } else {
+                // ถ้ายังไม่ได้ปลดล็อก -> ซ่อนไว้ (สร้าง Element แต่ display:none)
                 a.classList.add('hidden-link');
             }
         }
@@ -342,15 +327,15 @@ function renderDashboard() {
         container.appendChild(a);
     });
     
-    // *** การเปลี่ยนแปลง: ปุ่มปลดล็อกจะแสดงถ้ายังมีลิงก์ที่ซ่อนอยู่ และยังไม่ได้ถูกปลดล็อก ***
-    // ทุกยศเห็นปุ่มนี้ได้ ถ้ายังมี Hidden Links เหลืออยู่
-    if (!hiddenLinksVisible && DASHBOARD_LINKS.length > 5) {
+    // ปุ่มกุญแจจะโชว์ก็ต่อเมื่อ: User ไม่ใช่ Admin (Admin เห็นครบแล้วไม่ต้องใช้กุญแจ)
+    // และยังไม่ได้ปลดล็อก
+    if (!hiddenLinksVisible && DASHBOARD_LINKS.length > 5 && !hasFullAccess) {
         document.getElementById('secondaryLoginBtn').classList.add('active');
     } else {
         document.getElementById('secondaryLoginBtn').classList.remove('active');
     }
 
-    // ปรับเปลี่ยน Title ตามระดับการเข้าถึง
+    // ปรับ Title
     const title = document.querySelector('#dashboard h1');
     if (hasFullAccess) {
         title.textContent = "Admin Panel (Full Access)";
@@ -364,20 +349,22 @@ function renderDashboard() {
 }
 
 function showHiddenLinks() {
-    // ฟังก์ชันนี้จะทำงานได้สมบูรณ์ก็ต่อเมื่อล็อกอินรองสำเร็จ
     hiddenLinksVisible = true;
     
-    // ซ่อน Basic Links
-    const basicLinks = document.querySelectorAll('.link-card[data-index*="0"], .link-card[data-index*="1"], .link-card[data-index*="2"], .link-card[data-index*="3"], .link-card[data-index*="4"]');
+    // Animation ซ่อนลิงก์ Basic
+    const basicLinks = document.querySelectorAll('.link-card.visible-link');
+    // หมายเหตุ: เราอาจจะไม่ต้องซ่อน Basic Links ก็ได้ถ้าอยากให้เห็นทั้งหมด
+    // แต่ถ้าตามดีไซน์เดิมคือซ่อน Basic แล้วโชว์ Hidden ก็ใช้โค้ดเดิมได้เลย
     
-    basicLinks.forEach(link => {
-        link.style.transition = 'all 0.5s ease-in-out';
-        link.style.opacity = '0';
-        link.style.transform = 'scale(0.8) translateY(10px)';
-        
-        setTimeout(() => {
-            link.style.display = 'none';
-        }, 500);
+    // โค้ดเดิมของคุณ: ซ่อน Basic Link ก่อน (index 0-4)
+    const allLinks = document.querySelectorAll('.link-card');
+    allLinks.forEach((link, idx) => {
+        if(idx < 5) {
+             link.style.transition = 'all 0.5s ease-in-out';
+             link.style.opacity = '0';
+             link.style.transform = 'scale(0.8) translateY(10px)';
+             setTimeout(() => link.style.display = 'none', 500);
+        }
     });
     
     setTimeout(() => {
@@ -396,7 +383,6 @@ function showHiddenLinks() {
         
         document.getElementById('secondaryLoginBtn').classList.remove('active');
         
-        // เปลี่ยน Title สำหรับ Hidden Access
         const title = document.querySelector('#dashboard h1');
         title.textContent = "HIDDEN ADMIN PANEL";
         title.style.color = "#ff4d6d";
@@ -426,7 +412,7 @@ function doLogin(){
     const foundUser = USERS.find(item => item.user === u && item.pass === p);
     
     if(foundUser){
-        currentUser = foundUser; // บันทึกผู้ใช้ที่ล็อกอิน
+        currentUser = foundUser;
         showOverlay('ok'); 
         
         setTimeout(()=> {
@@ -446,7 +432,7 @@ function doSecondaryLogin() {
 
     const foundUser = USERS.find(item => item.user === u && item.pass === p);
 
-    // ตรวจสอบว่าผู้ใช้ที่ล็อกอินรองมีสิทธิ์ 'full' หรือไม่ ถึงจะปลดล็อกได้
+    // ต้องเป็น user ระดับ full ถึงจะปลดล็อกได้
     if(foundUser && foundUser.accessLevel === 'full'){
         showOverlay('ok');
         
@@ -463,55 +449,34 @@ function doSecondaryLogin() {
     }
 }
 
-// ============================================
 // Event Listeners
-// ============================================
 document.getElementById('loginBtn').addEventListener('click', doLogin);
-
-document.getElementById('user').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') doLogin();
-});
-
-document.getElementById('pass').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') doLogin();
-});
+document.getElementById('user').addEventListener('keyup', function(e) { if (e.key === 'Enter') doLogin(); });
+document.getElementById('pass').addEventListener('keyup', function(e) { if (e.key === 'Enter') doLogin(); });
 
 document.getElementById('secondaryLoginBtn').addEventListener('click', function() {
     document.getElementById('secondaryLoginForm').classList.add('show');
 });
-
 document.getElementById('secondaryLoginSubmit').addEventListener('click', doSecondaryLogin);
-
 document.getElementById('secondaryLoginCancel').addEventListener('click', function() {
     document.getElementById('secondaryLoginForm').classList.remove('show');
     document.getElementById('secondaryUser').value = '';
     document.getElementById('secondaryPass').value = '';
 });
-
-document.getElementById('secondaryUser').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') doSecondaryLogin();
-});
-
-document.getElementById('secondaryPass').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') doSecondaryLogin();
-});
+document.getElementById('secondaryUser').addEventListener('keyup', function(e) { if (e.key === 'Enter') doSecondaryLogin(); });
+document.getElementById('secondaryPass').addEventListener('keyup', function(e) { if (e.key === 'Enter') doSecondaryLogin(); });
 
 document.addEventListener('click', function(e) {
     const form = document.getElementById('secondaryLoginForm');
     const btn = document.getElementById('secondaryLoginBtn');
-    
-    if (form.classList.contains('show') && 
-        !form.contains(e.target) && 
-        !btn.contains(e.target)) {
+    if (form.classList.contains('show') && !form.contains(e.target) && !btn.contains(e.target)) {
         form.classList.remove('show');
         document.getElementById('secondaryUser').value = '';
         document.getElementById('secondaryPass').value = '';
     }
 });
 
-// ============================================
-// เอฟเฟกต์
-// ============================================
+// FX
 (function(){
     const o=document.getElementById('overlay');
     const h=document.getElementById('holoStatus');
