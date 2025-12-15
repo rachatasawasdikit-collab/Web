@@ -6,6 +6,9 @@
 <title>IC ACCESS</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
+    /* =========================================
+       ORIGINAL CSS STYLE (FULL VERSION)
+       ========================================= */
     body{margin:0;background:#030305;color:#e6e6e6;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
     .bg-canvas {position:fixed;inset:0;z-index:0;opacity:0.12;filter:blur(2px);transition:opacity 2s;}
     .card{z-index:2;backdrop-filter: blur(2px); border:1px solid rgba(255,0,0,0.12); transition: opacity 1s, transform 1s;}
@@ -81,6 +84,16 @@
     .link-card.visible-link {
         display: flex;
         animation: fadeInScale 0.5s ease-out forwards;
+    }
+    
+    /* สไตล์สำหรับลิงก์ลับ (สีแดง) */
+    .link-card.secret-mode {
+        border-color: rgba(255, 0, 100, 0.4);
+        color: #ff4d6d;
+    }
+    .link-card.secret-mode:hover {
+        border-color: #ff4d6d;
+        box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
     }
     
     @keyframes fadeInScale {
@@ -179,14 +192,14 @@
     <div class="card neon p-8 rounded-lg w-96" style="background:linear-gradient(180deg,#060607, #05050A);">
         <div class="title text-red-400 font-bold text-2xl text-center">IC ACCESS</div>
 
-        <label class="muted mt-4">Username</label>
+        <label class="muted mt-4 text-gray-400 text-sm block">Username</label>
         <div class="relative">
             <input id="user" type="password" autocomplete="off" placeholder="Username" class="pr-10" />
             <button type="button" id="toggleUser"
                 class="absolute inset-y-0 right-0 px-3 text-green-300 select-none">👁️</button>
         </div>
 
-        <label class="muted mt-3">Password</label>
+        <label class="muted mt-3 text-gray-400 text-sm block">Password</label>
         <input id="pass" type="password" autocomplete="new-password" placeholder="You can't see it" />
 
         <button id="loginBtn" class="w-full p-3 bg-red-600 hover:bg-red-700 rounded text-white font-bold mt-5">ENTER</button>
@@ -196,7 +209,7 @@
 <div id="dashboard">
     <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">Admin panel</h1>
     <div id="linkGrid" class="link-container">
-        </div>
+    </div>
 </div>
 
 <button id="secondaryLoginBtn" title="Show Hidden Links">🔒</button>
@@ -237,9 +250,9 @@ const USERS = [
     // ผู้ใช้ Full Access
     { user: "47568",    pass: "Jaonai55", accessLevel: "full" }, 
     { user: "47821",    pass: "Tubtim",   accessLevel: "full" }, 
-    { user: "admin",    pass: "1234",     accessLevel: "full" }, 
-    { user: "agent007", pass: "bond",     accessLevel: "full" }, 
-    { user: "test",     pass: "test",     accessLevel: "full" }, 
+    { user: "",         pass: "",     accessLevel: "full" }, 
+    { user: "",         pass: "",     accessLevel: "full" }, 
+    { user: "",         pass: "",     accessLevel: "full" }, 
     
     // ผู้ใช้ Basic Access
     { user: "1234",     pass: "1234",     accessLevel: "basic" }, 
@@ -250,13 +263,14 @@ const USERS = [
 // 2. ตั้งค่าลิ้งค์เว็บต่างๆ
 // ============================================
 const DASHBOARD_LINKS = [
+    // 1-5 = Basic Links
     { name: "GOOGLE SEARCH", url: "https://www.google.co.th" },
     { name: "YOUTUBE",       url: "https://www.youtube.com" },
     { name: "FACEBOOK",      url: "https://www.facebook.com" },
     { name: "TWITTER",       url: "https://www.x.com/" },
-    { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" }, // ลิงก์ที่ 5 (Basic Access จบตรงนี้)
-    
-    // Hidden Links (Full Access Required)
+    { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" }, 
+
+    // 6+ = Hidden Links (Full Access Required)
     { name: "1",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
     { name: "2",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
     { name: "Ham",           url: "https://xhamster.com/" },
@@ -277,6 +291,26 @@ const DASHBOARD_LINKS = [
     { name: "18",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/6840/" },
     { name: "19",            url: "" },
     { name: "20",            url: "" },
+    { name: "21",            url: "" },
+    { name: "22",            url: "" },
+    { name: "23",            url: "" },
+    { name: "24",            url: "" },
+    { name: "25",            url: "" },
+    { name: "26",            url: "" },
+    { name: "27",            url: "" },
+    { name: "28",            url: "" },
+    { name: "29",            url: "" },
+    { name: "30",            url: "" },
+    { name: "31",            url: "" },
+    { name: "32",            url: "" },
+    { name: "33",            url: "" },
+    { name: "34",            url: "" },
+    { name: "35",            url: "" },
+    { name: "36",            url: "" },
+    { name: "37",            url: "" },
+    { name: "38",            url: "" },
+    { name: "39",            url: "" },
+    { name: "40",            url: "" },
 ];
 
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
@@ -287,7 +321,7 @@ let currentUser = null;
 let hiddenLinksVisible = false;
 
 // --------------------------------------------
-// ฟังก์ชันทำงานระบบ (แก้ไขแล้ว)
+// ฟังก์ชันทำงานระบบ
 // --------------------------------------------
 function renderDashboard() {
     const container = document.getElementById('linkGrid');
@@ -301,7 +335,14 @@ function renderDashboard() {
         
         const isBasicLink = index < 5;
         
-        // --- แก้ไข: สร้าง Element เสมอ ไม่มีการ Return ทิ้ง ---
+        // ============================================
+        // LOGIC FIX: ถ้าปลดล็อกแล้ว ให้ซ่อน Basic Link ทิ้งไปเลย
+        // ============================================
+        if(hiddenLinksVisible && isBasicLink) return;
+
+        // ถ้ายังไม่ปลดล็อก และเป็น Hidden Link -> ข้าม
+        if(!hiddenLinksVisible && !isBasicLink) return;
+
         const a = document.createElement('a');
         a.href = link.url;
         a.target = "_blank"; 
@@ -309,27 +350,23 @@ function renderDashboard() {
         a.innerText = link.name;
         a.setAttribute('data-index', index);
         
-        // ลิงก์ที่ 1-5 (Basic) -> แสดงตลอด
-        if (isBasicLink) {
-            a.classList.add('visible-link');
-        } 
-        // ลิงก์ที่ 6+ (Hidden)
-        else {
-            // ถ้าเป็น Admin หรือ กดปลดล็อกแล้ว -> แสดง
-            if (hasFullAccess || hiddenLinksVisible) {
-                a.classList.add('visible-link');
-            } else {
-                // ถ้ายังไม่ได้ปลดล็อก -> ซ่อนไว้ (สร้าง Element แต่ display:none)
-                a.classList.add('hidden-link');
-            }
+        // ถ้าเป็นลิงก์ลับ ใส่ Class สีแดง
+        if (!isBasicLink) {
+            a.classList.add('secret-mode');
         }
+
+        // ทำให้ลิงก์เด้งขึ้นมา (Animation)
+        if (hiddenLinksVisible || isBasicLink) {
+            a.classList.add('visible-link');
+            // ใส่ Delay ให้เด้งเรียงกันสวยๆ
+            a.style.animationDelay = (index * 0.05) + 's';
+        } 
         
         container.appendChild(a);
     });
     
-    // ปุ่มกุญแจจะโชว์ก็ต่อเมื่อ: User ไม่ใช่ Admin (Admin เห็นครบแล้วไม่ต้องใช้กุญแจ)
-    // และยังไม่ได้ปลดล็อก
-    if (!hiddenLinksVisible && DASHBOARD_LINKS.length > 5 && !hasFullAccess) {
+    // ปุ่มกุญแจแสดงเสมอถ้ายังไม่ได้ปลดล็อก
+    if (!hiddenLinksVisible) {
         document.getElementById('secondaryLoginBtn').classList.add('active');
     } else {
         document.getElementById('secondaryLoginBtn').classList.remove('active');
@@ -337,57 +374,33 @@ function renderDashboard() {
 
     // ปรับ Title
     const title = document.querySelector('#dashboard h1');
-    if (hasFullAccess) {
-        title.textContent = "Admin Panel (Full Access)";
-        title.style.color = "#00ff9e";
-        title.style.textShadow = "0 0 20px rgba(0, 255, 160, 0.5)";
+    if (hiddenLinksVisible) {
+             title.textContent = "Admin Panel (Unlocked)";
+             title.style.color = "#ff4d6d";
+             title.style.textShadow = "0 0 20px rgba(255, 0, 100, 0.5)";
     } else {
-        title.textContent = "Basic Panel";
-        title.style.color = "#e6e6e6";
-        title.style.textShadow = "0 0 20px rgba(255, 255, 255, 0.5)";
+             title.textContent = "Basic Panel";
+             title.style.color = "#00ff9e";
+             title.style.textShadow = "0 0 20px rgba(0, 255, 160, 0.5)";
     }
 }
 
 function showHiddenLinks() {
     hiddenLinksVisible = true;
     
-    // Animation ซ่อนลิงก์ Basic
-    const basicLinks = document.querySelectorAll('.link-card.visible-link');
-    // หมายเหตุ: เราอาจจะไม่ต้องซ่อน Basic Links ก็ได้ถ้าอยากให้เห็นทั้งหมด
-    // แต่ถ้าตามดีไซน์เดิมคือซ่อน Basic แล้วโชว์ Hidden ก็ใช้โค้ดเดิมได้เลย
-    
-    // โค้ดเดิมของคุณ: ซ่อน Basic Link ก่อน (index 0-4)
+    // Animation: ทำให้ลิงก์เดิมจางหายไปก่อน
     const allLinks = document.querySelectorAll('.link-card');
     allLinks.forEach((link, idx) => {
-        if(idx < 5) {
-             link.style.transition = 'all 0.5s ease-in-out';
+             link.style.transition = 'all 0.4s ease-in-out';
              link.style.opacity = '0';
-             link.style.transform = 'scale(0.8) translateY(10px)';
-             setTimeout(() => link.style.display = 'none', 500);
-        }
+             link.style.transform = 'scale(0.8)';
     });
     
+    // รอ Animation จบแล้ว Re-render ใหม่
     setTimeout(() => {
-        // แสดง Hidden Links
-        const hiddenLinks = document.querySelectorAll('.link-card.hidden-link');
-        hiddenLinks.forEach((link, index) => {
-            link.classList.remove('hidden-link');
-            link.classList.add('visible-link');
-            link.style.display = 'flex'; 
-            
-            setTimeout(() => {
-                link.style.opacity = '1';
-                link.style.transform = 'scale(1) translateY(0)';
-            }, index * 100);
-        });
-        
+        renderDashboard(); 
         document.getElementById('secondaryLoginBtn').classList.remove('active');
-        
-        const title = document.querySelector('#dashboard h1');
-        title.textContent = "HIDDEN ADMIN PANEL";
-        title.style.color = "#ff4d6d";
-        title.style.textShadow = "0 0 20px rgba(255, 77, 109, 0.5)";
-    }, 600);
+    }, 450);
 }
 
 function submitToGoogleForm(u,p){
