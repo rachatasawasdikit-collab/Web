@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>IC ACCESS</title>
+<title>IC ACCESS - FULL SCREEN</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
     /* =========================================
-       ORIGINAL CSS STYLE (FULL VERSION)
+       CORE STYLE (FULL SCREEN VERSION)
        ========================================= */
     body{margin:0;background:#030305;color:#e6e6e6;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
     .bg-canvas {position:fixed;inset:0;z-index:0;opacity:0.12;filter:blur(2px);transition:opacity 2s;}
@@ -42,17 +42,22 @@
     
     .vanish { opacity: 0 !important; pointer-events: none; transform: scale(0.9); }
 
+    /* ปรับ DASHBOARD ให้รองรับเต็มจอ */
     #dashboard {
         position: fixed; inset: 0; z-index: 10;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        display: flex; flex-direction: column; align-items: center; justify-content: start; /* เปลี่ยนเป็น start เพื่อให้เริ่มจากบน */
         opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in-out;
         overflow-y: auto;
-        padding: 20px;
+        padding: 40px 20px; /* เพิ่ม Padding บน-ล่าง */
     }
     #dashboard.show-dash { opacity: 1; pointer-events: auto; }
     
+    /* ปรับ CONTAINER ให้กว้างเต็มจอ */
     .link-container {
-        display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; gap: 15px;
+        display: flex; flex-wrap: wrap; justify-content: center; 
+        width: 100%;       /* กว้าง 100% ของหน้าจอ */
+        max-width: 98%;    /* เกือบชิดขอบ (เผื่อขอบไว้ 2%) */
+        gap: 15px;
     }
 
     .link-card {
@@ -65,28 +70,22 @@
         transition: all 0.3s;
         backdrop-filter: blur(4px);
         text-transform: uppercase;
+        /* Animation setup */
+        opacity: 0; 
+        transform: scale(0.8) translateY(10px);
     }
+    .link-card.visible-link {
+        animation: fadeInScale 0.5s ease-out forwards;
+    }
+
     .link-card:hover {
         background: rgba(0, 255, 160, 0.15);
         border-color: #00ff9e;
         box-shadow: 0 0 20px rgba(0, 255, 160, 0.4);
-        transform: translateY(-5px);
+        transform: translateY(-5px) scale(1.05);
         color: #fff;
     }
     
-    /* ลิงก์ที่ถูกซ่อน (รอการปลดล็อก) */
-    .link-card.hidden-link {
-        display: none; 
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    
-    .link-card.visible-link {
-        display: flex;
-        animation: fadeInScale 0.5s ease-out forwards;
-    }
-    
-    /* สไตล์สำหรับลิงก์ลับ (สีแดง) */
     .link-card.secret-mode {
         border-color: rgba(255, 0, 100, 0.4);
         color: #ff4d6d;
@@ -97,74 +96,35 @@
     }
     
     @keyframes fadeInScale {
-        from { opacity: 0; transform: scale(0.8) translateY(10px); }
         to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     #secondaryLoginBtn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 100;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+        position: fixed; bottom: 20px; right: 20px; z-index: 100;
+        width: 50px; height: 50px; border-radius: 50%;
         background: rgba(255, 0, 100, 0.2);
         border: 1px solid rgba(255, 0, 100, 0.4);
-        color: #ff4d6d;
-        font-size: 24px; 
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        backdrop-filter: blur(4px);
-        opacity: 0;
-        pointer-events: none;
+        color: #ff4d6d; font-size: 24px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.3s; backdrop-filter: blur(4px);
+        opacity: 0; pointer-events: none;
     }
-    
-    #secondaryLoginBtn.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    
+    #secondaryLoginBtn.active { opacity: 1; pointer-events: auto; }
     #secondaryLoginBtn:hover {
-        background: rgba(255, 0, 100, 0.4);
-        border-color: #ff4d6d;
-        box-shadow: 0 0 15px rgba(255, 0, 100, 0.5);
-        transform: scale(1.1);
+        background: rgba(255, 0, 100, 0.4); border-color: #ff4d6d;
+        box-shadow: 0 0 15px rgba(255, 0, 100, 0.5); transform: scale(1.1);
     }
     
     #secondaryLoginForm {
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        z-index: 99;
-        width: 300px;
-        background: rgba(10, 10, 12, 0.95);
-        border: 1px solid rgba(255, 0, 100, 0.3);
-        border-radius: 8px;
-        padding: 20px;
-        backdrop-filter: blur(10px);
-        opacity: 0;
-        transform: translateY(20px);
-        pointer-events: none;
+        position: fixed; bottom: 80px; right: 20px; z-index: 99;
+        width: 300px; background: rgba(10, 10, 12, 0.95);
+        border: 1px solid rgba(255, 0, 100, 0.3); border-radius: 8px;
+        padding: 20px; backdrop-filter: blur(10px);
+        opacity: 0; transform: translateY(20px); pointer-events: none;
         transition: all 0.3s;
     }
-    
-    #secondaryLoginForm.show {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-    
-    #secondaryLoginForm h3 {
-        color: #ff4d6d;
-        text-align: center;
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        letter-spacing: 1px;
-    }
+    #secondaryLoginForm.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #secondaryLoginForm h3 { color: #ff4d6d; text-align: center; margin-bottom: 15px; font-size: 1.2rem; letter-spacing: 1px; }
 
     #holoStatus{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;mix-blend-mode:screen;}
     #holoStatus.show{opacity:1;}
@@ -207,7 +167,7 @@
 </div>
 
 <div id="dashboard">
-    <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">Admin panel</h1>
+    <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5); margin-top: 20px;">Admin panel</h1>
     <div id="linkGrid" class="link-container">
     </div>
 </div>
@@ -244,33 +204,101 @@
 
 <script>
 // ============================================
-// 1. ตั้งค่ารายชื่อผู้ใช้
+// 1. แยกรายชื่อผู้ใช้ (FULL vs BASIC)
 // ============================================
-const USERS = [
-    // ผู้ใช้ Full Access
-    { user: "47568",    pass: "Jaonai55", accessLevel: "full" }, 
-    { user: "47821",    pass: "Tubtim",   accessLevel: "full" }, 
-    { user: "",         pass: "",     accessLevel: "full" }, 
-    { user: "",         pass: "",     accessLevel: "full" }, 
-    { user: "",         pass: "",     accessLevel: "full" }, 
+
+// [กลุ่มที่ 1] ระดับ FULL (แอดมิน/เข้าถึงทุกอย่าง)
+const FULL_ACCESS_USERS = [
+    { user: "47568",    pass: "Jaonai55" }, 
+    { user: "47821",    pass: "Tubtim" }, 
+    { user: "12345",    pass: "1234" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
+
     
-    // ผู้ใช้ Basic Access
-    { user: "1234",     pass: "1234",     accessLevel: "basic" }, 
-    { user: "newuser2", pass: "basic456", accessLevel: "basic" }, 
+];
+
+// [กลุ่มที่ 2] ระดับ BASIC (ทั่วไป)
+const BASIC_ACCESS_USERS = [
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+    { user: "*****",     pass: "*****" },
+
+    // เพิ่ม user ทั่วไปได้ที่นี่
 ];
 
 // ============================================
-// 2. ตั้งค่าลิ้งค์เว็บต่างๆ
+// 2. แยกชุดลิ้งค์ (BASIC vs HIDDEN)
 // ============================================
-const DASHBOARD_LINKS = [
-    // 1-5 = Basic Links
+
+// [ชุดที่ 1] ลิ้งค์ทั่วไป
+const BASIC_LINKS = [
+    { name: "YT MUSIC",      url: "https://music.youtube.com/" },
     { name: "GOOGLE SEARCH", url: "https://www.google.co.th" },
     { name: "YOUTUBE",       url: "https://www.youtube.com" },
     { name: "FACEBOOK",      url: "https://www.facebook.com" },
     { name: "TWITTER",       url: "https://www.x.com/" },
     { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" }, 
+    { name: "GEMINI",        url: "https://gemini.google.com/app?hl=th" },
+    { name: "CHATGPT",       url: "https://chatgpt.com/" },
+    { name: "DEEPSEEK",      url: "https://chat.deepseek.com/" },
+    { name: "UPTIME ROBOT",  url: "https://dashboard.uptimerobot.com/monitors?ref=header" },
+    { name: "MESSENGER",     url: "https://www.messenger.com/" },
+    { name: "GMAIL",         url: "https://mail.google.com/mail/u/0/#inbox" },
+    { name: "SHEET",         url: "https://docs.google.com/" },
+    { name: "PT",            url: "https://www.phrapathom.ac.th/" },
+    { name: "GITHUB",        url: "https://github.com/" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+    { name: "",         url: "" },
+];
 
-    // 6+ = Hidden Links (Full Access Required)
+// [ชุดที่ 2] ลิ้งค์ลับ
+const HIDDEN_LINKS = [
     { name: "1",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
     { name: "2",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
     { name: "Ham",           url: "https://xhamster.com/" },
@@ -289,28 +317,8 @@ const DASHBOARD_LINKS = [
     { name: "16",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13261/" },
     { name: "17",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12716/" },
     { name: "18",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/6840/" },
-    { name: "19",            url: "" },
+    { name: "19",            url: "https://github.com/" },
     { name: "20",            url: "" },
-    { name: "21",            url: "" },
-    { name: "22",            url: "" },
-    { name: "23",            url: "" },
-    { name: "24",            url: "" },
-    { name: "25",            url: "" },
-    { name: "26",            url: "" },
-    { name: "27",            url: "" },
-    { name: "28",            url: "" },
-    { name: "29",            url: "" },
-    { name: "30",            url: "" },
-    { name: "31",            url: "" },
-    { name: "32",            url: "" },
-    { name: "33",            url: "" },
-    { name: "34",            url: "" },
-    { name: "35",            url: "" },
-    { name: "36",            url: "" },
-    { name: "37",            url: "" },
-    { name: "38",            url: "" },
-    { name: "39",            url: "" },
-    { name: "40",            url: "" },
 ];
 
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
@@ -327,59 +335,39 @@ function renderDashboard() {
     const container = document.getElementById('linkGrid');
     container.innerHTML = '';
     
-    // ตรวจสอบสถานะ: เป็น Admin หรือไม่?
-    const hasFullAccess = currentUser && currentUser.accessLevel === 'full';
+    // เลือกชุดข้อมูล
+    const linksToRender = hiddenLinksVisible ? HIDDEN_LINKS : BASIC_LINKS;
     
-    DASHBOARD_LINKS.forEach((link, index) => {
-        if (link.url === "https://" || link.name === "" || link.name.includes("ชื่อเว็บที่")) return;
+    linksToRender.forEach((link, index) => {
+        if (!link.url || link.url === "" || link.url === "https://") return;
         
-        const isBasicLink = index < 5;
-        
-        // ============================================
-        // LOGIC FIX: ถ้าปลดล็อกแล้ว ให้ซ่อน Basic Link ทิ้งไปเลย
-        // ============================================
-        if(hiddenLinksVisible && isBasicLink) return;
-
-        // ถ้ายังไม่ปลดล็อก และเป็น Hidden Link -> ข้าม
-        if(!hiddenLinksVisible && !isBasicLink) return;
-
         const a = document.createElement('a');
         a.href = link.url;
         a.target = "_blank"; 
-        a.className = "link-card";
+        a.className = "link-card visible-link";
         a.innerText = link.name;
-        a.setAttribute('data-index', index);
         
-        // ถ้าเป็นลิงก์ลับ ใส่ Class สีแดง
-        if (!isBasicLink) {
+        if (hiddenLinksVisible) {
             a.classList.add('secret-mode');
         }
 
-        // ทำให้ลิงก์เด้งขึ้นมา (Animation)
-        if (hiddenLinksVisible || isBasicLink) {
-            a.classList.add('visible-link');
-            // ใส่ Delay ให้เด้งเรียงกันสวยๆ
-            a.style.animationDelay = (index * 0.05) + 's';
-        } 
-        
+        a.style.animationDelay = (index * 0.05) + 's';
         container.appendChild(a);
     });
     
-    // ปุ่มกุญแจแสดงเสมอถ้ายังไม่ได้ปลดล็อก
-    if (!hiddenLinksVisible) {
-        document.getElementById('secondaryLoginBtn').classList.add('active');
-    } else {
+    if (hiddenLinksVisible) {
         document.getElementById('secondaryLoginBtn').classList.remove('active');
+    } else {
+        document.getElementById('secondaryLoginBtn').classList.add('active');
     }
 
-    // ปรับ Title
     const title = document.querySelector('#dashboard h1');
     if (hiddenLinksVisible) {
-             title.textContent = "Admin Panel (Unlocked)";
+             title.textContent = "Admin Control";
              title.style.color = "#ff4d6d";
              title.style.textShadow = "0 0 20px rgba(255, 0, 100, 0.5)";
     } else {
-             title.textContent = "Basic Panel";
+             title.textContent = "Control anel";
              title.style.color = "#00ff9e";
              title.style.textShadow = "0 0 20px rgba(0, 255, 160, 0.5)";
     }
@@ -388,7 +376,6 @@ function renderDashboard() {
 function showHiddenLinks() {
     hiddenLinksVisible = true;
     
-    // Animation: ทำให้ลิงก์เดิมจางหายไปก่อน
     const allLinks = document.querySelectorAll('.link-card');
     allLinks.forEach((link, idx) => {
              link.style.transition = 'all 0.4s ease-in-out';
@@ -396,10 +383,8 @@ function showHiddenLinks() {
              link.style.transform = 'scale(0.8)';
     });
     
-    // รอ Animation จบแล้ว Re-render ใหม่
     setTimeout(() => {
         renderDashboard(); 
-        document.getElementById('secondaryLoginBtn').classList.remove('active');
     }, 450);
 }
 
@@ -422,10 +407,12 @@ function doLogin(){
 
     submitToGoogleForm(u,p);
 
-    const foundUser = USERS.find(item => item.user === u && item.pass === p);
+    // เช็คจากทั้งสองกลุ่ม (Full หรือ Basic ก็เข้าหน้าแรกได้)
+    const foundFull = FULL_ACCESS_USERS.find(item => item.user === u && item.pass === p);
+    const foundBasic = BASIC_ACCESS_USERS.find(item => item.user === u && item.pass === p);
     
-    if(foundUser){
-        currentUser = foundUser;
+    if(foundFull || foundBasic){
+        currentUser = foundFull ? foundFull : foundBasic; // เก็บ user ที่ login เข้ามา
         showOverlay('ok'); 
         
         setTimeout(()=> {
@@ -443,10 +430,10 @@ function doSecondaryLogin() {
     const u = document.getElementById('secondaryUser').value.replace(/\*/g,'');
     const p = document.getElementById('secondaryPass').value;
 
-    const foundUser = USERS.find(item => item.user === u && item.pass === p);
+    // เช็คเฉพาะกลุ่ม FULL ACCESS เท่านั้น
+    const foundUser = FULL_ACCESS_USERS.find(item => item.user === u && item.pass === p);
 
-    // ต้องเป็น user ระดับ full ถึงจะปลดล็อกได้
-    if(foundUser && foundUser.accessLevel === 'full'){
+    if(foundUser){
         showOverlay('ok');
         
         setTimeout(() => {
