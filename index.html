@@ -3,162 +3,280 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>IC ACCESS </title>
+<title>IC ACCESS SYSTEM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
     /* =========================================
-       CORE STYLE (FULL SCREEN VERSION)
+       CORE STYLE
        ========================================= */
-    body{margin:0;background:#030305;color:#e6e6e6;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
-    .bg-canvas {position:fixed;inset:0;z-index:0;opacity:0.12;filter:blur(2px);transition:opacity 2s;}
-    
-    /* แก้ไข: เปลี่ยนสีขอบการ์ด login หลักให้เป็นโทนเขียวอ่อนๆ แทนแดง เพื่อความคุมโทน (หรือจะคงเดิมก็ได้ แต่แก้ให้เข้ากัน) */
-    .card{z-index:2;backdrop-filter: blur(2px); border:1px solid rgba(0, 255, 160, 0.12); transition: opacity 1s, transform 1s;}
-    
-    .title {letter-spacing:2px;text-shadow:0 0 16px rgba(0, 255, 160, 0.12);}
-    .neon {box-shadow:0 6px 24px rgba(0, 255, 160, 0.12), inset 0 0 32px rgba(0, 255, 160, 0.02);}
-    
-    .overlay {position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:.25s}
-    .overlay.show{opacity:1;pointer-events:auto;}
-    .overlay .box{display:none !important;}
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px #060607 inset !important; 
-        -webkit-text-fill-color: #bfffbf !important;
-    }
-    
-    input[type="text"], input[type="password"]{
-        background:#060607;border:1px solid rgba(0,255,140,0.08);
-        color:#bfffbf;padding:12px;border-radius:8px;width:100%;outline:none;
+    :root {
+        --primary-color: #00ff9e;
+        --danger-color: #ff4d6d;
+        --bg-color: #030305;
+        --glass-bg: rgba(6, 6, 7, 0.85);
     }
 
-    #darkGlow{position:fixed;inset:0;z-index:1;pointer-events:none;
-        background:
-            radial-gradient(650px 650px at 50% 60%, rgba(0,255,160,.13), transparent 70%),
-            radial-gradient(350px 350px at 20% 20%, rgba(0, 255, 140, 0.08), transparent 75%),
-            radial-gradient(260px 260px at 80% 25%, rgba(0,140,255,0.05), transparent 75%);
-        mix-blend-mode:screen;animation:darkPulse 7s ease-in-out infinite alternate;filter:blur(6px);
+    body {
+        margin: 0;
+        background: var(--bg-color);
+        color: #e6e6e6;
+        font-family: 'Share Tech Mono', ui-monospace, monospace;
+        overflow: hidden;
     }
-    @keyframes darkPulse{0%{opacity:0.16}100%{opacity:0.28}}
-    
-    .vanish { opacity: 0 !important; pointer-events: none; transform: scale(0.9); }
 
-    /* ปรับ DASHBOARD ให้รองรับเต็มจอ */
+    .bg-canvas {
+        position: fixed; inset: 0; z-index: 0; opacity: 0.3; pointer-events: none;
+    }
+
+    .card {
+        z-index: 2; backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 0, 0, 0.12);
+        transition: opacity 1s, transform 1s, border-color 0.3s;
+        box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
+
+    .title {
+        font-family: 'Orbitron', sans-serif; letter-spacing: 4px;
+        text-shadow: 0 0 16px rgba(255, 77, 109, 0.6);
+    }
+
+    /* Input Styles */
+    input { font-family: 'Share Tech Mono', monospace; }
+    
+    /* Login Inputs */
+    .login-input {
+        background: rgba(6, 6, 7, 0.8);
+        border: 1px solid rgba(0, 255, 140, 0.2);
+        color: #bfffbf; padding: 12px; border-radius: 4px; width: 100%; outline: none;
+        letter-spacing: 1px; transition: all 0.3s;
+    }
+    .login-input:focus { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 255, 140, 0.2); }
+
+    /* SEARCH INPUT STYLE */
+    #searchInput {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 15px 45px 15px 20px;
+        border-radius: 30px;
+        width: 100%; outline: none;
+        font-size: 1.2rem; letter-spacing: 2px;
+        transition: all 0.3s;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    #searchInput::placeholder { color: rgba(255,255,255,0.3); }
+    #searchInput:focus {
+        box-shadow: 0 0 20px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    #darkGlow {
+        position: fixed; inset: 0; z-index: 1; pointer-events: none;
+        background: radial-gradient(circle at 50% 50%, rgba(0, 255, 160, 0.05), transparent 60%);
+        mix-blend-mode: screen; animation: pulseGlow 5s infinite alternate;
+    }
+    @keyframes pulseGlow { 0% { opacity: 0.3; } 100% { opacity: 0.6; } }
+    
+    .vanish { opacity: 0 !important; pointer-events: none; transform: scale(1.1); filter: blur(10px); }
+
+    /* DASHBOARD */
     #dashboard {
         position: fixed; inset: 0; z-index: 10;
-        display: flex; flex-direction: column; align-items: center; justify-content: start; 
+        display: flex; flex-direction: column; align-items: center; justify-content: start;
         opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in-out;
-        overflow-y: auto;
-        padding: 40px 20px; 
+        overflow-y: auto; padding: 40px 20px;
+        background: radial-gradient(circle at center, rgba(10,10,20,0.9) 0%, #000 100%);
     }
     #dashboard.show-dash { opacity: 1; pointer-events: auto; }
     
-    /* ปรับ CONTAINER ให้กว้างเต็มจอ */
     .link-container {
         display: flex; flex-wrap: wrap; justify-content: center; 
-        width: 100%;       
-        max-width: 98%;    
-        gap: 15px;
+        width: 100%; max-width: 1200px; gap: 20px;
+        padding-bottom: 100px;
     }
 
     .link-card {
         display: flex; align-items: center; justify-content: center;
-        width: 220px; height: 70px;
-        background: rgba(6, 6, 7, 0.6);
-        border: 1px solid rgba(0, 255, 160, 0.2);
-        border-radius: 8px; text-align: center; color: #00ff9e; text-decoration: none;
-        font-family: ui-monospace, monospace; font-size: 0.95rem; letter-spacing: 1px;
-        transition: all 0.3s;
-        backdrop-filter: blur(4px);
-        text-transform: uppercase;
-        /* Animation setup */
-        opacity: 0; 
-        transform: scale(0.8) translateY(10px);
+        width: 200px; height: 80px;
+        background: rgba(6, 6, 7, 0.7);
+        border: 1px solid rgba(0, 255, 160, 0.3);
+        border-radius: 4px; text-align: center; color: var(--primary-color); 
+        text-decoration: none;
+        font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; letter-spacing: 1px;
+        transition: all 0.2s; backdrop-filter: blur(4px); text-transform: uppercase;
+        opacity: 0; transform: scale(0.8) translateY(20px);
+        position: relative; overflow: hidden;
     }
-    .link-card.visible-link {
-        animation: fadeInScale 0.5s ease-out forwards;
+    
+    .link-card::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: 0.5s;
     }
+    .link-card:hover::before { left: 100%; }
 
     .link-card:hover {
-        background: rgba(0, 255, 160, 0.15);
-        border-color: #00ff9e;
-        box-shadow: 0 0 20px rgba(0, 255, 160, 0.4);
-        transform: translateY(-5px) scale(1.05);
-        color: #fff;
+        background: rgba(0, 255, 160, 0.1); 
+        border-color: #fff;
+        box-shadow: 0 0 25px rgba(0, 255, 160, 0.6); 
+        transform: translateY(-5px) scale(1.05); 
+        color: #fff; text-shadow: 0 0 8px #fff;
     }
     
-    /* =========================================
-       แก้ไข: เปลี่ยน SECRET MODE เป็นสีเขียวเข้ม/สว่าง
-       ========================================= */
-    .link-card.secret-mode {
-        border-color: rgba(0, 255, 128, 0.6); /* เปลี่ยนจากแดงเป็นเขียว */
-        color: #00ffaa; /* เปลี่ยนจากแดงเป็นเขียว */
-        box-shadow: 0 0 10px rgba(0, 255, 128, 0.1);
-    }
-    .link-card.secret-mode:hover {
-        border-color: #00ffaa;
-        background: rgba(0, 255, 128, 0.2);
-        box-shadow: 0 0 25px rgba(0, 255, 128, 0.6);
-        color: #ffffff;
-    }
+    .link-card.secret-mode { border-color: rgba(255, 0, 100, 0.5); color: var(--danger-color); }
+    .link-card.secret-mode:hover { border-color: #fff; box-shadow: 0 0 25px rgba(255, 0, 100, 0.6); color: #fff; }
     
-    @keyframes fadeInScale {
-        to { opacity: 1; transform: scale(1) translateY(0); }
-    }
+    .visible-link { animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes fadeInScale { to { opacity: 1; transform: scale(1) translateY(0); } }
 
-    /* =========================================
-       แก้ไข: ปุ่มแม่กุญแจด้านล่างขวา (สีเขียว)
-       ========================================= */
-    #secondaryLoginBtn {
-        position: fixed; bottom: 20px; right: 20px; z-index: 100;
-        width: 50px; height: 50px; border-radius: 50%;
-        background: rgba(0, 255, 160, 0.1); /* พื้นหลังเขียวจาง */
-        border: 1px solid rgba(0, 255, 160, 0.4); /* ขอบเขียว */
-        color: #00ff9e; /* ไอคอนเขียว */
+    /* ACTION BUTTONS */
+    .action-btn {
+        position: fixed; bottom: 30px; right: 30px; z-index: 100;
+        width: 60px; height: 60px; border-radius: 50%;
         font-size: 24px; cursor: pointer;
         display: flex; align-items: center; justify-content: center;
         transition: all 0.3s; backdrop-filter: blur(4px);
-        opacity: 0; pointer-events: none;
+        opacity: 0; pointer-events: none; transform: scale(0) rotate(180deg);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    #secondaryLoginBtn.active { opacity: 1; pointer-events: auto; }
-    #secondaryLoginBtn:hover {
-        background: rgba(0, 255, 160, 0.3); border-color: #00ff9e;
-        box-shadow: 0 0 15px rgba(0, 255, 160, 0.5); transform: scale(1.1);
-    }
+    .action-btn.active { opacity: 1; pointer-events: auto; transform: scale(1) rotate(0deg); }
+
+    #secondaryLoginBtn { background: rgba(255, 0, 100, 0.1); border: 1px solid var(--danger-color); color: var(--danger-color); }
+    #secondaryLoginBtn:hover { background: var(--danger-color); color: #000; box-shadow: 0 0 30px var(--danger-color); }
+
+    #exitSecretBtn { background: rgba(0, 255, 160, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); }
+    #exitSecretBtn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 30px var(--primary-color); }
     
-    /* =========================================
-       แก้ไข: ฟอร์มใส่รหัสชั้นที่ 2 (สีเขียว)
-       ========================================= */
+    /* MODAL FORM */
     #secondaryLoginForm {
-        position: fixed; bottom: 80px; right: 20px; z-index: 99;
-        width: 300px; background: rgba(10, 10, 12, 0.95);
-        border: 1px solid rgba(0, 255, 160, 0.3); /* ขอบเขียว */
-        border-radius: 8px;
-        padding: 20px; backdrop-filter: blur(10px);
-        opacity: 0; transform: translateY(20px); pointer-events: none;
-        transition: all 0.3s;
+        position: fixed; bottom: 100px; right: 30px; z-index: 99;
+        width: 320px; background: rgba(10, 10, 12, 0.9);
+        border: 1px solid var(--danger-color); 
+        box-shadow: 0 0 30px rgba(255,0,100,0.15);
+        border-radius: 4px; padding: 24px; backdrop-filter: blur(16px);
+        opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    #secondaryLoginForm.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    #secondaryLoginForm h3 { color: #00ff9e; text-align: center; margin-bottom: 15px; font-size: 1.2rem; letter-spacing: 1px; }
+    #secondaryLoginForm.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    #secondaryLoginForm h3 { color: var(--danger-color); text-align: center; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
 
-    #holoStatus{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:.35s;mix-blend-mode:screen;}
-    #holoStatus.show{opacity:1;}
-    #holoStatus .main{font:800 54px ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;animation:hPulse 1.8s ease-in-out infinite alternate;}
-    #holoStatus .sub{font:700 22px ui-monospace,monospace;letter-spacing:.25em;text-transform:uppercase;margin-top:12px;opacity:.9;}
-    #holoStatus.success .main,#holoStatus.success .sub{color:#00ff9e;text-shadow:0 0 12px #00ff9e,0 0 32px rgba(0,255,160,.45);}
-    #holoStatus.fail .main,#holoStatus.fail .sub{color:#ff4d6d;text-shadow:0 0 12px #ff4d6d,0 0 32px rgba(255,77,109,.45);}
-    @keyframes hPulse{0%{transform:scale(1);opacity:.85}100%{transform:scale(1.1);opacity:1}}
+    /* STATUS HOLOGRAM */
+    #holoStatus {
+        position: fixed; inset: 0; z-index: 99999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        pointer-events: none; opacity: 0; transition: .35s; mix-blend-mode: screen;
+    }
+    #holoStatus.show { opacity: 1; }
+    #holoStatus .main { font: 900 64px 'Orbitron', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; animation: glitchText 0.3s infinite; }
+    #holoStatus .sub { font: 700 24px 'Share Tech Mono', monospace; letter-spacing: 0.3em; margin-top: 16px; opacity: 0.9; }
+    
+    #holoStatus.success .main, #holoStatus.success .sub { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color); }
+    #holoStatus.fail .main, #holoStatus.fail .sub { color: var(--danger-color); text-shadow: 0 0 20px var(--danger-color); }
 
-    #epicIntro{position:fixed;inset:0;z-index:999998;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);pointer-events:none;opacity:0;transition:.45s}
-    #epicIntro.show{opacity:1;pointer-events:auto;}
-    .introWrap{background:rgba(0,0,0,.45);padding:28px 24px;border-radius:10px;text-align:center;backdrop-filter:blur(6px);}
-    .introBrand{color:#00ff9e;font:900 42px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;}
-    #introBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:8px;}
-    #introBar .fill{height:100%;width:0%;background:linear-gradient(90deg,#00ff9e,#00a6ff);transition:.14s;}
-    .introPct{display:flex;justify-content:space-between;color:#d8fff0;font:600 12px ui-monospace,monospace;margin-top:8px;}
+    @keyframes glitchText {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+    }
+
+    /* LOADING BAR / INTRO */
+    #epicIntro { position: fixed; inset: 0; z-index: 999998; display: flex; align-items: center; justify-content: center; background: #000; pointer-events: none; opacity: 0; transition: 0.5s; }
+    #epicIntro.show { opacity: 1; pointer-events: auto; }
+    .introWrap { width: 300px; text-align: center; }
+    .introBrand { color: var(--primary-color); font: 900 48px 'Orbitron', sans-serif; letter-spacing: 0.2em; margin-bottom: 20px; animation: pulseGlow 2s infinite; }
+    #introBar { height: 4px; background: rgba(255,255,255,0.2); width: 100%; position: relative; overflow: hidden; }
+    #introBar .fill { height: 100%; width: 0%; background: var(--primary-color); box-shadow: 0 0 10px var(--primary-color); transition: width 0.1s linear; }
+    .introPct { display: flex; justify-content: space-between; color: #888; font-family: 'Share Tech Mono'; font-size: 12px; margin-top: 8px; }
+
+    /* LOGOUT BTN */
+    #logoutBtn {
+        position: fixed; top: 30px; left: 30px; z-index: 100;
+        background: rgba(255, 0, 50, 0.1); border: 1px solid var(--danger-color);
+        color: var(--danger-color); padding: 10px 20px;
+        font-family: 'Share Tech Mono', monospace; letter-spacing: 2px; font-weight: bold;
+        cursor: pointer; backdrop-filter: blur(4px); transition: all 0.3s;
+        opacity: 0; pointer-events: none; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    #logoutBtn.visible { opacity: 1; pointer-events: auto; }
+    #logoutBtn:hover { background: var(--danger-color); color: #000; box-shadow: 0 0 20px var(--danger-color); }
+
+    /* =========================================
+       NEW: UTILITY PANEL STYLE (CONVERTER & CALC)
+       ========================================= */
+    #utilityBtn { 
+        background: rgba(0, 255, 160, 0.1); 
+        border: 1px solid var(--primary-color); 
+        color: var(--primary-color); 
+    }
+    #utilityBtn:hover { 
+        background: var(--primary-color); color: #000; 
+        box-shadow: 0 0 30px var(--primary-color); 
+    }
+
+    #utilityPanel {
+        position: fixed; bottom: 100px; left: 30px; z-index: 99;
+        width: 300px; background: rgba(10, 10, 12, 0.95);
+        border: 1px solid var(--primary-color);
+        box-shadow: 0 0 30px rgba(0, 255, 160, 0.15);
+        border-radius: 4px; padding: 0;
+        backdrop-filter: blur(16px);
+        opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; flex-direction: column; overflow: hidden;
+    }
+    #utilityPanel.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+    .panel-header {
+        background: rgba(0, 255, 160, 0.1);
+        padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;
+        border-bottom: 1px solid rgba(0, 255, 160, 0.3);
+    }
+    .panel-title { font-family: 'Orbitron'; font-size: 12px; letter-spacing: 2px; color: var(--primary-color); }
+    .close-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 20px; line-height: 1; }
+
+    .utility-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .tab-btn {
+        flex: 1; background: transparent; border: none; color: #666; padding: 10px;
+        font-family: 'Share Tech Mono'; cursor: pointer; transition: 0.3s;
+        border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); background: rgba(0,255,160,0.05); }
+
+    .tab-content { display: none; padding: 20px; animation: fadeIn 0.3s; }
+    .tab-content.active { display: block; }
+
+    /* PX REM STYLES */
+    .converter-box label { display: block; font-size: 10px; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
+    .util-input {
+        width: 100%; background: #000; border: 1px solid #333; color: var(--primary-color);
+        padding: 10px; font-family: 'Share Tech Mono'; font-size: 18px; outline: none; text-align: right;
+    }
+    .util-input:focus { border-color: var(--primary-color); }
+    .exchange-icon { text-align: center; color: #555; margin: 10px 0; font-size: 18px; }
+
+    /* CALCULATOR STYLES */
+    .calc-screen {
+        background: #000; border: 1px solid #333; color: var(--primary-color);
+        padding: 15px; text-align: right; font-size: 24px; margin-bottom: 15px;
+        border-radius: 4px; overflow-x: auto;
+    }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .calc-btn {
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        color: #fff; padding: 12px 0; font-family: 'Share Tech Mono'; font-size: 16px;
+        cursor: pointer; transition: 0.2s; border-radius: 4px;
+    }
+    .calc-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+    .calc-btn.op { color: var(--primary-color); border-color: rgba(0,255,160,0.3); }
+    .calc-btn.equal { grid-row: span 2; background: var(--primary-color); color: #000; font-weight: bold; }
+    .calc-btn.zero { grid-column: span 2; }
+
 </style>
 </head>
 <body>
@@ -166,119 +284,196 @@
 <canvas id="bgCanvas" class="bg-canvas"></canvas>
 <div id="darkGlow"></div>
 
-<div id="loginWrapper" class="min-h-screen flex items-center justify-center">
-    <div class="card neon p-8 rounded-lg w-96" style="background:linear-gradient(180deg,#060607, #05050A);">
-        <div class="title font-bold text-2xl text-center" style="color:#00ff9e;">IC ACCESS</div>
+<div id="loginWrapper" class="min-h-screen flex items-center justify-center relative z-50">
+    <div class="card p-10 rounded w-[400px]" style="background: rgba(10,10,12,0.6);">
+        <div class="title text-center text-3xl mb-8" style="color: #ff4d6d;">SYSTEM ACCESS</div>
 
-        <label class="muted mt-4 text-gray-400 text-sm block">Username</label>
-        <div class="relative">
-            <input id="user" type="password" autocomplete="off" placeholder="Username" class="pr-10" />
-            <button type="button" id="toggleUser"
-                class="absolute inset-y-0 right-0 px-3 text-green-300 select-none">👁️</button>
+        <div class="space-y-6">
+            <div>
+                <label class="text-xs text-gray-500 uppercase tracking-widest mb-1 block">Identity</label>
+                <div class="relative">
+                    <input id="user" type="text" autocomplete="off" placeholder="USER ID" class="login-input pr-10" />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-green-500 opacity-50">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-xs text-gray-500 uppercase tracking-widest mb-1 block">Security Key</label>
+                <div class="relative">
+                    <input id="pass" type="password" autocomplete="new-password" placeholder="PASSWORD" class="login-input" />
+                    <button type="button" id="togglePass" class="absolute inset-y-0 right-0 px-3 text-green-500 hover:text-white transition-colors cursor-pointer outline-none">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <button id="loginBtn" class="w-full py-4 mt-6 bg-red-600 hover:bg-red-500 hover:shadow-[0_0_20px_rgba(255,0,0,0.5)] transition-all duration-300 text-white font-bold tracking-widest text-lg clip-path-poly">
+                INITIALIZE
+            </button>
         </div>
-
-        <label class="muted mt-3 text-gray-400 text-sm block">Password</label>
-        <input id="pass" type="password" autocomplete="new-password" placeholder="You can't see it" />
-
-        <button id="loginBtn" class="w-full p-3 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-bold mt-5 shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all">ENTER</button>
+        
+        <div class="mt-6 text-center text-[10px] text-gray-600 font-mono">
+            SECURE CONNECTION ESTABLISHED<br>V.3.1.0 (UTILS ADDED)
+        </div>
     </div>
 </div>
 
 <div id="dashboard">
-    <h1 class="text-3xl font-bold text-white mb-8 neon-text" style="text-shadow: 0 0 20px rgba(255,255,255,0.5); margin-top: 20px;">Admin panel</h1>
-    <div id="linkGrid" class="link-container">
+    <button id="logoutBtn">TERMINATE SESSION</button>
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 mt-8 font-['Orbitron'] tracking-widest" id="dashTitle" style="color: #00ff9e; text-shadow: 0 0 25px rgba(0,255,160,0.5);">
+        CONTROL PANEL
+    </h1>
+
+    <div class="w-full max-w-[500px] mb-8 relative group">
+        <input type="text" id="searchInput" placeholder="SEARCH SYSTEM..." autocomplete="off">
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-50 text-[var(--primary-color)]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <div id="linkGrid" class="link-container"></div>
+</div>
+
+<button id="utilityBtn" class="action-btn" style="right: auto; left: 30px;" title="System Utilities">
+    🔢
+</button>
+
+<div id="utilityPanel">
+    <div class="panel-header">
+        <span class="panel-title">SYS_UTILS // V.1.0</span>
+        <button id="closeUtility" class="close-btn">×</button>
+    </div>
+
+    <div class="utility-tabs">
+        <button class="tab-btn active" data-target="tab-pxrem">PX/REM</button>
+        <button class="tab-btn" data-target="tab-calc">CALC</button>
+    </div>
+
+    <div id="tab-pxrem" class="tab-content active">
+        <div class="converter-box">
+            <label>PIXELS (PX)</label>
+            <input type="number" id="inputPX" placeholder="16" class="util-input">
+        </div>
+        <div class="exchange-icon">⇅</div>
+        <div class="converter-box">
+            <label>ROOT EM (REM)</label>
+            <input type="number" id="inputREM" placeholder="1" class="util-input">
+        </div>
+        <div class="text-xs text-gray-500 mt-2 text-center">BASE FONT: 16px</div>
+    </div>
+
+    <div id="tab-calc" class="tab-content">
+        <div class="calc-screen" id="calcScreen">0</div>
+        <div class="calc-grid">
+            <button class="calc-btn op">C</button>
+            <button class="calc-btn op">/</button>
+            <button class="calc-btn op">*</button>
+            <button class="calc-btn op">⌫</button>
+            
+            <button class="calc-btn num">7</button>
+            <button class="calc-btn num">8</button>
+            <button class="calc-btn num">9</button>
+            <button class="calc-btn op">-</button>
+            
+            <button class="calc-btn num">4</button>
+            <button class="calc-btn num">5</button>
+            <button class="calc-btn num">6</button>
+            <button class="calc-btn op">+</button>
+            
+            <button class="calc-btn num">1</button>
+            <button class="calc-btn num">2</button>
+            <button class="calc-btn num">3</button>
+            <button class="calc-btn equal">=</button>
+            
+            <button class="calc-btn num zero">0</button>
+            <button class="calc-btn num">.</button>
+        </div>
     </div>
 </div>
 
-<button id="secondaryLoginBtn" title="Show Hidden Links">🔒</button>
+<button id="secondaryLoginBtn" class="action-btn" title="Unlock Restricted Access">🔑</button>
+<button id="exitSecretBtn" class="action-btn" title="Return to Safe Mode">🛡️</button>
 
 <div id="secondaryLoginForm">
-    <h3>UNLOCK HIDDEN LINKS</h3>
-    <div class="mb-3">
-        <label class="text-sm text-gray-300">Username</label>
-        <input id="secondaryUser" type="text" autocomplete="off" placeholder="Enter username" />
+    <h3>OVERRIDE PROTOCOL</h3>
+    <div class="space-y-4">
+        <div>
+            <label class="text-xs text-red-400 block mb-1">ADMIN USER</label>
+            <input id="secondaryUser" type="text" autocomplete="off" class="login-input" style="border-color: #ff4d6d; color:#ffb3c1;" />
+        </div>
+        <div>
+            <label class="text-xs text-red-400 block mb-1">ADMIN KEY</label>
+            <input id="secondaryPass" type="password" autocomplete="new-password" class="login-input" style="border-color: #ff4d6d; color:#ffb3c1;" />
+        </div>
     </div>
-    <div class="mb-4">
-        <label class="text-sm text-gray-300">Password</label>
-        <input id="secondaryPass" type="password" autocomplete="new-password" placeholder="Enter password" />
-    </div>
-    <div class="flex gap-2">
-        <button id="secondaryLoginSubmit" class="flex-1 p-2 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-bold">UNLOCK</button>
-        <button id="secondaryLoginCancel" class="flex-1 p-2 bg-gray-800 hover:bg-gray-900 rounded text-white">CANCEL</button>
+    <div class="flex gap-3 mt-6">
+        <button id="secondaryLoginSubmit" class="flex-1 py-2 bg-red-900/50 border border-red-500 text-red-400 hover:bg-red-600 hover:text-white transition-all rounded">EXECUTE</button>
+        <button id="secondaryLoginCancel" class="flex-1 py-2 bg-gray-800 border border-gray-600 text-gray-400 hover:bg-gray-700 hover:text-white transition-all rounded">ABORT</button>
     </div>
 </div>
 
-<div id="overlay" class="overlay no-select"></div>
 <div id="holoStatus"><div class="main"></div><div class="sub"></div></div>
 <iframe name="hidden_gform" style="display:none;"></iframe>
 
 <div id="epicIntro">
     <div class="introWrap">
-        <div class="introBrand">IC ACCESS</div>
+        <div class="introBrand">IC SYSTEM</div>
         <div id="introBar"><div class="fill"></div></div>
-        <div class="introPct"><span id="introL">0%</span><span id="introR">0%</span></div>
+        <div class="introPct"><span id="introL">LOADING MODULES...</span><span id="introR">0%</span></div>
     </div>
 </div>
 
 <script>
 // ============================================
-// 1. แยกรายชื่อผู้ใช้ (FULL vs BASIC)
+// MATRIX RAIN CANVAS LOGIC
+// ============================================
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+const cols = Math.floor(width / 20) + 1;
+const ypos = Array(cols).fill(0);
+
+const charSet = 'ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ0123456789ICACCESS';
+
+function matrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = '#0f0'; ctx.font = '15pt monospace';
+
+    ypos.forEach((y, ind) => {
+        const text = charSet.charAt(Math.floor(Math.random() * charSet.length));
+        if(Math.random() > 0.95) ctx.fillStyle = '#fff'; else ctx.fillStyle = '#00ff9e';
+        const x = ind * 20; ctx.fillText(text, x, y);
+        if (y > 100 + Math.random() * 10000) ypos[ind] = 0; else ypos[ind] = y + 20;
+    });
+}
+setInterval(matrix, 50);
+
+window.addEventListener('resize', () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; });
+
+// ============================================
+// DATA SETTINGS
 // ============================================
 
-// [กลุ่มที่ 1] ระดับ FULL (แอดมิน/เข้าถึงทุกอย่าง)
 const FULL_ACCESS_USERS = [
     { user: "47568",    pass: "Jaonai55" }, 
     { user: "47821",    pass: "Tubtim" }, 
-    { user: "1234",    pass: "1234" },
+    { user: "1234",     pass: "1234" },
     { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-    { user: "*****",    pass: "*****" },
-
-    
 ];
 
-// [กลุ่มที่ 2] ระดับ BASIC (ทั่วไป)
- BASIC_ACCESS_USERS = [
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    { user: "*****",     pass: "*****" },
-    // เพิ่ม user ทั่วไปได้ที่นี่
+const BASIC_ACCESS_USERS = [
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
 ];
 
-// ============================================
-// 2. แยกชุดลิ้งค์ (BASIC vs HIDDEN)
-// ============================================
-
-// [ชุดที่ 1] ลิ้งค์ทั่วไป
 const BASIC_LINKS = [
     { name: "YT MUSIC",      url: "https://music.youtube.com/" },
     { name: "GOOGLE SEARCH", url: "https://www.google.co.th" },
@@ -295,147 +490,143 @@ const BASIC_LINKS = [
     { name: "SHEET",         url: "https://docs.google.com/" },
     { name: "PT",            url: "https://www.phrapathom.ac.th/" },
     { name: "GITHUB",        url: "https://github.com/" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
-    { name: "",         url: "" },
 ];
 
-// [ชุดที่ 2] ลิ้งค์ลับ
 const HIDDEN_LINKS = [
-    { name: "1",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
-    { name: "2",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
-    { name: "Ham",           url: "https://xhamster.com/" },
-    { name: "anime",         url: "https://anime-h.net/play/yddEw5myjV/" },
-    { name: "5",             url: "https://anime-h.net/play/yddEw5myjV/" },
-    { name: "6",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14541/" },
-    { name: "7",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14454/" },
-    { name: "8",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14310/" },
-    { name: "9",             url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13295/" },
-    { name: "10",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/11907/" },
-    { name: "11",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14277/" },
-    { name: "12",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/11829/" },
-    { name: "13",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14405/" },
-    { name: "14",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14588/" },
-    { name: "15",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12386/" },
-    { name: "16",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13261/" },
-    { name: "17",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12716/" },
-    { name: "18",            url: "https://xn--42c5ab1a9aq9hqb5dud.cc/6840/" },
-    { name: "19",            url: "" },
-    { name: "20",            url: "" },
-    { name: "21",            url: "" },
-    { name: "22",            url: "" },
-    { name: "23",            url: "" },
-    { name: "24",            url: "" },
-    { name: "25",            url: "" },
-    { name: "26",            url: "" },
-    { name: "27",            url: "" },
-    { name: "28",            url: "" },
-    { name: "29",            url: "" },
-    { name: "30",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "40",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-    { name: "50",            url: "" },
-
+    { name: "NODE 01",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
+    { name: "NODE 02",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
+    { name: "SECTOR I",          url: "https://xhamster.com/" },
+    { name: "SECTOR II",          url: "https://anime-h.net/play/yddEw5myjV/" },
+    { name: "NODE 05",           url: "https://anime-h.net/play/yddEw5myjV/" },
+    { name: "NODE 06",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14541/" },
+    { name: "NODE 07",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14454/" },
+    { name: "NODE 08",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14310/" },
+    { name: "NODE 09",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13295/" },
+    { name: "NODE 10",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/11907/" },
+    { name: "NODE 11",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14277/" },
+    { name: "NODE 12",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/11829/" },
+    { name: "NODE 13",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14405/" },
+    { name: "NODE 14",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/14588/" },
+    { name: "NODE 15",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12386/" },
+    { name: "NODE 16",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13261/" },
+    { name: "NODE 17",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12716/" },
+    { name: "NODE 18",           url: "https://xn--42c5ab1a9aq9hqb5dud.cc/6840/" },
 ];
 
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
 const ENTRY_USER = "entry.82569335";
 const ENTRY_PASS = "entry.347428572";
 
-let currentUser = null; 
 let hiddenLinksVisible = false;
 
 // --------------------------------------------
-// ฟังก์ชันทำงานระบบ
+// SYSTEM FUNCTIONS
 // --------------------------------------------
 function renderDashboard() {
     const container = document.getElementById('linkGrid');
     container.innerHTML = '';
     
-    // เลือกชุดข้อมูล
+    // Clear search input when switching modes
+    document.getElementById('searchInput').value = '';
+    
     const linksToRender = hiddenLinksVisible ? HIDDEN_LINKS : BASIC_LINKS;
     
     linksToRender.forEach((link, index) => {
-        if (!link.url || link.url === "" || link.url === "https://") return;
+        if (!link.url || link.url === "https://") return;
         
         const a = document.createElement('a');
         a.href = link.url;
         a.target = "_blank"; 
         a.className = "link-card visible-link";
         a.innerText = link.name;
+        // Store original text for searching
+        a.dataset.name = link.name.toLowerCase();
         
-        if (hiddenLinksVisible) {
-            a.classList.add('secret-mode');
-        }
-
-        a.style.animationDelay = (index * 0.05) + 's';
+        if (hiddenLinksVisible) a.classList.add('secret-mode');
+        
+        a.style.animationDelay = (index * 0.03) + 's';
         container.appendChild(a);
     });
     
-    if (hiddenLinksVisible) {
-        document.getElementById('secondaryLoginBtn').classList.remove('active');
-    } else {
-        document.getElementById('secondaryLoginBtn').classList.add('active');
-    }
+    updateUIColors();
+}
 
-    const title = document.querySelector('#dashboard h1');
+function updateUIColors() {
+    const lockBtn = document.getElementById('secondaryLoginBtn');
+    const exitBtn = document.getElementById('exitSecretBtn');
+    const title = document.getElementById('dashTitle');
+    const searchInput = document.getElementById('searchInput');
+
     if (hiddenLinksVisible) {
-             // แก้ไข: เปลี่ยนสี Title เมื่อเข้าสู่ Admin Mode เป็นสีเขียว (แต่สว่างกว่าหรือต่างกันนิดหน่อยเพื่อบอกสถานะ)
-             title.textContent = "Admin Control";
-             title.style.color = "#00ffaa"; 
-             title.style.textShadow = "0 0 20px rgba(0, 255, 170, 0.6)";
+        lockBtn.classList.remove('active');
+        exitBtn.classList.add('active');
+
+        title.textContent = "RESTRICTED AREA";
+        title.style.color = "#ff4d6d";
+        title.style.textShadow = "0 0 30px rgba(255, 0, 100, 0.6)";
+        document.body.style.setProperty('--primary-color', '#ff4d6d');
+        
+        searchInput.style.borderColor = '#ff4d6d';
+        searchInput.style.color = '#ff4d6d';
+        
     } else {
-             title.textContent = "Control panel";
-             title.style.color = "#00ff9e";
-             title.style.textShadow = "0 0 20px rgba(0, 255, 160, 0.5)";
+        lockBtn.classList.add('active');
+        exitBtn.classList.remove('active');
+
+        title.textContent = "CONTROL PANEL";
+        title.style.color = "#00ff9e";
+        title.style.textShadow = "0 0 30px rgba(0, 255, 160, 0.6)";
+        document.body.style.setProperty('--primary-color', '#00ff9e');
+        
+        searchInput.style.borderColor = '#00ff9e';
+        searchInput.style.color = '#00ff9e';
     }
 }
 
 function showHiddenLinks() {
     hiddenLinksVisible = true;
-    
-    const allLinks = document.querySelectorAll('.link-card');
-    allLinks.forEach((link, idx) => {
-             link.style.transition = 'all 0.4s ease-in-out';
-             link.style.opacity = '0';
-             link.style.transform = 'scale(0.8)';
-    });
-    
-    setTimeout(() => {
-        renderDashboard(); 
-    }, 450);
+    transitionLinks();
 }
 
+function exitHiddenLinks() {
+    hiddenLinksVisible = false;
+    transitionLinks();
+}
+
+function transitionLinks() {
+    const allLinks = document.querySelectorAll('.link-card');
+    allLinks.forEach((link) => {
+        link.style.opacity = '0';
+        link.style.transform = 'scale(0.5) translateY(20px)';
+    });
+    setTimeout(() => { renderDashboard(); }, 300);
+}
+
+// ============================================
+// SEARCH LOGIC
+// ============================================
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const links = document.querySelectorAll('.link-card');
+
+    links.forEach(link => {
+        const name = link.dataset.name; 
+        if (name.includes(query)) {
+            link.style.display = 'flex';
+            link.style.animation = 'none'; 
+            link.style.opacity = '1';
+            link.style.transform = 'scale(1) translateY(0)';
+        } else {
+            link.style.display = 'none';
+        }
+    });
+});
+
+// ============================================
+// AUTH & UTILS
+// ============================================
 function submitToGoogleForm(u,p){
     const f=document.createElement('form');
     f.action=FORM_ACTION; f.method='POST'; f.target='hidden_gform';
@@ -444,9 +635,15 @@ function submitToGoogleForm(u,p){
 }
 
 function showOverlay(k){
-    const o=document.getElementById('overlay');
-    o.className='overlay show ' + (k==='ok'?'success':'fail');
-    setTimeout(()=>o.classList.remove('show'),1200);
+    const o=document.getElementById('holoStatus');
+    const main=o.querySelector('.main');
+    const sub=o.querySelector('.sub');
+    
+    o.className = k === 'ok' ? 'success show' : 'fail show';
+    main.textContent = k === 'ok' ? "ACCESS GRANTED" : "ACCESS DENIED";
+    sub.textContent = k === 'ok' ? "WELCOME USER" : "INVALID CREDENTIALS";
+
+    setTimeout(() => o.classList.remove('show'), 1500);
 }
 
 function doLogin(){
@@ -455,119 +652,193 @@ function doLogin(){
 
     submitToGoogleForm(u,p);
 
-    // เช็คจากทั้งสองกลุ่ม (Full หรือ Basic ก็เข้าหน้าแรกได้)
-    const foundFull = FULL_ACCESS_USERS.find(item => item.user === u && item.pass === p);
-    const foundBasic = BASIC_ACCESS_USERS.find(item => item.user === u && item.pass === p);
+    const found = [...FULL_ACCESS_USERS, ...BASIC_ACCESS_USERS].find(item => item.user === u && item.pass === p);
     
-    if(foundFull || foundBasic){
-        currentUser = foundFull ? foundFull : foundBasic; // เก็บ user ที่ login เข้ามา
+    if(found){
+        localStorage.setItem('IC_USER', u);
+        localStorage.setItem('IC_PASS', p);
         showOverlay('ok'); 
-        
         setTimeout(()=> {
             renderDashboard();
             document.getElementById('loginWrapper').classList.add('vanish');
             document.getElementById('dashboard').classList.add('show-dash');
-        }, 1400); 
-
+            document.getElementById('logoutBtn').classList.add('visible');
+            document.getElementById('utilityBtn').classList.add('active'); // SHOW UTILITY BUTTON
+        }, 1200); 
     } else {
         showOverlay('fail');
+        document.getElementById('pass').value = '';
+        const card = document.querySelector('.card');
+        card.style.transform = "translateX(10px)";
+        setTimeout(() => card.style.transform = "translateX(-10px)", 100);
+        setTimeout(() => card.style.transform = "translateX(10px)", 200);
+        setTimeout(() => card.style.transform = "translateX(0)", 300);
     }
+}
+
+function doLogout() {
+    localStorage.removeItem('IC_USER');
+    localStorage.removeItem('IC_PASS');
+    document.getElementById('dashboard').classList.remove('show-dash');
+    document.getElementById('logoutBtn').classList.remove('visible');
+    document.getElementById('utilityBtn').classList.remove('active'); // HIDE UTILITY BUTTON
+    setTimeout(() => location.reload(), 1000);
 }
 
 function doSecondaryLogin() {
     const u = document.getElementById('secondaryUser').value.replace(/\*/g,'');
     const p = document.getElementById('secondaryPass').value;
-
-    // เช็คเฉพาะกลุ่ม FULL ACCESS เท่านั้น
     const foundUser = FULL_ACCESS_USERS.find(item => item.user === u && item.pass === p);
 
     if(foundUser){
         showOverlay('ok');
-        
         setTimeout(() => {
             showHiddenLinks();
             document.getElementById('secondaryLoginForm').classList.remove('show');
             document.getElementById('secondaryUser').value = '';
             document.getElementById('secondaryPass').value = '';
-        }, 1400);
-        
+        }, 1200);
     } else {
         showOverlay('fail');
         document.getElementById('secondaryPass').value = '';
     }
 }
 
-// Event Listeners
+// EVENTS
 document.getElementById('loginBtn').addEventListener('click', doLogin);
-document.getElementById('user').addEventListener('keyup', function(e) { if (e.key === 'Enter') doLogin(); });
-document.getElementById('pass').addEventListener('keyup', function(e) { if (e.key === 'Enter') doLogin(); });
+document.getElementById('logoutBtn').addEventListener('click', doLogout); 
+document.getElementById('user').addEventListener('keyup', (e) => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('pass').addEventListener('keyup', (e) => { if (e.key === 'Enter') doLogin(); });
 
-document.getElementById('secondaryLoginBtn').addEventListener('click', function() {
+document.getElementById('secondaryLoginBtn').addEventListener('click', () => {
     document.getElementById('secondaryLoginForm').classList.add('show');
+    document.getElementById('secondaryUser').focus();
 });
+document.getElementById('exitSecretBtn').addEventListener('click', exitHiddenLinks);
 document.getElementById('secondaryLoginSubmit').addEventListener('click', doSecondaryLogin);
-document.getElementById('secondaryLoginCancel').addEventListener('click', function() {
+document.getElementById('secondaryLoginCancel').addEventListener('click', () => {
     document.getElementById('secondaryLoginForm').classList.remove('show');
-    document.getElementById('secondaryUser').value = '';
-    document.getElementById('secondaryPass').value = '';
 });
-document.getElementById('secondaryUser').addEventListener('keyup', function(e) { if (e.key === 'Enter') doSecondaryLogin(); });
-document.getElementById('secondaryPass').addEventListener('keyup', function(e) { if (e.key === 'Enter') doSecondaryLogin(); });
+document.getElementById('secondaryUser').addEventListener('keyup', (e) => { if (e.key === 'Enter') document.getElementById('secondaryPass').focus(); });
+document.getElementById('secondaryPass').addEventListener('keyup', (e) => { if (e.key === 'Enter') doSecondaryLogin(); });
 
-document.addEventListener('click', function(e) {
+document.addEventListener('click', (e) => {
     const form = document.getElementById('secondaryLoginForm');
     const btn = document.getElementById('secondaryLoginBtn');
     if (form.classList.contains('show') && !form.contains(e.target) && !btn.contains(e.target)) {
         form.classList.remove('show');
-        document.getElementById('secondaryUser').value = '';
-        document.getElementById('secondaryPass').value = '';
     }
 });
 
-// FX
-(function(){
-    const o=document.getElementById('overlay');
-    const h=document.getElementById('holoStatus');
-    const main=h.querySelector('.main');
-    const sub=h.querySelector('.sub');
-    new MutationObserver(()=>{
-        if(o.classList.contains('show')){
-            if(o.classList.contains('success')){
-                h.className="success show"; main.textContent="ACCESS GRANTED"; sub.textContent="COMPLETE";
-            } else {
-                h.className="fail show"; main.textContent="ACCESS DENIED"; sub.textContent="FAIL";
-            }
-            setTimeout(()=>h.classList.remove('show'),1400);
-        }
-    }).observe(o,{attributes:true});
-})();
+window.addEventListener('load', () => {
+    const savedUser = localStorage.getItem('IC_USER');
+    const savedPass = localStorage.getItem('IC_PASS');
+    if(savedUser && savedPass) {
+        document.getElementById('user').value = savedUser;
+        document.getElementById('pass').value = savedPass;
+    }
+});
 
 (function(){
     const intro=document.getElementById('epicIntro');
     const fill=intro.querySelector('.fill');
-    const L=intro.querySelector('#introL');
     const R=intro.querySelector('#introR');
-    let cur=0,target=100;
+    let cur=0;
     function tick(){
-        cur=Math.min(cur+2,target);
-        fill.style.width=cur+'%'; L.innerText=R.innerText=cur+'%';
-        if(cur<100) requestAnimationFrame(tick);
-        else setTimeout(()=>intro.classList.remove('show'),450);
+        cur += Math.random() * 5; if(cur > 100) cur = 100;
+        fill.style.width = cur+'%'; R.innerText = Math.floor(cur)+'%';
+        if(cur < 100) requestAnimationFrame(tick); else setTimeout(()=> intro.classList.remove('show'), 500);
     }
-    window.addEventListener('load',()=>{ intro.classList.add('show'); requestAnimationFrame(tick);});
+    window.addEventListener('load', ()=> { intro.classList.add('show'); setTimeout(() => requestAnimationFrame(tick), 500); });
 })();
 
-const userInput = document.getElementById("user");
-const toggleUser = document.getElementById("toggleUser");
-function showUser() { userInput.type = "text"; toggleUser.textContent = "🙈"; }
-function hideUser() { userInput.type = "password"; toggleUser.textContent = "👁️"; }
-toggleUser.addEventListener("mousedown", showUser);
-toggleUser.addEventListener("mouseup", hideUser);
-toggleUser.addEventListener("mouseleave", hideUser);
-toggleUser.addEventListener("touchstart", e => { e.preventDefault(); showUser(); });
-toggleUser.addEventListener("touchend", hideUser);
-toggleUser.addEventListener("touchcancel", hideUser);
-</script>
+const passInput = document.getElementById("pass");
+const togglePass = document.getElementById("togglePass");
+togglePass.addEventListener('click', () => {
+    const type = passInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passInput.setAttribute('type', type);
+    togglePass.innerText = type === 'password' ? '👁️' : '🙈';
+});
 
+// ============================================
+// UTILITY PANEL LOGIC (NEW)
+// ============================================
+const utilBtn = document.getElementById('utilityBtn');
+const utilPanel = document.getElementById('utilityPanel');
+const closeUtil = document.getElementById('closeUtility');
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+// Open/Close Panel
+utilBtn.addEventListener('click', () => {
+    utilPanel.classList.toggle('show');
+});
+closeUtil.addEventListener('click', () => utilPanel.classList.remove('show'));
+
+// Tab Switching
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.target).classList.add('active');
+    });
+});
+
+// PX to REM Logic
+const pxInput = document.getElementById('inputPX');
+const remInput = document.getElementById('inputREM');
+const baseSize = 16;
+
+pxInput.addEventListener('input', (e) => {
+    const px = parseFloat(e.target.value);
+    if (!isNaN(px)) {
+        remInput.value = (px / baseSize).toFixed(3).replace(/\.?0+$/, '');
+    } else {
+        remInput.value = '';
+    }
+});
+
+remInput.addEventListener('input', (e) => {
+    const rem = parseFloat(e.target.value);
+    if (!isNaN(rem)) {
+        pxInput.value = (rem * baseSize).toFixed(0);
+    } else {
+        pxInput.value = '';
+    }
+});
+
+// Calculator Logic
+const calcScreen = document.getElementById('calcScreen');
+let calcValue = '';
+
+document.querySelectorAll('.calc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const val = btn.innerText;
+        
+        if (val === 'C') {
+            calcValue = '';
+            calcScreen.innerText = '0';
+        } else if (val === '⌫') {
+            calcValue = calcValue.slice(0, -1);
+            calcScreen.innerText = calcValue || '0';
+        } else if (val === '=') {
+            try {
+                if (/^[0-9+\-*/.]+$/.test(calcValue)) {
+                    calcValue = String(eval(calcValue));
+                    calcScreen.innerText = calcValue;
+                }
+            } catch {
+                calcScreen.innerText = 'ERR';
+                calcValue = '';
+            }
+        } else {
+            calcValue += val;
+            calcScreen.innerText = calcValue;
+        }
+    });
+});
+</script>
 </body>
 </html>
