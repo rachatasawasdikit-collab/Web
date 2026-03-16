@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>IC ACCESS SYSTEM</title>
+<title>Welcome</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -20,328 +20,169 @@
     }
 
     body {
-        margin: 0;
-        background: var(--bg-color);
-        color: #e6e6e6;
-        font-family: 'Share Tech Mono', ui-monospace, monospace;
-        overflow: hidden;
+        margin: 0; background: var(--bg-color); color: #e6e6e6;
+        font-family: 'Share Tech Mono', ui-monospace, monospace; overflow: hidden;
     }
 
-    .bg-canvas {
-        position: fixed; inset: 0; z-index: 0; opacity: 0.3; pointer-events: none;
-    }
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.3; pointer-events: none; }
 
     .card {
-        z-index: 2;
-        backdrop-filter: blur(10px);
+        z-index: 2; backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 0, 0, 0.12);
         transition: opacity 1s, transform 1s, border-color 0.3s;
         box-shadow: 0 0 40px rgba(0,0,0,0.5);
     }
 
-    .title {
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 4px;
-        text-shadow: 0 0 16px rgba(255, 77, 109, 0.6);
-    }
+    .title { font-family: 'Orbitron', sans-serif; letter-spacing: 4px; text-shadow: 0 0 16px rgba(255, 77, 109, 0.6); }
 
-    input {
-        font-family: 'Share Tech Mono', monospace;
-    }
+    input { font-family: 'Share Tech Mono', monospace; }
     
     .login-input {
-        background: rgba(6, 6, 7, 0.8);
-        border: 1px solid rgba(0, 255, 140, 0.2);
-        color: #bfffbf; padding: 12px; border-radius: 4px; width: 100%; outline: none; letter-spacing: 1px;
-        transition: all 0.3s;
+        background: rgba(6, 6, 7, 0.8); border: 1px solid rgba(0, 255, 140, 0.2);
+        color: #bfffbf; padding: 12px; border-radius: 4px; width: 100%; outline: none; letter-spacing: 1px; transition: all 0.3s;
     }
-    .login-input:focus {
-        border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 255, 140, 0.2);
-    }
+    .login-input:focus { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 255, 140, 0.2); }
 
     #searchInput {
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid var(--primary-color); color: var(--primary-color);
+        background: rgba(0, 0, 0, 0.6); border: 1px solid var(--primary-color); color: var(--primary-color);
         padding: 15px 45px 15px 20px; border-radius: 30px; width: 100%; outline: none;
-        font-size: 1.2rem;
-        letter-spacing: 2px; transition: all 0.3s; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        font-size: 1.2rem; letter-spacing: 2px; transition: all 0.3s; box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    #searchInput::placeholder {
-        color: rgba(255,255,255,0.3);
-    }
-    #searchInput:focus {
-        box-shadow: 0 0 20px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.5);
-        background: rgba(0, 0, 0, 0.8);
-    }
+    #searchInput::placeholder { color: rgba(255,255,255,0.3); }
+    #searchInput:focus { box-shadow: 0 0 20px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.5); background: rgba(0, 0, 0, 0.8); }
 
     #darkGlow {
-        position: fixed;
-        inset: 0; z-index: 1; pointer-events: none;
+        position: fixed; inset: 0; z-index: 1; pointer-events: none;
         background: radial-gradient(circle at 50% 50%, rgba(0, 255, 160, 0.05), transparent 60%); mix-blend-mode: screen;
         animation: pulseGlow 5s infinite alternate;
     }
-    @keyframes pulseGlow {
-        0% { opacity: 0.3; } 100% { opacity: 0.6; }
-    }
+    @keyframes pulseGlow { 0% { opacity: 0.3; } 100% { opacity: 0.6; } }
     
-    .vanish {
-        opacity: 0 !important;
-        pointer-events: none; transform: scale(1.1); filter: blur(10px);
-    }
+    .vanish { opacity: 0 !important; pointer-events: none; transform: scale(1.1); filter: blur(10px); }
 
     /* DASHBOARD */
     #dashboard {
-        position: fixed;
-        inset: 0; z-index: 10;
+        position: fixed; inset: 0; z-index: 10;
         display: flex; flex-direction: column; align-items: center; justify-content: start;
         opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in-out;
         overflow-y: auto; padding: 40px 20px;
         background: radial-gradient(circle at center, rgba(10,10,20,0.9) 0%, #000 100%);
     }
-    #dashboard.show-dash {
-        opacity: 1; pointer-events: auto;
-    }
+    #dashboard.show-dash { opacity: 1; pointer-events: auto; }
     
-    .link-container {
-        display: flex; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px;
-        gap: 20px; padding-bottom: 100px;
-    }
+    .link-container { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; gap: 20px; padding-bottom: 100px; }
 
     .link-card {
-        display: flex;
-        align-items: center; justify-content: center;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
         width: 200px; height: 80px; background: rgba(6, 6, 7, 0.7);
-        border: 1px solid rgba(0, 255, 160, 0.3);
-        border-radius: 4px; text-align: center;
-        color: var(--primary-color); text-decoration: none; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; letter-spacing: 1px;
-        transition: all 0.2s;
-        backdrop-filter: blur(4px); text-transform: uppercase;
+        border: 1px solid rgba(0, 255, 160, 0.3); border-radius: 4px; text-align: center;
+        color: var(--primary-color); text-decoration: none; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; letter-spacing: 1px;
+        transition: all 0.2s; backdrop-filter: blur(4px); text-transform: uppercase;
         opacity: 0; transform: scale(0.8) translateY(20px); position: relative; overflow: hidden;
     }
+    .link-card .link-favicon {
+        width: 22px; height: 22px; object-fit: contain; border-radius: 3px;
+        filter: drop-shadow(0 0 4px rgba(0,255,160,0.4));
+        transition: filter 0.2s;
+    }
+    .link-card:hover .link-favicon { filter: drop-shadow(0 0 6px #fff) brightness(1.2); }
+    .link-favicon-placeholder {
+        width: 22px; height: 22px; border-radius: 3px;
+        background: rgba(0,255,160,0.15); border: 1px solid rgba(0,255,160,0.3);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11px; color: var(--primary-color);
+    }
     .link-card::before {
-        content: ''; position: absolute; top: 0;
-        left: -100%; width: 100%; height: 100%;
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s;
     }
     .link-card:hover::before { left: 100%; }
-    .link-card:hover {
-        background: rgba(0, 255, 160, 0.1);
-        border-color: #fff; box-shadow: 0 0 25px rgba(0, 255, 160, 0.6); transform: translateY(-5px) scale(1.05); color: #fff; text-shadow: 0 0 8px #fff;
-    }
-    .link-card.secret-mode {
-        border-color: rgba(255, 0, 100, 0.5); color: var(--danger-color);
-    }
-    .link-card.secret-mode:hover {
-        border-color: #fff; box-shadow: 0 0 25px rgba(255, 0, 100, 0.6); color: #fff;
-    }
+    .link-card:hover { background: rgba(0, 255, 160, 0.1); border-color: #fff; box-shadow: 0 0 25px rgba(0, 255, 160, 0.6); transform: translateY(-5px) scale(1.05); color: #fff; text-shadow: 0 0 8px #fff; }
+    .link-card.secret-mode { border-color: rgba(255, 0, 100, 0.5); color: var(--danger-color); }
+    .link-card.secret-mode:hover { border-color: #fff; box-shadow: 0 0 25px rgba(255, 0, 100, 0.6); color: #fff; }
     
-    .visible-link {
-        animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-    @keyframes fadeInScale {
-        to { opacity: 1; transform: scale(1) translateY(0); }
-    }
+    .visible-link { animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes fadeInScale { to { opacity: 1; transform: scale(1) translateY(0); } }
 
     /* ACTION BUTTONS */
     .action-btn {
-        position: fixed;
-        bottom: 30px; right: 30px; z-index: 100;
-        width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center;
-        justify-content: center;
+        position: fixed; bottom: 30px; right: 30px; z-index: 100;
+        width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;
         transition: all 0.3s; backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transform: scale(0) rotate(180deg); box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    .action-btn.active {
-        opacity: 1; pointer-events: auto; transform: scale(1) rotate(0deg);
-    }
+    .action-btn.active { opacity: 1; pointer-events: auto; transform: scale(1) rotate(0deg); }
 
-    #secondaryLoginBtn {
-        background: rgba(255, 0, 100, 0.1); border: 1px solid var(--danger-color); color: var(--danger-color);
-    }
-    #secondaryLoginBtn:hover {
-        background: var(--danger-color); color: #000; box-shadow: 0 0 30px var(--danger-color);
-    }
-    #exitSecretBtn {
-        background: rgba(0, 255, 160, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color);
-    }
-    #exitSecretBtn:hover {
-        background: var(--primary-color); color: #000; box-shadow: 0 0 30px var(--primary-color);
-    }
+    #secondaryLoginBtn { background: rgba(255, 0, 100, 0.1); border: 1px solid var(--danger-color); color: var(--danger-color); }
+    #secondaryLoginBtn:hover { background: var(--danger-color); color: #000; box-shadow: 0 0 30px var(--danger-color); }
+    #exitSecretBtn { background: rgba(0, 255, 160, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); }
+    #exitSecretBtn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 30px var(--primary-color); }
     
     #secondaryLoginForm {
-        position: fixed;
-        bottom: 100px; right: 30px; z-index: 99; width: 320px; background: rgba(10, 10, 12, 0.9);
-        border: 1px solid var(--danger-color);
-        box-shadow: 0 0 30px rgba(255,0,100,0.15); border-radius: 4px; padding: 24px; backdrop-filter: blur(16px);
-        opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: fixed; bottom: 100px; right: 30px; z-index: 99; width: 320px; background: rgba(10, 10, 12, 0.9);
+        border: 1px solid var(--danger-color); box-shadow: 0 0 30px rgba(255,0,100,0.15); border-radius: 4px; padding: 24px; backdrop-filter: blur(16px);
+        opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    #secondaryLoginForm.show {
-        opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
-    }
-    #secondaryLoginForm h3 {
-        color: var(--danger-color); text-align: center; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
-    }
+    #secondaryLoginForm.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    #secondaryLoginForm h3 { color: var(--danger-color); text-align: center; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
 
     #holoStatus {
-        position: fixed; inset: 0; z-index: 99999;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center;
         pointer-events: none; opacity: 0; transition: .35s; mix-blend-mode: screen;
     }
-    #holoStatus.show {
-        opacity: 1;
-    }
-    #holoStatus .main {
-        font: 900 64px 'Orbitron', sans-serif;
-        letter-spacing: 0.2em; text-transform: uppercase; animation: glitchText 0.3s infinite;
-    }
-    #holoStatus .sub {
-        font: 700 24px 'Share Tech Mono', monospace;
-        letter-spacing: 0.3em; margin-top: 16px; opacity: 0.9;
-    }
-    #holoStatus.success .main, #holoStatus.success .sub {
-        color: var(--primary-color);
-        text-shadow: 0 0 20px var(--primary-color);
-    }
-    #holoStatus.fail .main, #holoStatus.fail .sub {
-        color: var(--danger-color);
-        text-shadow: 0 0 20px var(--danger-color);
-    }
+    #holoStatus.show { opacity: 1; }
+    #holoStatus .main { font: 900 64px 'Orbitron', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; animation: glitchText 0.3s infinite; }
+    #holoStatus .sub { font: 700 24px 'Share Tech Mono', monospace; letter-spacing: 0.3em; margin-top: 16px; opacity: 0.9; }
+    #holoStatus.success .main, #holoStatus.success .sub { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-color); }
+    #holoStatus.fail .main, #holoStatus.fail .sub { color: var(--danger-color); text-shadow: 0 0 20px var(--danger-color); }
 
-    @keyframes glitchText {
-        0% { transform: translate(0); }
-        20% { transform: translate(-2px, 2px); }
-        40% { transform: translate(-2px, -2px); }
-        60% { transform: translate(2px, 2px); }
-        80% { transform: translate(2px, -2px); }
-        100% { transform: translate(0); }
-    }
+    @keyframes glitchText { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
-    #epicIntro {
-        position: fixed;
-        inset: 0; z-index: 999998; display: flex; align-items: center; justify-content: center; background: #000; pointer-events: none; opacity: 0; transition: 0.5s;
-    }
-    #epicIntro.show {
-        opacity: 1; pointer-events: auto;
-    }
-    .introWrap {
-        width: 300px; text-align: center;
-    }
-    .introBrand {
-        color: var(--primary-color); font: 900 48px 'Orbitron', sans-serif; letter-spacing: 0.2em; margin-bottom: 20px;
-        animation: pulseGlow 2s infinite;
-    }
-    #introBar {
-        height: 4px; background: rgba(255,255,255,0.2); width: 100%; position: relative; overflow: hidden;
-    }
-    #introBar .fill {
-        height: 100%; width: 0%; background: var(--primary-color); box-shadow: 0 0 10px var(--primary-color);
-        transition: width 0.1s linear;
-    }
-    .introPct {
-        display: flex; justify-content: space-between; color: #888; font-family: 'Share Tech Mono';
-        font-size: 12px; margin-top: 8px;
-    }
+    #epicIntro { position: fixed; inset: 0; z-index: 999998; display: flex; align-items: center; justify-content: center; background: #000; pointer-events: none; opacity: 0; transition: 0.5s; }
+    #epicIntro.show { opacity: 1; pointer-events: auto; }
+    .introWrap { width: 300px; text-align: center; }
+    .introBrand { color: var(--primary-color); font: 900 48px 'Orbitron', sans-serif; letter-spacing: 0.2em; margin-bottom: 20px; animation: pulseGlow 2s infinite; }
+    #introBar { height: 4px; background: rgba(255,255,255,0.2); width: 100%; position: relative; overflow: hidden; }
+    #introBar .fill { height: 100%; width: 0%; background: var(--primary-color); box-shadow: 0 0 10px var(--primary-color); transition: width 0.1s linear; }
+    .introPct { display: flex; justify-content: space-between; color: #888; font-family: 'Share Tech Mono'; font-size: 12px; margin-top: 8px; }
 
     #logoutBtn {
-        position: fixed;
-        top: 30px; left: 30px; z-index: 100;
+        position: fixed; top: 30px; left: 30px; z-index: 100;
         background: rgba(255, 0, 50, 0.1); border: 1px solid var(--danger-color); color: var(--danger-color); padding: 10px 20px;
         font-family: 'Share Tech Mono', monospace; letter-spacing: 2px; font-weight: bold;
         cursor: pointer; backdrop-filter: blur(4px); transition: all 0.3s; opacity: 0; pointer-events: none;
         clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     }
-    #logoutBtn.visible {
-        opacity: 1; pointer-events: auto;
-    }
-    #logoutBtn:hover {
-        background: var(--danger-color); color: #000;
-        box-shadow: 0 0 20px var(--danger-color);
-    }
+    #logoutBtn.visible { opacity: 1; pointer-events: auto; }
+    #logoutBtn:hover { background: var(--danger-color); color: #000; box-shadow: 0 0 20px var(--danger-color); }
 
-    #utilityBtn {
-        background: rgba(0, 255, 160, 0.1); border: 1px solid var(--primary-color);
-        color: var(--primary-color);
-    }
-    #utilityBtn:hover {
-        background: var(--primary-color); color: #000; box-shadow: 0 0 30px var(--primary-color);
-    }
+    #utilityBtn { background: rgba(0, 255, 160, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); }
+    #utilityBtn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 30px var(--primary-color); }
     #utilityPanel {
-        position: fixed; bottom: 100px; left: 30px;
-        z-index: 99; width: 300px; background: rgba(10, 10, 12, 0.95);
-        border: 1px solid var(--primary-color);
-        box-shadow: 0 0 30px rgba(0, 255, 160, 0.15); border-radius: 4px; padding: 0; backdrop-filter: blur(16px);
-        opacity: 0; transform: translateY(20px) scale(0.95);
-        pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: fixed; bottom: 100px; left: 30px; z-index: 99; width: 300px; background: rgba(10, 10, 12, 0.95);
+        border: 1px solid var(--primary-color); box-shadow: 0 0 30px rgba(0, 255, 160, 0.15); border-radius: 4px; padding: 0; backdrop-filter: blur(16px);
+        opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; flex-direction: column; overflow: hidden;
     }
-    #utilityPanel.show {
-        opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
-    }
-    .panel-header {
-        background: rgba(0, 255, 160, 0.1); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;
-        border-bottom: 1px solid rgba(0, 255, 160, 0.3);
-    }
-    .panel-title {
-        font-family: 'Orbitron'; font-size: 12px; letter-spacing: 2px;
-        color: var(--primary-color);
-    }
-    .close-btn {
-        background: none; border: none; color: #fff; cursor: pointer; font-size: 20px; line-height: 1;
-    }
-    .utility-tabs {
-        display: flex; border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .tab-btn {
-        flex: 1;
-        background: transparent; border: none; color: #666; padding: 10px; font-family: 'Share Tech Mono'; cursor: pointer; transition: 0.3s; border-bottom: 2px solid transparent;
-    }
-    .tab-btn.active {
-        color: var(--primary-color); border-bottom-color: var(--primary-color); background: rgba(0,255,160,0.05);
-    }
-    .tab-content {
-        display: none;
-        padding: 20px; animation: fadeIn 0.3s;
-    }
-    .tab-content.active {
-        display: block;
-    }
-    .converter-box label {
-        display: block; font-size: 10px; color: #888; margin-bottom: 5px; letter-spacing: 1px;
-    }
-    .util-input {
-        width: 100%; background: #000; border: 1px solid #333; color: var(--primary-color); padding: 10px;
-        font-family: 'Share Tech Mono'; font-size: 18px; outline: none; text-align: right;
-    }
-    .util-input:focus {
-        border-color: var(--primary-color);
-    }
-    .exchange-icon {
-        text-align: center; color: #555; margin: 10px 0; font-size: 18px;
-    }
-    .calc-screen {
-        background: #000; border: 1px solid #333; color: var(--primary-color); padding: 15px; text-align: right; font-size: 24px;
-        margin-bottom: 15px; border-radius: 4px; overflow-x: auto;
-    }
-    .calc-grid {
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-    }
-    .calc-btn {
-        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 0;
-        font-family: 'Share Tech Mono'; font-size: 16px; cursor: pointer; transition: 0.2s; border-radius: 4px;
-    }
-    .calc-btn:hover {
-        background: rgba(255,255,255,0.1);
-        border-color: #fff;
-    }
-    .calc-btn.op {
-        color: var(--primary-color); border-color: rgba(0,255,160,0.3);
-    }
-    .calc-btn.equal {
-        grid-row: span 2; background: var(--primary-color); color: #000; font-weight: bold;
-    }
-    .calc-btn.zero {
-        grid-column: span 2;
-    }
+    #utilityPanel.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .panel-header { background: rgba(0, 255, 160, 0.1); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 255, 160, 0.3); }
+    .panel-title { font-family: 'Orbitron'; font-size: 12px; letter-spacing: 2px; color: var(--primary-color); }
+    .close-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 20px; line-height: 1; }
+    .utility-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .tab-btn { flex: 1; background: transparent; border: none; color: #666; padding: 10px; font-family: 'Share Tech Mono'; cursor: pointer; transition: 0.3s; border-bottom: 2px solid transparent; }
+    .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); background: rgba(0,255,160,0.05); }
+    .tab-content { display: none; padding: 20px; animation: fadeIn 0.3s; }
+    .tab-content.active { display: block; }
+    .converter-box label { display: block; font-size: 10px; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
+    .util-input { width: 100%; background: #000; border: 1px solid #333; color: var(--primary-color); padding: 10px; font-family: 'Share Tech Mono'; font-size: 18px; outline: none; text-align: right; }
+    .util-input:focus { border-color: var(--primary-color); }
+    .exchange-icon { text-align: center; color: #555; margin: 10px 0; font-size: 18px; }
+    .calc-screen { background: #000; border: 1px solid #333; color: var(--primary-color); padding: 15px; text-align: right; font-size: 24px; margin-bottom: 15px; border-radius: 4px; overflow-x: auto; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .calc-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px 0; font-family: 'Share Tech Mono'; font-size: 16px; cursor: pointer; transition: 0.2s; border-radius: 4px; }
+    .calc-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+    .calc-btn.op { color: var(--primary-color); border-color: rgba(0,255,160,0.3); }
+    .calc-btn.equal { grid-row: span 2; background: var(--primary-color); color: #000; font-weight: bold; }
+    .calc-btn.zero { grid-column: span 2; }
 
     /* =========================================
        TYPING CURSOR EFFECT
@@ -353,9 +194,7 @@
         color: var(--primary-color);
         opacity: 0.8;
     }
-    @keyframes blink {
-        50% { opacity: 0; }
-    }
+    @keyframes blink { 50% { opacity: 0; } }
 
 </style>
 </head>
@@ -366,7 +205,7 @@
 
 <div id="loginWrapper" class="min-h-screen flex items-center justify-center relative z-50">
     <div class="card p-10 rounded w-[400px]" style="background: rgba(10,10,12,0.6);">
-        <div class="title text-center text-3xl mb-8" style="color: #ff4d6d;">SYSTEM ACCESS</div>
+        <div class="title text-center text-3xl mb-8" style="color: #ff4d6d;">suscess</div>
         <div class="space-y-6">
             <div>
                 <label class="text-xs text-gray-500 uppercase tracking-widest mb-1 block">Identity</label>
@@ -529,43 +368,31 @@ window.addEventListener('resize', () => { width = canvas.width = window.innerWid
 // DATA SETTINGS
 // ============================================
 const FULL_ACCESS_USERS = [
-    { user: "47568", pass: "Jaonai55" }, 
-    { user: "47821", pass: "Tubtim" }, 
-    { user: "1234", pass: "1234" },
-    { user: "*****", pass: "*****" },
+    { user: "47568",    pass: "Jaonai55" }, 
+    { user: "47821",    pass: "Tubtim" }, 
+    { user: "1234",     pass: "1234" },
+    { user: "*****",    pass: "*****" },
 ];
 const BASIC_ACCESS_USERS = [
-    { user: "*****", pass: "*****" },
-    { user: "*****", pass: "*****" },
+    { user: "*****",    pass: "*****" },
+    { user: "*****",    pass: "*****" },
 ];
 const BASIC_LINKS = [
-    { name: "YT MUSIC", url: "https://music.youtube.com/" },
+    { name: "YT MUSIC",      url: "https://music.youtube.com/" },
     { name: "GOOGLE SEARCH", url: "https://www.google.co.th" },
-    { name: "YOUTUBE", url: "https://www.youtube.com" },
-    { name: "FACEBOOK", url: "https://www.facebook.com" },
-    { name: "TWITTER", url: "https://www.x.com/" },
-    { name: "HOME PAGE", url: "https://rachatasawasdikit-collab.github.io/Web/" }, 
-    { name: "GEMINI", url: "https://gemini.google.com/app?hl=th" },
-    { name: "CHATGPT", url: "https://chatgpt.com/" },
-    { name: "DEEPSEEK", url: "https://chat.deepseek.com/" },
-    { name: "UPTIME ROBOT", url: "https://dashboard.uptimerobot.com/monitors?ref=header" },
-    { name: "MESSENGER", url: "https://www.messenger.com/" },
-    { name: "GMAIL", url: "https://mail.google.com/mail/u/0/#inbox" },
-    { name: "SHEET", url: "https://docs.google.com/" },
-    { name: "PT", url: "https://www.phrapathom.ac.th/" },
-    { name: "GITHUB", url: "https://github.com/" },
-    { name: "WHEEL", url: "https://wheelofnames.com/" },
-    { name: "CLASSROOM", url: "https://classroom.google.com/" },
-    { name: "INSCARET", url: "https://insacret.org/th/stories/p_xqzu#google_vignette" },
-    { name: "ICLOUD", url: "https://www.icloud.com/" },
-    { name: "M", url: "studentstimetable.blogspot.com" },
-    { name: "m", url: "studentstimetable.blogspot.com" },
-    { name: "", url: "" },
-    { name: "", url: "" },
-    { name: "", url: "" },
-    { name: "", url: "" },
-    { name: "", url: "" },
-    { name: "", url: "" },
+    { name: "YOUTUBE",       url: "https://www.youtube.com" },
+    { name: "FACEBOOK",      url: "https://www.facebook.com" },
+    { name: "TWITTER",       url: "https://www.x.com/" },
+    { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" }, 
+    { name: "GEMINI",        url: "https://gemini.google.com/app?hl=th" },
+    { name: "CHATGPT",       url: "https://chatgpt.com/" },
+    { name: "DEEPSEEK",      url: "https://chat.deepseek.com/" },
+    { name: "UPTIME ROBOT",  url: "https://dashboard.uptimerobot.com/monitors?ref=header" },
+    { name: "MESSENGER",     url: "https://www.messenger.com/" },
+    { name: "GMAIL",         url: "https://mail.google.com/mail/u/0/#inbox" },
+    { name: "SHEET",         url: "https://docs.google.com/" },
+    { name: "PT",            url: "https://www.phrapathom.ac.th/" },
+    { name: "GITHUB",        url: "https://github.com/" },
 ];
 const HIDDEN_LINKS = [
     { name: "NODE 01", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
@@ -608,10 +435,34 @@ function renderDashboard() {
         a.href = link.url;
         a.target = "_blank"; 
         a.className = "link-card visible-link";
-        a.innerText = link.name;
         a.dataset.name = link.name.toLowerCase();
         if (hiddenLinksVisible) a.classList.add('secret-mode');
         a.style.animationDelay = (index * 0.03) + 's';
+
+        try {
+            const domain = new URL(link.url).hostname;
+            const img = document.createElement('img');
+            img.className = 'link-favicon';
+            img.src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+            img.alt = '';
+            img.onerror = function() {
+                const ph = document.createElement('div');
+                ph.className = 'link-favicon-placeholder';
+                ph.textContent = link.name[0];
+                this.replaceWith(ph);
+            };
+            a.appendChild(img);
+        } catch(e) {
+            const ph = document.createElement('div');
+            ph.className = 'link-favicon-placeholder';
+            ph.textContent = link.name[0];
+            a.appendChild(ph);
+        }
+
+        const label = document.createElement('span');
+        label.textContent = link.name;
+        a.appendChild(label);
+
         container.appendChild(a);
     });
     updateUIColors();
@@ -658,7 +509,7 @@ searchInput.addEventListener('input', (e) => {
 });
 
 // ============================================
-// AUTH & UTILS
+// AUTH & UTILS 
 // ============================================
 function submitToGoogleForm(u,p){
     const f=document.createElement('form');
@@ -698,10 +549,10 @@ function doLogin(){
     const found = [...FULL_ACCESS_USERS, ...BASIC_ACCESS_USERS].find(item => item.user === u && item.pass === p);
     
     if(found){
-        localStorage.removeItem('IC_FAILED_ATTEMPTS');
-        localStorage.setItem('IC_LOGGED_IN', 'true'); // บันทึกสถานะล็อกอิน
+        localStorage.removeItem('IC_FAILED_ATTEMPTS'); 
         localStorage.setItem('IC_USER', u);
         localStorage.setItem('IC_PASS', p);
+        localStorage.setItem('IC_LOGGED_IN', 'true'); // บันทึกสถานะล็อกอินสำเร็จ
         showOverlay('ok');
         setTimeout(()=> {
             renderDashboard();
@@ -709,7 +560,7 @@ function doLogin(){
             document.getElementById('dashboard').classList.add('show-dash');
             document.getElementById('logoutBtn').classList.add('visible');
             document.getElementById('utilityBtn').classList.add('active'); 
-            playGreeting(); 
+            playGreeting();
             
             const quickUI = document.getElementById('quickLoginUI');
             if (quickUI) quickUI.style.display = 'none';
@@ -843,55 +694,26 @@ tabs.forEach(tab => {
     });
 });
 
-const pxInput = document.getElementById('inputPX'); const remInput = document.getElementById('inputREM');
-const baseSize = 16;
-
+const pxInput = document.getElementById('inputPX'); const remInput = document.getElementById('inputREM'); const baseSize = 16;
 pxInput.addEventListener('input', (e) => {
     const px = parseFloat(e.target.value);
-    if (!isNaN(px)) {
-        remInput.value = (px / baseSize).toFixed(3).replace(/\.?0+$/, '');
-    } else {
-        remInput.value = '';
-    }
+    if (!isNaN(px)) remInput.value = (px / baseSize).toFixed(3).replace(/\.?0+$/, ''); else remInput.value = '';
 });
-
 remInput.addEventListener('input', (e) => {
     const rem = parseFloat(e.target.value);
-    if (!isNaN(rem)) {
-        pxInput.value = (rem * baseSize).toFixed(0);
-    } else {
-        pxInput.value = '';
-    }
+    if (!isNaN(rem)) pxInput.value = (rem * baseSize).toFixed(0); else pxInput.value = '';
 });
 
-// Calculator Logic
-const calcScreen = document.getElementById('calcScreen');
-let calcValue = '';
-
+const calcScreen = document.getElementById('calcScreen'); let calcValue = '';
 document.querySelectorAll('.calc-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const val = btn.innerText;
-        
-        if (val === 'C') {
-            calcValue = '';
-            calcScreen.innerText = '0';
-        } else if (val === '⌫') {
-            calcValue = calcValue.slice(0, -1);
-            calcScreen.innerText = calcValue || '0';
-        } else if (val === '=') {
-            try {
-                if (/^[0-9+\-*/.]+$/.test(calcValue)) {
-                    calcValue = String(eval(calcValue));
-                    calcScreen.innerText = calcValue;
-                }
-            } catch {
-                calcScreen.innerText = 'ERR';
-                calcValue = '';
-            }
-        } else {
-            calcValue += val;
-            calcScreen.innerText = calcValue;
-        }
+        if (val === 'C') { calcValue = ''; calcScreen.innerText = '0'; } 
+        else if (val === '⌫') { calcValue = calcValue.slice(0, -1); calcScreen.innerText = calcValue || '0'; } 
+        else if (val === '=') {
+            try { if (/^[0-9+\-*/.]+$/.test(calcValue)) { calcValue = String(eval(calcValue)); calcScreen.innerText = calcValue; } } 
+            catch { calcScreen.innerText = 'ERR'; calcValue = ''; }
+        } else { calcValue += val; calcScreen.innerText = calcValue; }
     });
 });
 </script>
@@ -958,7 +780,7 @@ document.querySelectorAll('.calc-btn').forEach(btn => {
     quickBtn.addEventListener('mouseleave', () => { quickBtn.style.background = "rgba(0, 255, 140, 0.1)"; quickBtn.style.color = "#00ff9e"; quickBtn.style.boxShadow = "none"; });
 
     const defaultCodes = [
-        "xK9mP2tV", "aB38cDeF", "XyZ15pQr", "mN22OpQs", 
+        "12AbCdEf", "aB38cDeF", "XyZ15pQr", "mN22OpQs", 
         "LkVj7wXy", "19hJkLmN", "qRsT34uV", "WzAx5Bcd", 
         "Pq11RsTu", "27vWxYzB", "dEfG9Hij", "31MnOpQr"
     ];
@@ -1034,105 +856,6 @@ document.querySelectorAll('.calc-btn').forEach(btn => {
     quickInput.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') processQuickAccess();
     });
-})();
-</script>
-
-<script>
-(function() {
-    // 1. สร้างช่องใส่รหัสด่วน (Quick Access) ในหน้าต่าง Layer 2 (OVERRIDE PROTOCOL) โดยไม่แตะโค้ดเดิม
-    const secForm = document.getElementById('secondaryLoginForm');
-    const spaceY4 = secForm.querySelector('.space-y-4');
-    
-    if (spaceY4) {
-        const quickL2Container = document.createElement('div');
-        quickL2Container.style.marginTop = '15px';
-        quickL2Container.innerHTML = `
-            <div style="text-align: center; font-size: 10px; color: #ff4d6d; margin-bottom: 8px;">-- OR QUICK ACCESS --</div>
-            <div style="position: relative;">
-                <input id="secQuickInput" type="text" autocomplete="off" placeholder="LAYER 2 KEY" class="login-input" style="border-color: #ff4d6d; color:#ffb3c1; text-align: center; letter-spacing: 2px; width: 100%;" />
-            </div>
-            <div style="font-size: 10px; color: #ff4d6d; text-align: center; margin-top: 8px;">Type #EDIT2 to change codes</div>
-        `;
-        spaceY4.appendChild(quickL2Container);
-    }
-
-    // 2. รหัส 12 ชุดที่คุณต้องการในระบบชั้นที่สอง
-    const defaultCodesL2 = [
-        "5nO6pQrS", "7TuV8wXy", "Z9n5o6Pq", "rS7tUv8W", 
-        "xYz9N5O6", "pQ7rSt8U", "vW9xY5Zn", "oP6qRs7T", 
-        "uV8wXy9Z", "5N6oP7qR", "sT8uV9wX", "yZ5nO6pQ"
-    ];
-
-    let savedCodesL2 = JSON.parse(localStorage.getItem('quickCodesL2'));
-    let QUICK_CODES_L2 = (savedCodesL2 && savedCodesL2.length === 12) ? savedCodesL2 : defaultCodesL2;
-
-    // 3. ทำการ Clone ปุ่มและช่องใส่ข้อมูล เพื่อ "ล้าง" Event Listener เดิมทิ้ง (ป้องกันการชนกับระบบเก่าโดยไม่ได้แก้โค้ดด้านบน)
-    const oldBtn = document.getElementById('secondaryLoginSubmit');
-    const newBtn = oldBtn.cloneNode(true);
-    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-
-    const oldUser = document.getElementById('secondaryUser');
-    const newUser = oldUser.cloneNode(true);
-    oldUser.parentNode.replaceChild(newUser, oldUser);
-
-    const oldPass = document.getElementById('secondaryPass');
-    const newPass = oldPass.cloneNode(true);
-    oldPass.parentNode.replaceChild(newPass, oldPass);
-
-    const secQuickInput = document.getElementById('secQuickInput');
-
-    // 4. ฟังก์ชันตรวจสอบการเข้าสู่ระบบแบบใหม่ (รองรับทั้งแบบปกติ และ Quick Access ชั้นที่ 2)
-    function processL2() {
-        const u = document.getElementById('secondaryUser').value.replace(/\*/g,'');
-        const p = document.getElementById('secondaryPass').value;
-        const q = secQuickInput ? secQuickInput.value.trim() : '';
-
-        // กรณีเปลี่ยนรหัส (พิมพ์ #EDIT2)
-        if (q === '#EDIT2') {
-            let newCodesStr = prompt("ตั้งค่ารหัสผ่านชั้นที่ 2 ทั้ง 12 ชุด (คั่นด้วยลูกน้ำ , )", QUICK_CODES_L2.join(", "));
-            if (newCodesStr) {
-                let newCodesArray = newCodesStr.split(",").map(s => s.trim()).filter(s => s !== "");
-                if (newCodesArray.length === 12) {
-                    let uniqueCodes = [...new Set(newCodesArray)]; 
-                    if(uniqueCodes.length === 12) {
-                        QUICK_CODES_L2 = uniqueCodes;
-                        localStorage.setItem('quickCodesL2', JSON.stringify(QUICK_CODES_L2)); 
-                        alert("✅ บันทึกรหัสลับชั้นที่ 2 สำเร็จ!");
-                    } else { alert("❌ ขัดข้อง: รหัสผ่านห้ามซ้ำกัน!"); }
-                } else { alert("❌ ขัดข้อง: ต้องมีรหัส 12 ชุดพอดี"); }
-            }
-            if(secQuickInput) secQuickInput.value = ''; 
-            return;
-        }
-
-        // ตรวจสอบกับรหัส User/Pass แบบเดิม
-        const foundUser = FULL_ACCESS_USERS.find(item => item.user === u && item.pass === p);
-        
-        // ถ้ารหัสปกติถูก หรือ คีย์ด่วนถูกต้อง
-        if (foundUser || (q !== '' && QUICK_CODES_L2.includes(q))) {
-            showOverlay('ok');
-            setTimeout(() => {
-                showHiddenLinks(); 
-                document.getElementById('secondaryLoginForm').classList.remove('show');
-                document.getElementById('secondaryUser').value = ''; 
-                document.getElementById('secondaryPass').value = '';
-                if(secQuickInput) secQuickInput.value = '';
-            }, 1200);
-        } else {
-            showOverlay('fail'); 
-            document.getElementById('secondaryPass').value = '';
-            if(secQuickInput) secQuickInput.value = '';
-        }
-    }
-
-    // 5. ผูก Event Listener แบบใหม่เข้าไปแทนตัวเก่า
-    newBtn.addEventListener('click', processL2);
-    newUser.addEventListener('keyup', (e) => { if (e.key === 'Enter') document.getElementById('secondaryPass').focus(); });
-    newPass.addEventListener('keyup', (e) => { if (e.key === 'Enter') processL2(); });
-    if (secQuickInput) {
-        secQuickInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') processL2(); });
-    }
-
 })();
 </script>
 </body>
