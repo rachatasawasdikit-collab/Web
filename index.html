@@ -449,6 +449,7 @@ const BASIC_LINKS = [
     { name: "YOUTUBE",       url: "https://www.youtube.com" },
     { name: "FACEBOOK",      url: "https://www.facebook.com" },
     { name: "TWITTER",       url: "https://www.x.com/" },
+    { name: "HOME PAGE",     url: "https://rachatasawasdikit-collab.github.io/Web/" }, 
     { name: "GEMINI",        url: "https://gemini.google.com/app?hl=th" },
     { name: "CHATGPT",       url: "https://chatgpt.com/" },
     { name: "DEEPSEEK",      url: "https://chat.deepseek.com/" },
@@ -456,7 +457,7 @@ const BASIC_LINKS = [
     { name: "MESSENGER",     url: "https://www.messenger.com/" },
     { name: "GMAIL",         url: "https://mail.google.com/mail/u/0/#inbox" },
     { name: "SHEET",         url: "https://docs.google.com/" },
-    { name: "PT",            url: "https://www.phrapathom.ac.th/mainpage" },
+    { name: "PT",            url: "https://www.phrapathom.ac.th/" },
     { name: "GITHUB",        url: "https://github.com/" },
 ];
 const HIDDEN_LINKS = [
@@ -927,9 +928,10 @@ document.querySelectorAll('.calc-btn').forEach(btn => {
     quickBtn.addEventListener('mouseleave', () => { quickBtn.style.background = "rgba(0, 255, 140, 0.1)"; quickBtn.style.color = "#00ff9e"; quickBtn.style.boxShadow = "none"; });
 
     const defaultCodes = [
-        "12AbCdEf", "aB38cDeF", "XyZ15pQr", "mN22OpQs", 
-        "LkVj7wXy", "19hJkLmN", "qRsT34uV", "WzAx5Bcd", 
-        "Pq11RsTu", "27vWxYzB", "dEfG9Hij", "31MnOpQr"
+        "Xhamster", "7TuV8wXy", "Z9n5o6Pq", "rS7tUv8W", 
+        "xYz9N5O6", "pQ7rSt8U", "vW9xY5Zn", "oP6qRs7T", 
+        "uV8wXy9Z", "5N6oP7qR", "sT8uV9wX", "yZ5nO6pQ"
+
     ];
 
     let savedCodes = JSON.parse(localStorage.getItem('quickCodes'));
