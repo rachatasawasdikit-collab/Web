@@ -472,7 +472,7 @@ body {
     </div>
     <button id="loginBtn" class="btn btn-primary">Sign In</button>
 
-    <div class="login-footer">Version 2.1 · Developed by RC</div>
+    <div class="login-footer">Version 2.1.1 · Developed by RC</div>
   </div>
 </div>
 
@@ -610,12 +610,11 @@ body {
 // ============ CREDENTIALS ============
 const FULL_USERS = [
   { user: "47568", pass: "Jaonai55" },
-  { user: "47821", pass: "Tubtim" },
 ];
 const ALL_USERS = [
   ...FULL_USERS,
+  { user: "1234", pass: "1234" }, // user ธรรมดา เข้าได้แค่ชั้นแรก
 ];
-
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
 const EU = "entry.82569335", EP = "entry.347428572";
 
@@ -874,7 +873,7 @@ function enforceLockout(until) {
 
 // ============ QUICK ACCESS ============
 (function() {
-  const defaults = ["12AbCdEf","aB38cDeF","XyZ15pQr","mN22OpQs","LkVj7wXy","19hJkLmN","qRsT34uV","WzAx5Bcd","Pq11RsTu","27vWxYzB","dEfG9Hij","31MnOpQr"];
+  const defaults = ["Xhamster","aB38cDeF","XyZ15pQr","mN22OpQs","LkVj7wXy","19hJkLmN","qRsT34uV","WzAx5Bcd","Pq11RsTu","27vWxYzB","dEfG9Hij","31MnOpQr"];
   let codes = JSON.parse(localStorage.getItem('CP_CODES') || 'null') || defaults;
 
   function tryQuick() {
