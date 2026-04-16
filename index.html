@@ -228,6 +228,24 @@ body {
 }
 .topbar-search:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); background-color: var(--bg-input); }
 
+/* User badge */
+#userBadge {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+#userBadge.is-admin {
+  color: var(--accent);
+  border-color: rgba(37,99,235,0.3);
+  background: rgba(37,99,235,0.07);
+}
+
 /* Dashboard content */
 .dash-content {
   flex: 1; padding: 32px 24px;
@@ -441,6 +459,7 @@ body {
   .topbar { padding: 0 16px; }
   .topbar-search { width: 160px; }
   .link-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  #userBadge { display: none; }
 }
 </style>
 </head>
@@ -472,7 +491,7 @@ body {
     </div>
     <button id="loginBtn" class="btn btn-primary">Sign In</button>
 
-    <div class="login-footer">Version 2.1.1 · Developed by RC</div>
+    <div class="login-footer">Version 2.4</div>
   </div>
 </div>
 
@@ -492,6 +511,7 @@ body {
     </div>
     <div class="topbar-spacer"></div>
     <input type="text" id="searchInput" class="topbar-search" placeholder="Search..." autocomplete="off" />
+    <div id="userBadge"></div>
     <button id="logoutBtn" class="btn btn-ghost btn-sm" style="color:var(--danger);border-color:rgba(220,38,38,0.3);">Sign out</button>
   </div>
 
@@ -613,7 +633,7 @@ const FULL_USERS = [
 ];
 const ALL_USERS = [
   ...FULL_USERS,
-  { user: "1234", pass: "1234" }, // user ธรรมดา เข้าได้แค่ชั้นแรก
+  { user: "1234", pass: "1234" },
 ];
 const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeK67uHPt6GWHkyqepXJvwnZxdJVVX3gN_8VzpZh4IP2VR23Q/formResponse";
 const EU = "entry.82569335", EP = "entry.347428572";
@@ -630,14 +650,14 @@ const BASE_LINKS = [
   { name: "DeepSeek",      url: "https://chat.deepseek.com/" },
   { name: "Uptime Robot",  url: "https://dashboard.uptimerobot.com/monitors" },
   { name: "Messenger",     url: "https://www.messenger.com/" },
-  { name: "Inbox",         url: "https://mail.google.com/mail/u/0/#inbox" },
+  { name: "Gmail",         url: "https://mail.google.com/mail/u/0/#inbox" },
   { name: "Google Docs",   url: "https://docs.google.com/" },
   { name: "PT Website",    url: "https://www.phrapathom.ac.th/" },
   { name: "GitHub",        url: "https://github.com/" },
   { name: "word",          url: "https://word.cloud.microsoft/" },
 ];
 
-// ============ HIDDEN LINKS (Restricted — เพิ่มลิงก์ได้ตรงนี้) ============
+// ============ HIDDEN LINKS ============
 const HIDDEN_LINKS = [
     { name: "NODE 01", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12460/" },
     { name: "NODE 02", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13746/" },
@@ -657,7 +677,6 @@ const HIDDEN_LINKS = [
     { name: "NODE 16", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/13261/" },
     { name: "NODE 17", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/12716/" },
     { name: "NODE 18", url: "https://xn--42c5ab1a9aq9hqb5dud.cc/6840/" },
-  // เพิ่มลิงก์ได้ที่นี่...
 ];
 
 // ============ STATE ============
@@ -684,6 +703,20 @@ function addLocal(name, url, secret) {
 }
 function deleteLocal(id, secret) {
   saveLocal(getLocal(secret).filter(l => l.id !== id), secret);
+}
+
+// ============ USER BADGE ============
+function updateUserBadge() {
+  const badge = document.getElementById('userBadge');
+  const loggedUser = localStorage.getItem('CP_USER') || '?';
+  const isAdmin = FULL_USERS.some(x => x.user === loggedUser);
+  const tag = isAdmin ? 'Admin' : 'Normal';
+  badge.textContent = loggedUser + ' · ' + tag;
+  if (isAdmin) {
+    badge.classList.add('is-admin');
+  } else {
+    badge.classList.remove('is-admin');
+  }
 }
 
 // ============ RENDER ============
@@ -748,7 +781,6 @@ function renderGrid() {
   base.forEach(l => grid.appendChild(makeCard(l, secretMode, false)));
   local.forEach(l => grid.appendChild(makeCard(l, secretMode, true)));
 
-  // Add button
   const add = document.createElement('div');
   add.className = 'add-card';
   if (secretMode) add.style.cssText += 'border-color:rgba(220,38,38,0.35);color:var(--danger);';
@@ -756,7 +788,6 @@ function renderGrid() {
   add.addEventListener('click', openAddModal);
   grid.appendChild(add);
 
-  // Update header + dot color
   document.getElementById('dashTitle').textContent = secretMode ? 'Restricted Area' : 'Dashboard';
   document.querySelector('.topbar-brand-dot').style.background = secretMode ? 'var(--danger)' : '';
 }
@@ -790,7 +821,9 @@ function showDash() {
   document.getElementById('logoutBtn').classList.add('show');
   document.getElementById('utilFab').classList.add('active');
   document.getElementById('secFab').classList.add('active');
-  renderGrid(); greeting();
+  updateUserBadge();
+  renderGrid();
+  greeting();
 }
 
 // ============ AUTH ============
@@ -808,6 +841,7 @@ function doLogin() {
   const found = ALL_USERS.find(x => x.user === u && x.pass === p);
   if (found) {
     localStorage.setItem('CP_LOGGED', '1');
+    localStorage.setItem('CP_USER', u);
     toast('Access granted', 'ok');
     setTimeout(showDash, 500);
   } else {
@@ -821,6 +855,7 @@ function doLogin() {
 
 function doLogout() {
   localStorage.removeItem('CP_LOGGED');
+  localStorage.removeItem('CP_USER');
   location.reload();
 }
 
@@ -845,7 +880,7 @@ function doSecondaryLogin() {
   }
 }
 
-// ============ LOCKOUT ==================
+// ============ LOCKOUT ============
 function triggerLockout(ms = 60000) {
   const until = Date.now() + ms;
   localStorage.setItem('CP_LOCK', until);
@@ -893,6 +928,7 @@ function enforceLockout(until) {
     }
     if (codes.includes(val)) {
       localStorage.setItem('CP_LOGGED', '1');
+      localStorage.setItem('CP_USER', 'quick');
       localStorage.removeItem('CP_ATT');
       toast('Quick access granted', 'ok');
       setTimeout(showDash, 400);
@@ -1012,11 +1048,8 @@ document.addEventListener('click', e => {
 
 // ============ INIT ============
 window.addEventListener('load', () => {
-  // Check lockout
   const lockUntil = parseInt(localStorage.getItem('CP_LOCK') || '0');
   if (lockUntil && Date.now() < lockUntil) { enforceLockout(lockUntil); }
-
-  // Auto-login
   if (localStorage.getItem('CP_LOGGED') === '1') {
     showDash();
   }
