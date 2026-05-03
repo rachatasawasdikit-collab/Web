@@ -352,6 +352,88 @@ body {
 .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
 .modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
 
+/* Binary Modal */
+#binaryModal {
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+.binary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.binary-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.binary-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0;
+}
+.binary-close-btn:hover {
+  color: var(--text);
+}
+.binary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.binary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.binary-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.binary-textarea {
+  width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.binary-textarea:focus {
+  border-color: var(--border-focus);
+}
+.binary-textarea[readonly] {
+  background: var(--bg-panel);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.binary-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.binary-controls button {
+  flex: 1;
+  padding: 10px;
+  font-size: 13px;
+}
+
 /* Floating panels */
 .panel {
   position: fixed; z-index: 100;
@@ -446,6 +528,7 @@ body {
 .fab.active { opacity: 1; pointer-events: auto; }
 .fab:hover { box-shadow: var(--shadow-lg); }
 #utilFab { bottom: 24px; left: 24px; }
+#binFab { bottom: 80px; left: 24px; }
 #secFab { bottom: 24px; right: 24px; border-color: rgba(220,38,38,0.3); color: var(--danger); }
 #exitSecFab { bottom: 24px; right: 24px; border-color: rgba(22,163,74,0.3); color: var(--success); }
 
@@ -460,6 +543,13 @@ body {
   .topbar-search { width: 160px; }
   .link-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
   #userBadge { display: none; }
+  
+  #binaryModal {
+    padding: 16px;
+  }
+  .binary-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -491,7 +581,7 @@ body {
     </div>
     <button id="loginBtn" class="btn btn-primary">Sign In</button>
 
-    <div class="login-footer">Version 2.4</div>
+    <div class="login-footer">Version 2.5</div>
   </div>
 </div>
 
@@ -529,6 +619,7 @@ body {
 
 <!-- FABs -->
 <button id="utilFab" class="fab" title="Utilities">🔢</button>
+<button id="binFab" class="fab" title="Binary Converter">🔠</button>
 <button id="secFab" class="fab" title="Restricted Access">🔑</button>
 <button id="exitSecFab" class="fab" title="Exit Restricted" style="display:none;">✕</button>
 
@@ -570,6 +661,33 @@ body {
       <button class="calc-btn equal">=</button>
       <button class="calc-btn num zero">0</button>
       <button class="calc-btn num">.</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BINARY CONVERTER MODAL ==================== -->
+<div id="binaryModalOverlay" class="modal-overlay">
+  <div id="binaryModal" class="modal-box">
+    <div class="binary-header">
+      <h2>🔠 Binary Converter</h2>
+      <button class="binary-close-btn" onclick="closeBinaryModal()">×</button>
+    </div>
+    
+    <div class="binary-grid">
+      <div class="binary-section">
+        <label class="binary-label">📝 Text (รองรับ UTF-8 & ไทย)</label>
+        <textarea id="binText" class="binary-textarea" placeholder="พิมพ์ข้อความที่นี่..."></textarea>
+      </div>
+      <div class="binary-section">
+        <label class="binary-label">⚙️ Binary (0/1)</label>
+        <textarea id="binBinary" class="binary-textarea" placeholder="ผลลัพธ์ binary จะปรากฏที่นี่..." readonly></textarea>
+      </div>
+    </div>
+    
+    <div class="binary-controls">
+      <button class="btn btn-primary btn-sm" onclick="encodeBinary()" style="background:var(--accent);">Encode →</button>
+      <button class="btn btn-primary btn-sm" onclick="decodeBinary()" style="background:var(--accent);">← Decode</button>
+      <button class="btn btn-primary btn-sm" onclick="copyBinary()" style="background:var(--accent);">Copy</button>
     </div>
   </div>
 </div>
@@ -681,6 +799,70 @@ const HIDDEN_LINKS = [
 
 // ============ STATE ============
 let secretMode = false;
+
+// ============ BINARY CONVERTER ============
+function textToBinary(text) {
+  let binary = '';
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(text);
+  for (let byte of bytes) {
+    binary += byte.toString(2).padStart(8, '0') + ' ';
+  }
+  return binary.trim();
+}
+
+function binaryToText(binary) {
+  try {
+    const bytes = binary
+      .trim()
+      .split(/\s+/)
+      .map(b => parseInt(b, 2));
+    
+    if (bytes.some(b => isNaN(b) || b < 0 || b > 255)) {
+      throw new Error('Invalid binary');
+    }
+    
+    const decoder = new TextDecoder();
+    return decoder.decode(new Uint8Array(bytes));
+  } catch {
+    return null;
+  }
+}
+
+function encodeBinary() {
+  const text = document.getElementById('binText').value;
+  if (!text) { toast('Please enter text', 'fail'); return; }
+  const binary = textToBinary(text);
+  document.getElementById('binBinary').value = binary;
+  toast('Text converted to binary', 'ok');
+}
+
+function decodeBinary() {
+  const binary = document.getElementById('binBinary').value;
+  if (!binary) { toast('Please enter binary', 'fail'); return; }
+  const text = binaryToText(binary);
+  if (text === null) { toast('Invalid binary format', 'fail'); return; }
+  document.getElementById('binText').value = text;
+  toast('Binary converted to text', 'ok');
+}
+
+function copyBinary() {
+  const binary = document.getElementById('binBinary').value;
+  if (!binary) { toast('Nothing to copy', 'fail'); return; }
+  navigator.clipboard.writeText(binary).then(() => {
+    toast('Copied to clipboard', 'ok');
+  }).catch(() => {
+    toast('Failed to copy', 'fail');
+  });
+}
+
+function openBinaryModal() {
+  document.getElementById('binaryModalOverlay').classList.add('show');
+}
+
+function closeBinaryModal() {
+  document.getElementById('binaryModalOverlay').classList.remove('show');
+}
 
 // ============ UTILS ============
 function toast(msg, type='ok', dur=2000) {
@@ -820,6 +1002,7 @@ function showDash() {
   dash.classList.add('active');
   document.getElementById('logoutBtn').classList.add('show');
   document.getElementById('utilFab').classList.add('active');
+  document.getElementById('binFab').classList.add('active');
   document.getElementById('secFab').classList.add('active');
   updateUserBadge();
   renderGrid();
@@ -982,6 +1165,12 @@ const utilFab = document.getElementById('utilFab');
 const utilPanel = document.getElementById('utilityPanel');
 utilFab.addEventListener('click', () => utilPanel.classList.toggle('show'));
 document.getElementById('closeUtil').addEventListener('click', () => utilPanel.classList.remove('show'));
+
+// Binary Converter FAB
+document.getElementById('binFab').addEventListener('click', openBinaryModal);
+document.getElementById('binaryModalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('binaryModalOverlay')) closeBinaryModal();
+});
 
 // Tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
