@@ -30,7 +30,6 @@
     padding: 0 0 60px;
   }
 
-  /* Header */
   header {
     background: var(--surface);
     border-bottom: 2px solid var(--accent);
@@ -87,7 +86,6 @@
 
   .meta-input:focus { border-color: var(--accent); }
 
-  /* Total bar */
   .total-bar {
     background: linear-gradient(135deg, var(--accent2), var(--accent));
     padding: 10px 20px;
@@ -110,7 +108,6 @@
     color: #000;
   }
 
-  /* Grid */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -118,7 +115,6 @@
     padding: 16px;
   }
 
-  /* Vehicle card */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -143,10 +139,7 @@
     gap: 10px;
   }
 
-  .card-icon {
-    font-size: 22px;
-    flex-shrink: 0;
-  }
+  .card-icon { font-size: 22px; flex-shrink: 0; }
 
   .card-name {
     font-size: 13px;
@@ -185,10 +178,7 @@
     border: 1px solid rgba(248, 81, 73, 0.3);
   }
 
-  .btn-minus:active {
-    background: rgba(248, 81, 73, 0.35);
-    transform: scale(0.93);
-  }
+  .btn-minus:active { background: rgba(248, 81, 73, 0.35); transform: scale(0.93); }
 
   .btn-plus {
     background: rgba(63, 185, 80, 0.15);
@@ -196,10 +186,7 @@
     border: 1px solid rgba(63, 185, 80, 0.3);
   }
 
-  .btn-plus:active {
-    background: rgba(63, 185, 80, 0.35);
-    transform: scale(0.93);
-  }
+  .btn-plus:active { background: rgba(63, 185, 80, 0.35); transform: scale(0.93); }
 
   .card-count {
     font-family: 'IBM Plex Mono', monospace;
@@ -211,7 +198,6 @@
     transition: color 0.2s;
   }
 
-  /* History dots */
   .history-track {
     padding: 6px 14px 10px;
     display: flex;
@@ -234,7 +220,6 @@
     to { transform: scale(1); opacity: 0.7; }
   }
 
-  /* Action buttons */
   .actions {
     padding: 0 16px 16px;
     display: flex;
@@ -283,7 +268,6 @@
 
   .btn-copy:hover { background: rgba(88, 166, 255, 0.25); }
 
-  /* Toast */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -302,7 +286,18 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* Section divider */
+  /* saved indicator in header */
+  .save-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .save-dot.on { opacity: 1; }
+
   .section-label {
     padding: 12px 16px 4px;
     font-size: 10px;
@@ -343,6 +338,7 @@
       <input class="meta-input" id="name" type="text" placeholder="ชื่อผู้นับ">
     </div>
   </div>
+  <div class="save-dot" id="saveDot" title="บันทึกแล้ว"></div>
 </header>
 
 <div class="total-bar">
@@ -369,23 +365,29 @@
 
 <script>
 const VEHICLES = [
-  { id: 'moto', name: 'จักรยานยนต์\n/สามล้อเครื่อง', icon: '🏍️', grid: 1 },
-  { id: 'car7', name: 'รถนั่งส่วนบุคคล\n<7 คน', icon: '🚗', grid: 1 },
-  { id: 'car7p', name: 'รถนั่งส่วนบุคคล\n>7 คน', icon: '🚐', grid: 1 },
-  { id: 'busS', name: 'รถโดยสาร\nขนาดเล็ก', icon: '🚌', grid: 2 },
-  { id: 'busM', name: 'รถโดยสาร\nขนาดกลาง', icon: '🚌', grid: 2 },
-  { id: 'busL', name: 'รถโดยสาร\nขนาดใหญ่', icon: '🚍', grid: 2 },
-  { id: 'trk4', name: 'รถบรรทุกเล็ก\n4 ล้อ', icon: '🚚', grid: 3 },
-  { id: 'trk6', name: 'รถบรรทุกกลาง\n6 ล้อ', icon: '🚛', grid: 3 },
-  { id: 'trk10', name: 'รถบรรทุกใหญ่\n10 ล้อ', icon: '🚛', grid: 3 },
-  { id: 'semi', name: 'รถกึ่งพ่วง', icon: '🚜', grid: 3 },
-  { id: 'trail', name: 'รถพ่วง', icon: '🚛', grid: 3 },
-  { id: 'trk4s', name: 'รถบรรทุก\n4 ล้อ*', icon: '🚚', grid: 3 },
+  { id: 'moto',  name: 'จักรยานยนต์\n/สามล้อเครื่อง', icon: '🏍️', grid: 1 },
+  { id: 'car7',  name: 'รถนั่งส่วนบุคคล\n<7 คน',        icon: '🚗', grid: 1 },
+  { id: 'car7p', name: 'รถนั่งส่วนบุคคล\n>7 คน',        icon: '🚐', grid: 1 },
+  { id: 'busS',  name: 'รถโดยสาร\nขนาดเล็ก',            icon: '🚌', grid: 2 },
+  { id: 'busM',  name: 'รถโดยสาร\nขนาดกลาง',            icon: '🚌', grid: 2 },
+  { id: 'busL',  name: 'รถโดยสาร\nขนาดใหญ่',            icon: '🚍', grid: 2 },
+  { id: 'trk4',  name: 'รถบรรทุกเล็ก\n4 ล้อ',           icon: '🚚', grid: 3 },
+  { id: 'trk6',  name: 'รถบรรทุกกลาง\n6 ล้อ',           icon: '🚛', grid: 3 },
+  { id: 'trk10', name: 'รถบรรทุกใหญ่\n10 ล้อ',          icon: '🚛', grid: 3 },
+  { id: 'semi',  name: 'รถกึ่งพ่วง',                     icon: '🚜', grid: 3 },
+  { id: 'trail', name: 'รถพ่วง',                          icon: '🚛', grid: 3 },
+  { id: 'trk4s', name: 'รถบรรทุก\n4 ล้อ*',              icon: '🚚', grid: 3 },
 ];
 
-const counts = {};
-VEHICLES.forEach(v => counts[v.id] = 0);
+const LS_COUNTS = 'traffic_counts';
+const LS_META   = 'traffic_meta';
 
+// ── Load saved counts ──────────────────────────────────────────────────────
+const saved = JSON.parse(localStorage.getItem(LS_COUNTS) || '{}');
+const counts = {};
+VEHICLES.forEach(v => counts[v.id] = saved[v.id] ?? 0);
+
+// ── Build cards ────────────────────────────────────────────────────────────
 function buildCard(v) {
   const card = document.createElement('div');
   card.className = 'card';
@@ -405,20 +407,57 @@ function buildCard(v) {
   return card;
 }
 
-[1,2,3].forEach(g => {
+[1, 2, 3].forEach(g => {
   const container = document.getElementById('grid' + g);
   VEHICLES.filter(v => v.grid === g).forEach(v => container.appendChild(buildCard(v)));
 });
 
-// Set default date
-document.getElementById('date').value = new Date().toISOString().split('T')[0];
+// ── Restore UI from saved counts ───────────────────────────────────────────
+VEHICLES.forEach(v => {
+  if (counts[v.id] > 0) renderCard(v.id);
+});
+updateTotal();
 
-function adjust(id, delta) {
-  counts[id] = Math.max(0, counts[id] + delta);
+// ── Restore meta fields ────────────────────────────────────────────────────
+const savedMeta = JSON.parse(localStorage.getItem(LS_META) || '{}');
+document.getElementById('site').value = savedMeta.site ?? '';
+document.getElementById('date').value = savedMeta.date ?? new Date().toISOString().split('T')[0];
+document.getElementById('name').value = savedMeta.name ?? '';
+
+// Save meta on change
+['site', 'date', 'name'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveMeta);
+});
+
+// ── Save helpers ───────────────────────────────────────────────────────────
+let saveDotTimer;
+function flashSaveDot() {
+  const dot = document.getElementById('saveDot');
+  dot.classList.add('on');
+  clearTimeout(saveDotTimer);
+  saveDotTimer = setTimeout(() => dot.classList.remove('on'), 1200);
+}
+
+function saveCounts() {
+  localStorage.setItem(LS_COUNTS, JSON.stringify(counts));
+  flashSaveDot();
+}
+
+function saveMeta() {
+  localStorage.setItem(LS_META, JSON.stringify({
+    site: document.getElementById('site').value,
+    date: document.getElementById('date').value,
+    name: document.getElementById('name').value,
+  }));
+  flashSaveDot();
+}
+
+// ── Core logic ─────────────────────────────────────────────────────────────
+function renderCard(id) {
   document.getElementById('count-' + id).textContent = counts[id];
   const card = document.getElementById('card-' + id);
   card.classList.toggle('active', counts[id] > 0);
-  // Update dots
+
   const hist = document.getElementById('hist-' + id);
   hist.innerHTML = '';
   const show = Math.min(counts[id], 20);
@@ -430,30 +469,38 @@ function adjust(id, delta) {
   if (counts[id] > 20) {
     hist.innerHTML += `<span style="font-size:10px;color:var(--muted);margin-left:4px;font-family:monospace">+${counts[id]-20}</span>`;
   }
+}
+
+function adjust(id, delta) {
+  counts[id] = Math.max(0, counts[id] + delta);
+  renderCard(id);
   updateTotal();
+  saveCounts();
 }
 
 function updateTotal() {
-  const total = Object.values(counts).reduce((a,b)=>a+b, 0);
-  document.getElementById('grandTotal').textContent = total;
+  document.getElementById('grandTotal').textContent =
+    Object.values(counts).reduce((a, b) => a + b, 0);
 }
 
 function resetAll() {
   if (!confirm('รีเซ็ตตัวนับทั้งหมดใช่ไหม?')) return;
   VEHICLES.forEach(v => {
     counts[v.id] = 0;
-    document.getElementById('count-'+v.id).textContent = '0';
-    document.getElementById('hist-'+v.id).innerHTML = '';
-    document.getElementById('card-'+v.id).classList.remove('active');
+    renderCard(v.id);
+    document.getElementById('hist-' + v.id).innerHTML = '';
   });
   updateTotal();
+  saveCounts();
 }
 
+// ── Export helpers ─────────────────────────────────────────────────────────
 function getData() {
-  const site = document.getElementById('site').value || '-';
-  const date = document.getElementById('date').value || '-';
-  const name = document.getElementById('name').value || '-';
-  return { site, date, name };
+  return {
+    site: document.getElementById('site').value || '-',
+    date: document.getElementById('date').value || '-',
+    name: document.getElementById('name').value || '-',
+  };
 }
 
 function copyData() {
@@ -461,11 +508,11 @@ function copyData() {
   let text = `SITE: ${site}  DATE: ${date}  NAME: ${name}\n`;
   text += '─'.repeat(50) + '\n';
   VEHICLES.forEach(v => {
-    const label = v.name.replace(/\n/g,'').padEnd(22,' ');
+    const label = v.name.replace(/\n/g, '').padEnd(22, ' ');
     text += `${label}: ${counts[v.id]}\n`;
   });
   text += '─'.repeat(50) + '\n';
-  text += `รวม: ${Object.values(counts).reduce((a,b)=>a+b,0)}`;
+  text += `รวม: ${Object.values(counts).reduce((a, b) => a + b, 0)}`;
   navigator.clipboard.writeText(text).then(() => showToast('✅ คัดลอกแล้ว!'));
 }
 
@@ -474,10 +521,10 @@ function exportCSV() {
   let csv = `SITE,DATE,NAME\n"${site}","${date}","${name}"\n\n`;
   csv += 'ประเภทรถ,จำนวน\n';
   VEHICLES.forEach(v => {
-    csv += `"${v.name.replace(/\n/g,'')}",${counts[v.id]}\n`;
+    csv += `"${v.name.replace(/\n/g, '')}",${counts[v.id]}\n`;
   });
-  csv += `"รวมทั้งหมด",${Object.values(counts).reduce((a,b)=>a+b,0)}`;
-  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  csv += `"รวมทั้งหมด",${Object.values(counts).reduce((a, b) => a + b, 0)}`;
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `traffic_count_${date}.csv`;
