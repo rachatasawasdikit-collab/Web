@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>นับปริมาณจราจร</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -170,6 +170,7 @@
     transition: all 0.1s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .btn-minus {
@@ -242,6 +243,8 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-reset {
@@ -286,7 +289,6 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* saved indicator in header */
   .save-dot {
     width: 7px;
     height: 7px;
@@ -356,9 +358,9 @@
 <div class="grid" id="grid3"></div>
 
 <div class="actions">
-  <button class="btn-action btn-reset" onclick="resetAll()">🔄 รีเซ็ตทั้งหมด</button>
-  <button class="btn-action btn-copy" onclick="copyData()">📋 คัดลอกข้อมูล</button>
-  <button class="btn-action btn-export" onclick="exportCSV()">📥 ดาวน์โหลด CSV</button>
+  <button class="btn-action btn-reset" id="btnReset">🔄 รีเซ็ตทั้งหมด</button>
+  <button class="btn-action btn-copy"  id="btnCopy">📋 คัดลอกข้อมูล</button>
+  <button class="btn-action btn-export" id="btnExport">📥 ดาวน์โหลด CSV</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -366,28 +368,26 @@
 <script>
 const VEHICLES = [
   { id: 'moto',  name: 'จักรยานยนต์\n/สามล้อเครื่อง', icon: '🏍️', grid: 1 },
-  { id: 'car7',  name: 'รถนั่งส่วนบุคคล(บน)\n<7 คน',        icon: '🚗', grid: 1 },
-  { id: 'car7p', name: 'รถนั่งส่วนบุคค(มากดว่า7\n>7 คน',        icon: '🚐', grid: 1 },
-  { id: 'busS',  name: 'รถโดยสาร(แท้กซี่)\nขนาดเล็ก',            icon: '🚌', grid: 2 },
-  { id: 'busM',  name: 'รถโดยสาร\nขนาดกลาง',            icon: '🚌', grid: 2 },
-  { id: 'busL',  name: 'รถโดยสาร\nขนาดใหญ่',            icon: '🚍', grid: 2 },
-  { id: 'trk4',  name: 'รถกระบะ\n4 ล้อ',           icon: '🚚', grid: 3 },
-  { id: 'trk6',  name: 'รถบรรทุกกลาง\n6 ล้อ',           icon: '🚛', grid: 3 },
-  { id: 'trk10', name: 'รถบรรทุกใหญ่\n10 ล้อ',          icon: '🚛', grid: 3 },
-  { id: 'semi',  name: 'รถกึ่งพ่วง',                     icon: '🚜', grid: 3 },
-  { id: 'trail', name: 'รถพ่วง',                          icon: '🚛', grid: 3 },
-  { id: 'trk4s', name: 'รถบรรทุก\n4 ล้อ*',              icon: '🚚', grid: 3 },
+  { id: 'car7',  name: 'รถนั่งส่วนบุคคล(ยนต์)\n<7 คน',        icon: '🚗', grid: 1 },
+  { id: 'car7p', name: 'รถนั่งส่วนบุคคล\n>7 คน',               icon: '🚐', grid: 1 },
+  { id: 'busS',  name: 'รถโดยสาร(แท็กซี่)\nขนาดเล็ก',          icon: '🚌', grid: 2 },
+  { id: 'busM',  name: 'รถโดยสาร\nขนาดกลาง',                   icon: '🚌', grid: 2 },
+  { id: 'busL',  name: 'รถโดยสาร\nขนาดใหญ่',                   icon: '🚍', grid: 2 },
+  { id: 'trk4',  name: 'รถกระบะ\n4 ล้อ',                       icon: '🚚', grid: 3 },
+  { id: 'trk6',  name: 'รถบรรทุกกลาง\n6 ล้อ',                  icon: '🚛', grid: 3 },
+  { id: 'trk10', name: 'รถบรรทุกใหญ่\n10 ล้อ',                 icon: '🚛', grid: 3 },
+  { id: 'semi',  name: 'รถกึ่งพ่วง',                            icon: '🚜', grid: 3 },
+  { id: 'trail', name: 'รถพ่วง',                                 icon: '🚛', grid: 3 },
+  { id: 'trk4s', name: 'รถบรรทุก\n4 ล้อ*',                     icon: '🚚', grid: 3 },
 ];
 
 const LS_COUNTS = 'traffic_counts';
 const LS_META   = 'traffic_meta';
 
-// ── Load saved counts ──────────────────────────────────────────────────────
 const saved = JSON.parse(localStorage.getItem(LS_COUNTS) || '{}');
 const counts = {};
 VEHICLES.forEach(v => counts[v.id] = saved[v.id] ?? 0);
 
-// ── Build cards ────────────────────────────────────────────────────────────
 function buildCard(v) {
   const card = document.createElement('div');
   card.className = 'card';
@@ -398,9 +398,9 @@ function buildCard(v) {
       <div class="card-name">${v.name.replace(/\n/g, '<br>')}</div>
     </div>
     <div class="card-body">
-      <button class="btn-count btn-minus" onclick="adjust('${v.id}',-1)">−</button>
+      <button class="btn-count btn-minus" data-id="${v.id}" data-delta="-1">−</button>
       <div class="card-count" id="count-${v.id}">0</div>
-      <button class="btn-count btn-plus" onclick="adjust('${v.id}',1)">+</button>
+      <button class="btn-count btn-plus"  data-id="${v.id}" data-delta="1">+</button>
     </div>
     <div class="history-track" id="hist-${v.id}"></div>
   `;
@@ -412,24 +412,18 @@ function buildCard(v) {
   VEHICLES.filter(v => v.grid === g).forEach(v => container.appendChild(buildCard(v)));
 });
 
-// ── Restore UI from saved counts ───────────────────────────────────────────
-VEHICLES.forEach(v => {
-  if (counts[v.id] > 0) renderCard(v.id);
-});
+VEHICLES.forEach(v => { if (counts[v.id] > 0) renderCard(v.id); });
 updateTotal();
 
-// ── Restore meta fields ────────────────────────────────────────────────────
 const savedMeta = JSON.parse(localStorage.getItem(LS_META) || '{}');
 document.getElementById('site').value = savedMeta.site ?? '';
 document.getElementById('date').value = savedMeta.date ?? new Date().toISOString().split('T')[0];
 document.getElementById('name').value = savedMeta.name ?? '';
 
-// Save meta on change
 ['site', 'date', 'name'].forEach(id => {
   document.getElementById(id).addEventListener('input', saveMeta);
 });
 
-// ── Save helpers ───────────────────────────────────────────────────────────
 let saveDotTimer;
 function flashSaveDot() {
   const dot = document.getElementById('saveDot');
@@ -452,7 +446,6 @@ function saveMeta() {
   flashSaveDot();
 }
 
-// ── Core logic ─────────────────────────────────────────────────────────────
 function renderCard(id) {
   document.getElementById('count-' + id).textContent = counts[id];
   const card = document.getElementById('card-' + id);
@@ -494,7 +487,6 @@ function resetAll() {
   saveCounts();
 }
 
-// ── Export helpers ─────────────────────────────────────────────────────────
 function getData() {
   return {
     site: document.getElementById('site').value || '-',
@@ -538,6 +530,19 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+/* ── Touch: กัน double-tap zoom บน iPad/iOS ── */
+document.addEventListener('touchend', function(e) {
+  const btn = e.target.closest('.btn-count');
+  if (!btn) return;
+  e.preventDefault();
+  adjust(btn.dataset.id, +btn.dataset.delta);
+}, { passive: false });
+
+/* ── Action buttons ── */
+document.getElementById('btnReset').addEventListener('click', resetAll);
+document.getElementById('btnCopy').addEventListener('click', copyData);
+document.getElementById('btnExport').addEventListener('click', exportCSV);
 </script>
 </body>
 </html>
