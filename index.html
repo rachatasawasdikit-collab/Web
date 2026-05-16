@@ -539,6 +539,13 @@ document.addEventListener('touchend', function(e) {
   adjust(btn.dataset.id, +btn.dataset.delta);
 }, { passive: false });
 
+/* ── Mouse click สำหรับคอม ── */
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.btn-count');
+  if (!btn) return;
+  adjust(btn.dataset.id, +btn.dataset.delta);
+});
+
 /* ── Action buttons ── */
 document.getElementById('btnReset').addEventListener('click', resetAll);
 document.getElementById('btnCopy').addEventListener('click', copyData);
