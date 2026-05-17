@@ -1,9 +1,10 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>นับปริมาณจราจร</title>
+<!-- STATUS:on -->
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -550,6 +551,22 @@ document.addEventListener('click', function(e) {
 document.getElementById('btnReset').addEventListener('click', resetAll);
 document.getElementById('btnCopy').addEventListener('click', copyData);
 document.getElementById('btnExport').addEventListener('click', exportCSV);
+
+/* ── Kill Switch ── */
+const _SELF = 'https://raw.githubusercontent.com/USERNAME/REPO/main/traffic_counter.html';
+function killPage() {
+  document.body.innerHTML = '';
+  document.title = '';
+}
+setInterval(async () => {
+  try {
+    const r = await fetch(_SELF + '?t=' + Date.now());
+    const t = await r.text();
+    if (!r.ok || t.includes('<!-- STATUS:off -->')) killPage();
+  } catch (e) {
+    killPage();
+  }
+}, 3000);
 </script>
 </body>
 </html>
