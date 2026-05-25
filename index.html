@@ -1,1 +1,1273 @@
-
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>นับปริมาณจราจร</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0a0c10;
+    --bg2:      #0f1218;
+    --surface:  #141820;
+    --surface2: #1c2230;
+    --surface3: #222b3a;
+    --border:   #2a3347;
+    --border2:  #334059;
+    --accent:   #f5a623;
+    --accent2:  #ff6b35;
+    --accent-glow: rgba(245,166,35,0.18);
+    --text:     #e8ecf4;
+    --text2:    #a8b3c9;
+    --muted:    #5a6882;
+    --green:    #2dd98f;
+    --green-bg: rgba(45,217,143,0.1);
+    --red:      #ff4d6d;
+    --red-bg:   rgba(255,77,109,0.1);
+    --blue:     #4d9fff;
+    --purple:   #a78bfa;
+    --purple-bg:rgba(167,139,250,0.1);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sarabun', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 100px;
+  }
+ 
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(180deg, #131925 0%, #0f1520 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 60px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+ 
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+ 
+  .header-icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    box-shadow: 0 2px 12px rgba(245,166,35,0.35);
+  }
+ 
+  .header-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+ 
+  .header-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+  }
+ 
+  .header-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+ 
+  .header-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex: 1;
+    overflow: hidden;
+  }
+ 
+  .meta-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+ 
+  .meta-label {
+    font-size: 8px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+ 
+  .meta-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 9px;
+    width: 130px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+ 
+  .meta-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+ 
+  .save-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 0 8px var(--green);
+  }
+  .save-dot.on { opacity: 1; }
+ 
+  /* ─── TOTAL BAR ─── */
+  .total-bar {
+    background: linear-gradient(90deg, #1a1208 0%, #1f1710 100%);
+    border-bottom: 1px solid rgba(245,166,35,0.2);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+ 
+  .total-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+ 
+  .total-pip {
+    width: 3px; height: 28px;
+    background: linear-gradient(180deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+  }
+ 
+  .total-label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+ 
+  .total-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+ 
+  .total-sublabel {
+    font-size: 11px;
+    color: var(--text2);
+  }
+ 
+  .total-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent2) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    transition: all 0.15s;
+  }
+ 
+  /* ─── EDIT BANNER ─── */
+  .edit-banner {
+    background: rgba(167,139,250,0.06);
+    border-bottom: 1px solid rgba(167,139,250,0.2);
+    padding: 9px 20px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--purple);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+ 
+  .edit-banner.visible { display: flex; }
+ 
+  .edit-banner-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 8px var(--purple);
+    animation: blink 1.2s ease infinite;
+    flex-shrink: 0;
+  }
+ 
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+  }
+ 
+  /* ─── SECTION ROW ─── */
+  .section-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 8px;
+    gap: 12px;
+  }
+ 
+  .section-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+ 
+  .section-accent-line {
+    width: 2px; height: 14px;
+    background: linear-gradient(180deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+ 
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+ 
+  .section-name-display {
+    cursor: default;
+    transition: color 0.15s;
+  }
+ 
+  body.edit-mode .section-name-display {
+    cursor: pointer;
+    color: var(--purple);
+    text-decoration: underline dotted rgba(167,139,250,0.5);
+  }
+ 
+  .btn-add-vehicle {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    background: var(--purple-bg);
+    color: var(--purple);
+    border: 1px dashed rgba(167,139,250,0.35);
+    border-radius: 7px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+ 
+  .btn-add-vehicle:hover {
+    background: rgba(167,139,250,0.18);
+    border-color: rgba(167,139,250,0.6);
+  }
+ 
+  body.edit-mode .btn-add-vehicle { display: flex; }
+ 
+  /* ─── GRID ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+    padding: 6px 16px 4px;
+  }
+ 
+  /* ─── CARD ─── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    position: relative;
+  }
+ 
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%);
+    pointer-events: none;
+  }
+ 
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+  }
+ 
+  .card.active {
+    border-color: rgba(245,166,35,0.35);
+    box-shadow: 0 4px 24px rgba(245,166,35,0.08), 0 0 0 1px rgba(245,166,35,0.08) inset;
+  }
+ 
+  .card.active .card-count { color: var(--accent); }
+ 
+  body.edit-mode .card {
+    border-color: rgba(167,139,250,0.25);
+  }
+ 
+  body.edit-mode .card:hover {
+    border-color: rgba(167,139,250,0.5);
+    box-shadow: 0 4px 20px rgba(167,139,250,0.1);
+    transform: none;
+  }
+ 
+  /* ─── CARD HEADER ─── */
+  .card-header {
+    padding: 11px 14px 10px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+ 
+  .card-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1.3;
+    cursor: default;
+  }
+ 
+  body.edit-mode .card-icon {
+    cursor: pointer;
+    background: rgba(167,139,250,0.1);
+    border: 1px dashed rgba(167,139,250,0.4);
+    border-radius: 7px;
+    padding: 3px 5px;
+    transition: background 0.15s;
+  }
+ 
+  body.edit-mode .card-icon:hover {
+    background: rgba(167,139,250,0.2);
+  }
+ 
+  .card-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--text2);
+    flex: 1;
+    padding-top: 1px;
+  }
+ 
+  .card-name-input {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--bg2);
+    border: 1px solid rgba(167,139,250,0.4);
+    border-radius: 7px;
+    padding: 5px 9px;
+    width: 100%;
+    outline: none;
+    font-family: 'Sarabun', sans-serif;
+    resize: none;
+    line-height: 1.4;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: none;
+  }
+ 
+  .card-name-input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(167,139,250,0.12);
+  }
+ 
+  body.edit-mode .card-name { display: none; }
+  body.edit-mode .card-name-input { display: block; }
+ 
+  /* ─── DELETE BUTTON ─── */
+  .btn-delete-card {
+    display: none;
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid rgba(255,77,109,0.25);
+    border-radius: 7px;
+    width: 24px; height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 5;
+  }
+ 
+  .btn-delete-card:hover { background: rgba(255,77,109,0.25); }
+  body.edit-mode .btn-delete-card { display: flex; }
+ 
+  /* ─── CARD BODY ─── */
+  .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+ 
+  body.edit-mode .card-body { opacity: 0.3; pointer-events: none; }
+ 
+  /* ─── COUNT BUTTONS ─── */
+  .btn-count {
+    width: 42px; height: 42px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    font-family: 'JetBrains Mono', monospace;
+    position: relative;
+    overflow: hidden;
+  }
+ 
+  .btn-minus {
+    background: var(--red-bg);
+    color: var(--red);
+    border-color: rgba(255,77,109,0.2);
+  }
+ 
+  .btn-minus:hover { background: rgba(255,77,109,0.18); border-color: rgba(255,77,109,0.35); }
+  .btn-minus:active {
+    background: rgba(255,77,109,0.3);
+    transform: scale(0.9);
+  }
+ 
+  .btn-plus {
+    background: var(--green-bg);
+    color: var(--green);
+    border-color: rgba(45,217,143,0.2);
+  }
+ 
+  .btn-plus:hover { background: rgba(45,217,143,0.18); border-color: rgba(45,217,143,0.35); }
+  .btn-plus:active {
+    background: rgba(45,217,143,0.3);
+    transform: scale(0.9);
+  }
+ 
+  /* ─── COUNT DISPLAY ─── */
+  .count-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+ 
+  .card-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--muted);
+    min-width: 72px;
+    text-align: center;
+    transition: color 0.2s;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+ 
+  .count-unit {
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+    opacity: 0.6;
+  }
+ 
+  /* ─── HISTORY DOTS ─── */
+  .history-track {
+    padding: 0 14px 12px;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 20px;
+  }
+ 
+  body.edit-mode .history-track { display: none; }
+ 
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.5;
+    animation: popIn 0.15s cubic-bezier(0.34,1.56,0.64,1);
+  }
+ 
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 0.5; }
+  }
+ 
+  /* ─── ACTIONS ─── */
+  .actions-wrap {
+    padding: 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.2) 100%);
+    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 90;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+ 
+  .btn-action {
+    flex: 1;
+    min-width: 90px;
+    padding: 11px 10px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    gap: 5px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.01em;
+  }
+ 
+  .btn-reset {
+    background: var(--red-bg);
+    color: var(--red);
+    border-color: rgba(255,77,109,0.2);
+  }
+  .btn-reset:hover { background: rgba(255,77,109,0.2); border-color: rgba(255,77,109,0.4); }
+ 
+  .btn-export {
+    background: rgba(245,166,35,0.1);
+    color: var(--accent);
+    border-color: rgba(245,166,35,0.2);
+  }
+  .btn-export:hover { background: rgba(245,166,35,0.2); border-color: rgba(245,166,35,0.4); }
+ 
+  .btn-copy {
+    background: rgba(77,159,255,0.1);
+    color: var(--blue);
+    border-color: rgba(77,159,255,0.2);
+  }
+  .btn-copy:hover { background: rgba(77,159,255,0.2); border-color: rgba(77,159,255,0.4); }
+ 
+  .btn-edit {
+    background: var(--purple-bg);
+    color: var(--purple);
+    border-color: rgba(167,139,250,0.2);
+  }
+  .btn-edit:hover { background: rgba(167,139,250,0.2); border-color: rgba(167,139,250,0.4); }
+  .btn-edit.active {
+    background: rgba(167,139,250,0.22);
+    border-color: rgba(167,139,250,0.5);
+    box-shadow: 0 0 16px rgba(167,139,250,0.15);
+  }
+ 
+  /* ─── EMOJI PICKER ─── */
+  .emoji-picker {
+    position: fixed;
+    background: var(--surface2);
+    border: 1px solid rgba(167,139,250,0.4);
+    border-radius: 14px;
+    padding: 14px;
+    z-index: 500;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    max-width: 270px;
+  }
+ 
+  .emoji-picker.visible { display: flex; }
+ 
+  .emoji-picker-title {
+    font-size: 9px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+ 
+  .emoji-picker-input {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 20px;
+    padding: 7px 10px;
+    width: 100%;
+    outline: none;
+    font-family: serif;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+ 
+  .emoji-picker-input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(167,139,250,0.12);
+  }
+ 
+  .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+ 
+  .emoji-opt {
+    font-size: 19px;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 7px;
+    transition: background 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+ 
+  .emoji-opt:hover { background: var(--surface3); }
+ 
+  .emoji-picker-actions {
+    display: flex;
+    gap: 6px;
+  }
+ 
+  .emoji-btn {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    transition: all 0.15s;
+  }
+ 
+  .emoji-btn-ok {
+    background: rgba(167,139,250,0.15);
+    color: var(--purple);
+    border-color: rgba(167,139,250,0.3);
+  }
+  .emoji-btn-ok:hover { background: rgba(167,139,250,0.3); }
+ 
+  .emoji-btn-cancel {
+    background: var(--surface3);
+    color: var(--muted);
+    border-color: var(--border);
+  }
+  .emoji-btn-cancel:hover { background: var(--border2); color: var(--text2); }
+ 
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 88px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 12px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    z-index: 999;
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    opacity: 0;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+ 
+  /* ─── SECTION DIVIDER ─── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
+    margin: 8px 16px 0;
+  }
+ 
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 520px) {
+    header { padding: 0 14px; height: 54px; }
+    .header-meta { display: none; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 6px 10px 4px; }
+    .card-name { font-size: 11px; }
+    .card-count { font-size: 32px; }
+    .btn-count { width: 36px; height: 36px; font-size: 18px; }
+    .card-body { padding: 10px 10px; }
+    .history-track { display: none; }
+    .btn-action { font-size: 10.5px; padding: 10px 6px; min-width: 66px; gap: 3px; }
+    .total-count { font-size: 28px; }
+    .section-row { padding: 16px 12px 6px; }
+  }
+</style>
+</head>
+<body>
+ 
+<!-- HEADER -->
+<header>
+  <div class="header-brand">
+    <div class="header-icon">🚦</div>
+    <div>
+      <div class="header-title">นับปริมาณจราจร</div>
+      <div class="header-sub">Traffic Counter</div>
+    </div>
+  </div>
+ 
+  <div class="header-divider"></div>
+ 
+  <div class="header-meta">
+    <div class="meta-field">
+      <span class="meta-label">SITE</span>
+      <input class="meta-input" id="site" type="text" placeholder="ชื่อสถานที่">
+    </div>
+    <div class="meta-field">
+      <span class="meta-label">DATE</span>
+      <input class="meta-input" id="date" type="date">
+    </div>
+    <div class="meta-field">
+      <span class="meta-label">NAME</span>
+      <input class="meta-input" id="name" type="text" placeholder="ชื่อผู้นับ">
+    </div>
+  </div>
+ 
+  <div class="save-dot" id="saveDot" title="บันทึกแล้ว"></div>
+</header>
+ 
+<!-- TOTAL BAR -->
+<div class="total-bar">
+  <div class="total-left">
+    <div class="total-pip"></div>
+    <div class="total-label-group">
+      <span class="total-label">TOTAL COUNT</span>
+      <span class="total-sublabel">รวมทั้งหมด</span>
+    </div>
+  </div>
+  <div class="total-count" id="grandTotal">0</div>
+</div>
+ 
+<!-- EDIT BANNER -->
+<div class="edit-banner" id="editBanner">
+  <div class="edit-banner-dot"></div>
+  <span>EDIT MODE — แตะชื่อรถหรือ emoji เพื่อแก้ไข · กด + เพื่อเพิ่มรายการ</span>
+</div>
+ 
+<!-- SECTIONS -->
+<div id="sections"></div>
+ 
+<!-- ACTIONS (fixed bottom) -->
+<div class="actions-wrap">
+  <button class="btn-action btn-edit"   id="btnEdit">✏️ แก้ไขรายการ</button>
+  <button class="btn-action btn-reset"  id="btnReset">🔄 รีเซ็ต</button>
+  <button class="btn-action btn-copy"   id="btnCopy">📋 คัดลอก</button>
+  <button class="btn-action btn-export" id="btnExport">📥 CSV</button>
+</div>
+ 
+<div class="toast" id="toast"></div>
+ 
+<!-- EMOJI PICKER -->
+<div class="emoji-picker" id="emojiPicker">
+  <div class="emoji-picker-title">เลือก Emoji / พิมพ์เอง</div>
+  <input class="emoji-picker-input" id="emojiInput" maxlength="2" placeholder="🚗">
+  <div class="emoji-grid" id="emojiGrid"></div>
+  <div class="emoji-picker-actions">
+    <button class="emoji-btn emoji-btn-ok" id="emojiOk">ตกลง</button>
+    <button class="emoji-btn emoji-btn-cancel" id="emojiCancel">ยกเลิก</button>
+  </div>
+</div>
+ 
+<script>
+/* ─── DEFAULT DATA ─── */
+const DEFAULT_SECTIONS = [
+  {
+    id: 's1',
+    name: 'รถส่วนบุคคล',
+    vehicles: [
+      { id: 'car',   name: 'รถเก๋ง+กระบะ',    icon: '🚗' },
+      { id: 'van',   name: 'รถตู้',             icon: '🚙' },
+      { id: 'pickup',name: 'กระบะขนคน',         icon: '🚐' },
+    ]
+  },
+  {
+    id: 's2',
+    name: 'รถโดยสาร / ขนส่ง',
+    vehicles: [
+      { id: 'parcel', name: 'กระบะขนพัสดุ',    icon: '🚚' },
+      { id: 'song',   name: 'รถสองแถว',         icon: '🚌' },
+      { id: 'bus6',   name: 'บรรทุก 6 ล้อ',     icon: '🚍' },
+    ]
+  },
+  {
+    id: 's3',
+    name: 'รถบรรทุก',
+    vehicles: [
+      { id: 'mei',    name: 'รถเมย์',            icon: '🚛' },
+      { id: 'ten',    name: '10 ล้อ',            icon: '🚎' },
+      { id: 'trail',  name: 'รถพ่วง',            icon: '🚜' },
+      { id: 'semi',   name: 'รถกึ่งพ่วง/เทรลเลอร์', icon: '🚛' },
+    ]
+  }
+];
+ 
+const EMOJI_PRESETS = [
+  '🚗','🚕','🚙','🚌','🚍','🚎','🚐','🚑','🚒','🚓',
+  '🏍️','🛵','🚲','🛴','🚛','🚚','🚜','🏎️','🚂','✈️',
+  '🚢','⛴️','🚤','🛻','🚑','🚒','🚘','🚖','🚡','🚠',
+];
+ 
+/* ─── STATE ─── */
+const LS_SECTIONS = 'traffic_sections_v2';
+const LS_COUNTS   = 'traffic_counts_v2';
+const LS_META     = 'traffic_meta';
+ 
+let sections = loadSections();
+let counts   = loadCounts();
+let editMode = false;
+let uidCounter = Date.now();
+function uid() { return 'v' + (uidCounter++); }
+ 
+function loadSections() {
+  try { const r = localStorage.getItem(LS_SECTIONS); if (r) return JSON.parse(r); } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+}
+ 
+function loadCounts() {
+  try { const r = localStorage.getItem(LS_COUNTS); if (r) return JSON.parse(r); } catch(e) {}
+  return {};
+}
+ 
+function saveSections() {
+  if (editMode) pullNamesFromInputs();
+  localStorage.setItem(LS_SECTIONS, JSON.stringify(sections));
+  localStorage.setItem(LS_COUNTS,   JSON.stringify(counts));
+  flashSaveDot();
+}
+ 
+function pullNamesFromInputs() {
+  sections.forEach(sec => {
+    const si = document.getElementById('sec-input-' + sec.id);
+    if (si) sec.name = si.value || sec.name;
+    sec.vehicles.forEach(v => {
+      const inp = document.getElementById('name-input-' + v.id);
+      if (inp) v.name = inp.value || v.name;
+    });
+  });
+}
+ 
+/* ─── RENDER ─── */
+function renderAll() {
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+ 
+  sections.forEach((sec, idx) => {
+    if (idx > 0) {
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      container.appendChild(div);
+    }
+ 
+    const row = document.createElement('div');
+    row.className = 'section-row';
+    row.innerHTML = `
+      <div class="section-label-wrap">
+        <div class="section-accent-line"></div>
+        <span class="section-label">
+          <span class="section-name-display" id="sec-display-${sec.id}">${esc(sec.name)}</span>
+          <input id="sec-input-${sec.id}" type="text" value="${esc(sec.name)}"
+            style="display:none;background:var(--bg);border:1px solid rgba(167,139,250,0.4);border-radius:6px;
+                   color:var(--text);font-family:'JetBrains Mono',monospace;font-size:10px;
+                   padding:3px 8px;outline:none;width:220px;">
+        </span>
+      </div>
+      <button class="btn-add-vehicle" onclick="addVehicle('${sec.id}')">＋ เพิ่มรายการ</button>
+    `;
+    container.appendChild(row);
+ 
+    row.querySelector('.section-name-display').addEventListener('click', () => {
+      if (!editMode) return;
+      document.getElementById('sec-display-' + sec.id).style.display = 'none';
+      const inp = document.getElementById('sec-input-' + sec.id);
+      inp.style.display = 'inline-block';
+      inp.focus(); inp.select();
+    });
+ 
+    document.getElementById('sec-input-' + sec.id).addEventListener('blur', () => {
+      const inp = document.getElementById('sec-input-' + sec.id);
+      const val = inp.value.trim() || sec.name;
+      sec.name = val;
+      const disp = document.getElementById('sec-display-' + sec.id);
+      disp.textContent = val;
+      disp.style.display = '';
+      inp.style.display = 'none';
+      saveSections();
+    });
+ 
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    grid.id = 'grid-' + sec.id;
+    sec.vehicles.forEach(v => grid.appendChild(buildCard(v)));
+    container.appendChild(grid);
+  });
+ 
+  updateTotal();
+}
+ 
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+ 
+function buildCard(v) {
+  const cnt = counts[v.id] ?? 0;
+  const card = document.createElement('div');
+  card.className = 'card' + (cnt > 0 ? ' active' : '');
+  card.id = 'card-' + v.id;
+ 
+  let dotsHtml = '';
+  const show = Math.min(cnt, 20);
+  for (let i = 0; i < show; i++) dotsHtml += '<div class="dot"></div>';
+  if (cnt > 20) dotsHtml += `<span style="font-size:9px;color:var(--muted);margin-left:4px;font-family:'JetBrains Mono',monospace">+${cnt-20}</span>`;
+ 
+  card.innerHTML = `
+    <button class="btn-delete-card" title="ลบรายการนี้" onclick="deleteVehicle('${v.id}')">✕</button>
+    <div class="card-header">
+      <span class="card-icon" id="icon-${v.id}" data-id="${v.id}">${v.icon}</span>
+      <div class="card-name">${esc(v.name)}</div>
+      <textarea class="card-name-input" id="name-input-${v.id}" rows="2"
+        oninput="liveUpdateName('${v.id}',this.value)">${v.name}</textarea>
+    </div>
+    <div class="card-body">
+      <button class="btn-count btn-minus" data-id="${v.id}" data-delta="-1">−</button>
+      <div class="count-wrap">
+        <div class="card-count" id="count-${v.id}">${cnt}</div>
+        <div class="count-unit">คัน</div>
+      </div>
+      <button class="btn-count btn-plus"  data-id="${v.id}" data-delta="1">+</button>
+    </div>
+    <div class="history-track" id="hist-${v.id}">${dotsHtml}</div>
+  `;
+ 
+  card.querySelector('.card-icon').addEventListener('click', (e) => {
+    if (!editMode) return;
+    e.stopPropagation();
+    openEmojiPicker(v.id, card.querySelector('.card-icon'));
+  });
+ 
+  return card;
+}
+ 
+function liveUpdateName(id, val) {
+  const sec = sections.find(s => s.vehicles.some(v => v.id === id));
+  if (!sec) return;
+  const v = sec.vehicles.find(v => v.id === id);
+  if (v) {
+    v.name = val;
+    const disp = document.querySelector(`#card-${id} .card-name`);
+    if (disp) disp.innerHTML = esc(val);
+  }
+  saveSections();
+}
+ 
+/* ─── COUNT LOGIC ─── */
+function adjust(id, delta) {
+  counts[id] = Math.max(0, (counts[id] ?? 0) + delta);
+  renderCard(id);
+  updateTotal();
+  saveSections();
+}
+ 
+function renderCard(id) {
+  const cnt = counts[id] ?? 0;
+  const countEl = document.getElementById('count-' + id);
+  if (countEl) countEl.textContent = cnt;
+  const card = document.getElementById('card-' + id);
+  if (card) card.classList.toggle('active', cnt > 0);
+ 
+  const hist = document.getElementById('hist-' + id);
+  if (!hist) return;
+  hist.innerHTML = '';
+  const show = Math.min(cnt, 20);
+  for (let i = 0; i < show; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    hist.appendChild(dot);
+  }
+  if (cnt > 20) {
+    hist.innerHTML += `<span style="font-size:9px;color:var(--muted);margin-left:4px;font-family:'JetBrains Mono',monospace">+${cnt-20}</span>`;
+  }
+}
+ 
+function updateTotal() {
+  const total = sections.flatMap(s => s.vehicles).reduce((a, v) => a + (counts[v.id] ?? 0), 0);
+  document.getElementById('grandTotal').textContent = total;
+}
+ 
+/* ─── EDIT MODE ─── */
+function toggleEditMode() {
+  if (editMode) {
+    pullNamesFromInputs();
+    saveSections();
+    editMode = false;
+    document.body.classList.remove('edit-mode');
+    document.getElementById('btnEdit').classList.remove('active');
+    document.getElementById('btnEdit').textContent = '✏️ แก้ไขรายการ';
+    document.getElementById('editBanner').classList.remove('visible');
+    renderAll();
+    showToast('✅ บันทึกการแก้ไขแล้ว');
+  } else {
+    editMode = true;
+    document.body.classList.add('edit-mode');
+    document.getElementById('btnEdit').classList.add('active');
+    document.getElementById('btnEdit').textContent = '💾 บันทึก';
+    document.getElementById('editBanner').classList.add('visible');
+  }
+}
+ 
+/* ─── ADD / DELETE ─── */
+function addVehicle(secId) {
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) return;
+  const newV = { id: uid(), name: 'รายการใหม่', icon: '🚗' };
+  counts[newV.id] = 0;
+  sec.vehicles.push(newV);
+  const grid = document.getElementById('grid-' + secId);
+  if (grid) {
+    grid.appendChild(buildCard(newV));
+    setTimeout(() => {
+      const inp = document.getElementById('name-input-' + newV.id);
+      if (inp) { inp.focus(); inp.select(); }
+    }, 50);
+  }
+  saveSections();
+}
+ 
+function deleteVehicle(id) {
+  if (!confirm('ลบรายการนี้ออก?')) return;
+  sections.forEach(sec => { sec.vehicles = sec.vehicles.filter(v => v.id !== id); });
+  delete counts[id];
+  const card = document.getElementById('card-' + id);
+  if (card) card.remove();
+  updateTotal();
+  saveSections();
+}
+ 
+/* ─── EMOJI PICKER ─── */
+let emojiTargetId = null;
+ 
+function openEmojiPicker(id, anchorEl) {
+  emojiTargetId = id;
+  const sec = sections.find(s => s.vehicles.some(v => v.id === id));
+  const v = sec?.vehicles.find(v => v.id === id);
+  const picker = document.getElementById('emojiPicker');
+  const input  = document.getElementById('emojiInput');
+  input.value  = v?.icon ?? '🚗';
+ 
+  const grid = document.getElementById('emojiGrid');
+  grid.innerHTML = '';
+  EMOJI_PRESETS.forEach(em => {
+    const span = document.createElement('span');
+    span.className = 'emoji-opt';
+    span.textContent = em;
+    span.addEventListener('click', () => { input.value = em; });
+    grid.appendChild(span);
+  });
+ 
+  const rect = anchorEl.getBoundingClientRect();
+  picker.style.top  = (rect.bottom + window.scrollY + 8) + 'px';
+  picker.style.left = Math.min(rect.left, window.innerWidth - 280) + 'px';
+  picker.classList.add('visible');
+  input.focus();
+}
+ 
+document.getElementById('emojiOk').addEventListener('click', () => {
+  if (!emojiTargetId) return;
+  const val = document.getElementById('emojiInput').value.trim();
+  if (!val) return;
+  const sec = sections.find(s => s.vehicles.some(v => v.id === emojiTargetId));
+  const v = sec?.vehicles.find(v => v.id === emojiTargetId);
+  if (v) {
+    v.icon = val;
+    const iconEl = document.getElementById('icon-' + emojiTargetId);
+    if (iconEl) iconEl.textContent = val;
+  }
+  document.getElementById('emojiPicker').classList.remove('visible');
+  emojiTargetId = null;
+  saveSections();
+});
+ 
+document.getElementById('emojiCancel').addEventListener('click', () => {
+  document.getElementById('emojiPicker').classList.remove('visible');
+  emojiTargetId = null;
+});
+ 
+document.addEventListener('click', (e) => {
+  const picker = document.getElementById('emojiPicker');
+  if (!picker.contains(e.target) && !e.target.closest('.card-icon')) {
+    picker.classList.remove('visible');
+  }
+});
+ 
+/* ─── META ─── */
+const savedMeta = JSON.parse(localStorage.getItem(LS_META) || '{}');
+document.getElementById('site').value = savedMeta.site ?? '';
+document.getElementById('date').value = savedMeta.date ?? new Date().toISOString().split('T')[0];
+document.getElementById('name').value = savedMeta.name ?? '';
+['site','date','name'].forEach(id => {
+  document.getElementById(id).addEventListener('input', saveMeta);
+});
+ 
+function saveMeta() {
+  localStorage.setItem(LS_META, JSON.stringify({
+    site: document.getElementById('site').value,
+    date: document.getElementById('date').value,
+    name: document.getElementById('name').value,
+  }));
+  flashSaveDot();
+}
+ 
+/* ─── RESET / COPY / EXPORT ─── */
+function resetAll() {
+  if (!confirm('รีเซ็ตตัวนับทั้งหมดใช่ไหม?')) return;
+  sections.forEach(sec => sec.vehicles.forEach(v => { counts[v.id] = 0; }));
+  saveSections();
+  renderAll();
+  showToast('🔄 รีเซ็ตแล้ว');
+}
+ 
+function getMeta() {
+  return {
+    site: document.getElementById('site').value || '-',
+    date: document.getElementById('date').value || '-',
+    name: document.getElementById('name').value || '-',
+  };
+}
+ 
+function copyData() {
+  const { site, date, name } = getMeta();
+  let text = `SITE: ${site}  DATE: ${date}  NAME: ${name}\n`;
+  text += '─'.repeat(50) + '\n';
+  sections.forEach(sec => {
+    text += `\n[${sec.name}]\n`;
+    sec.vehicles.forEach(v => {
+      const label = (v.icon + ' ' + v.name).padEnd(28,' ');
+      text += `  ${label}: ${counts[v.id] ?? 0}\n`;
+    });
+  });
+  text += '─'.repeat(50) + '\n';
+  const total = sections.flatMap(s => s.vehicles).reduce((a, v) => a + (counts[v.id] ?? 0), 0);
+  text += `รวม: ${total}`;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ คัดลอกแล้ว!'));
+}
+ 
+function exportCSV() {
+  const { site, date, name } = getMeta();
+  let csv = `SITE,DATE,NAME\n"${site}","${date}","${name}"\n\n`;
+  sections.forEach(sec => {
+    csv += `\n"${sec.name}"\n`;
+    csv += 'ประเภทรถ,จำนวน\n';
+    sec.vehicles.forEach(v => {
+      csv += `"${v.icon} ${v.name}",${counts[v.id] ?? 0}\n`;
+    });
+  });
+  const total = sections.flatMap(s => s.vehicles).reduce((a, v) => a + (counts[v.id] ?? 0), 0);
+  csv += `"รวมทั้งหมด",${total}`;
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `traffic_count_${date}.csv`;
+  a.click();
+  showToast('📥 ดาวน์โหลดแล้ว!');
+}
+ 
+/* ─── UTILS ─── */
+let saveDotTimer;
+function flashSaveDot() {
+  const dot = document.getElementById('saveDot');
+  dot.classList.add('on');
+  clearTimeout(saveDotTimer);
+  saveDotTimer = setTimeout(() => dot.classList.remove('on'), 1200);
+}
+ 
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+ 
+/* ─── EVENTS ─── */
+document.getElementById('btnEdit').addEventListener('click', toggleEditMode);
+document.getElementById('btnReset').addEventListener('click', resetAll);
+document.getElementById('btnCopy').addEventListener('click', copyData);
+document.getElementById('btnExport').addEventListener('click', exportCSV);
+ 
+// Touch support for count buttons (prevent double-fire with click)
+document.addEventListener('touchend', function(e) {
+  const btn = e.target.closest('.btn-count');
+  if (!btn) return;
+  e.preventDefault();
+  adjust(btn.dataset.id, +btn.dataset.delta);
+}, { passive: false });
+ 
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.btn-count');
+  if (!btn) return;
+  adjust(btn.dataset.id, +btn.dataset.delta);
+});
+ 
+/* ─── INIT ─── */
+renderAll();
+</script>
+</body>
+</html>
+ 
