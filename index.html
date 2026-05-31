@@ -28,9 +28,9 @@
     --purple:   #a78bfa;
     --purple-bg:rgba(167,139,250,0.1);
   }
-
+ 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
   body {
     background: var(--bg);
     color: var(--text);
@@ -38,7 +38,7 @@
     min-height: 100vh;
     padding-bottom: 100px;
   }
-
+ 
   /* ─── HEADER ─── */
   header {
     background: linear-gradient(180deg, #131925 0%, #0f1520 100%);
@@ -53,14 +53,14 @@
     height: 60px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   }
-
+ 
   .header-brand {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
   }
-
+ 
   .header-icon {
     width: 34px; height: 34px;
     background: linear-gradient(135deg, var(--accent2), var(--accent));
@@ -69,7 +69,7 @@
     font-size: 17px;
     box-shadow: 0 2px 12px rgba(245,166,35,0.35);
   }
-
+ 
   .header-title {
     font-size: 15px;
     font-weight: 700;
@@ -77,7 +77,7 @@
     letter-spacing: 0.02em;
     line-height: 1.2;
   }
-
+ 
   .header-sub {
     font-size: 10px;
     color: var(--muted);
@@ -85,14 +85,14 @@
     font-family: 'JetBrains Mono', monospace;
     text-transform: uppercase;
   }
-
+ 
   .header-divider {
     width: 1px;
     height: 32px;
     background: var(--border);
     flex-shrink: 0;
   }
-
+ 
   .header-meta {
     display: flex;
     gap: 14px;
@@ -100,14 +100,14 @@
     flex: 1;
     overflow: hidden;
   }
-
+ 
   .meta-field {
     display: flex;
     flex-direction: column;
     gap: 2px;
     min-width: 0;
   }
-
+ 
   .meta-label {
     font-size: 8px;
     color: var(--muted);
@@ -115,7 +115,7 @@
     letter-spacing: 0.12em;
     font-family: 'JetBrains Mono', monospace;
   }
-
+ 
   .meta-input {
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -128,12 +128,12 @@
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-
+ 
   .meta-input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-glow);
   }
-
+ 
   .save-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
@@ -144,7 +144,7 @@
     box-shadow: 0 0 8px var(--green);
   }
   .save-dot.on { opacity: 1; }
-
+ 
   /* ─── TOTAL BAR ─── */
   .total-bar {
     background: linear-gradient(90deg, #1a1208 0%, #1f1710 100%);
@@ -155,25 +155,25 @@
     justify-content: space-between;
     gap: 16px;
   }
-
+ 
   .total-left {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-
+ 
   .total-pip {
     width: 3px; height: 28px;
     background: linear-gradient(180deg, var(--accent2), var(--accent));
     border-radius: 2px;
   }
-
+ 
   .total-label-group {
     display: flex;
     flex-direction: column;
     gap: 1px;
   }
-
+ 
   .total-label {
     font-size: 10px;
     font-weight: 600;
@@ -182,12 +182,12 @@
     letter-spacing: 0.1em;
     font-family: 'JetBrains Mono', monospace;
   }
-
+ 
   .total-sublabel {
     font-size: 11px;
     color: var(--text2);
   }
-
+ 
   .total-count {
     font-family: 'JetBrains Mono', monospace;
     font-size: 36px;
@@ -200,7 +200,7 @@
     line-height: 1;
     transition: all 0.15s;
   }
-
+ 
   /* ─── EDIT BANNER ─── */
   .edit-banner {
     background: rgba(167,139,250,0.06);
@@ -214,9 +214,9 @@
     font-family: 'JetBrains Mono', monospace;
     letter-spacing: 0.04em;
   }
-
+ 
   .edit-banner.visible { display: flex; }
-
+ 
   .edit-banner-dot {
     width: 7px; height: 7px;
     border-radius: 50%;
@@ -225,12 +225,12 @@
     animation: blink 1.2s ease infinite;
     flex-shrink: 0;
   }
-
+ 
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.15; }
   }
-
+ 
   /* ─── SECTION ROW ─── */
   .section-row {
     display: flex;
@@ -239,20 +239,20 @@
     padding: 20px 20px 8px;
     gap: 12px;
   }
-
+ 
   .section-label-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
   }
-
+ 
   .section-accent-line {
     width: 2px; height: 14px;
     background: linear-gradient(180deg, var(--accent2), var(--accent));
     border-radius: 2px;
     flex-shrink: 0;
   }
-
+ 
   .section-label {
     font-size: 10px;
     font-weight: 700;
@@ -261,18 +261,18 @@
     color: var(--text2);
     font-family: 'JetBrains Mono', monospace;
   }
-
+ 
   .section-name-display {
     cursor: default;
     transition: color 0.15s;
   }
-
+ 
   body.edit-mode .section-name-display {
     cursor: pointer;
     color: var(--purple);
     text-decoration: underline dotted rgba(167,139,250,0.5);
   }
-
+ 
   .btn-add-vehicle {
     display: none;
     align-items: center;
@@ -289,14 +289,14 @@
     transition: background 0.15s, border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-
+ 
   .btn-add-vehicle:hover {
     background: rgba(167,139,250,0.18);
     border-color: rgba(167,139,250,0.6);
   }
-
+ 
   body.edit-mode .btn-add-vehicle { display: flex; }
-
+ 
   /* ─── GRID ─── */
   .grid {
     display: grid;
@@ -304,7 +304,7 @@
     gap: 10px;
     padding: 6px 16px 4px;
   }
-
+ 
   /* ─── CARD ─── */
   .card {
     background: var(--surface);
@@ -316,7 +316,7 @@
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     position: relative;
   }
-
+ 
   .card::before {
     content: '';
     position: absolute;
@@ -325,30 +325,30 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%);
     pointer-events: none;
   }
-
+ 
   .card:hover {
     border-color: var(--border2);
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     transform: translateY(-1px);
   }
-
+ 
   .card.active {
     border-color: rgba(245,166,35,0.35);
     box-shadow: 0 4px 24px rgba(245,166,35,0.08), 0 0 0 1px rgba(245,166,35,0.08) inset;
   }
-
+ 
   .card.active .card-count { color: var(--accent); }
-
+ 
   body.edit-mode .card {
     border-color: rgba(167,139,250,0.25);
   }
-
+ 
   body.edit-mode .card:hover {
     border-color: rgba(167,139,250,0.5);
     box-shadow: 0 4px 20px rgba(167,139,250,0.1);
     transform: none;
   }
-
+ 
   /* ─── CARD HEADER ─── */
   .card-header {
     padding: 11px 14px 10px;
@@ -358,14 +358,14 @@
     align-items: flex-start;
     gap: 10px;
   }
-
+ 
   .card-icon {
     font-size: 20px;
     flex-shrink: 0;
     line-height: 1.3;
     cursor: default;
   }
-
+ 
   body.edit-mode .card-icon {
     cursor: pointer;
     background: rgba(167,139,250,0.1);
@@ -374,11 +374,11 @@
     padding: 3px 5px;
     transition: background 0.15s;
   }
-
+ 
   body.edit-mode .card-icon:hover {
     background: rgba(167,139,250,0.2);
   }
-
+ 
   .card-name {
     font-size: 12.5px;
     font-weight: 600;
@@ -387,7 +387,7 @@
     flex: 1;
     padding-top: 1px;
   }
-
+ 
   .card-name-input {
     font-size: 12px;
     font-weight: 500;
@@ -404,15 +404,15 @@
     transition: border-color 0.2s, box-shadow 0.2s;
     display: none;
   }
-
+ 
   .card-name-input:focus {
     border-color: var(--purple);
     box-shadow: 0 0 0 3px rgba(167,139,250,0.12);
   }
-
+ 
   body.edit-mode .card-name { display: none; }
   body.edit-mode .card-name-input { display: block; }
-
+ 
   /* ─── DELETE BUTTON ─── */
   .btn-delete-card {
     display: none;
@@ -431,10 +431,10 @@
     -webkit-tap-highlight-color: transparent;
     z-index: 5;
   }
-
+ 
   .btn-delete-card:hover { background: rgba(255,77,109,0.25); }
   body.edit-mode .btn-delete-card { display: flex; }
-
+ 
   /* ─── CARD BODY ─── */
   .card-body {
     display: flex;
@@ -443,9 +443,9 @@
     padding: 12px 14px;
     gap: 10px;
   }
-
+ 
   body.edit-mode .card-body { opacity: 0.3; pointer-events: none; }
-
+ 
   /* ─── COUNT BUTTONS ─── */
   .btn-count {
     width: 42px; height: 42px;
@@ -463,31 +463,31 @@
     position: relative;
     overflow: hidden;
   }
-
+ 
   .btn-minus {
     background: var(--red-bg);
     color: var(--red);
     border-color: rgba(255,77,109,0.2);
   }
-
+ 
   .btn-minus:hover { background: rgba(255,77,109,0.18); border-color: rgba(255,77,109,0.35); }
   .btn-minus:active {
     background: rgba(255,77,109,0.3);
     transform: scale(0.9);
   }
-
+ 
   .btn-plus {
     background: var(--green-bg);
     color: var(--green);
     border-color: rgba(45,217,143,0.2);
   }
-
+ 
   .btn-plus:hover { background: rgba(45,217,143,0.18); border-color: rgba(45,217,143,0.35); }
   .btn-plus:active {
     background: rgba(45,217,143,0.3);
     transform: scale(0.9);
   }
-
+ 
   /* ─── COUNT DISPLAY ─── */
   .count-wrap {
     display: flex;
@@ -496,7 +496,7 @@
     gap: 2px;
     flex: 1;
   }
-
+ 
   .card-count {
     font-family: 'JetBrains Mono', monospace;
     font-size: 40px;
@@ -508,7 +508,7 @@
     letter-spacing: -0.03em;
     line-height: 1;
   }
-
+ 
   .count-unit {
     font-size: 9px;
     color: var(--muted);
@@ -517,7 +517,7 @@
     font-family: 'JetBrains Mono', monospace;
     opacity: 0.6;
   }
-
+ 
   /* ─── HISTORY DOTS ─── */
   .history-track {
     padding: 0 14px 12px;
@@ -527,9 +527,9 @@
     align-items: center;
     min-height: 20px;
   }
-
+ 
   body.edit-mode .history-track { display: none; }
-
+ 
   .dot {
     width: 6px; height: 6px;
     border-radius: 50%;
@@ -537,12 +537,12 @@
     opacity: 0.5;
     animation: popIn 0.15s cubic-bezier(0.34,1.56,0.64,1);
   }
-
+ 
   @keyframes popIn {
     from { transform: scale(0); opacity: 0; }
     to   { transform: scale(1); opacity: 0.5; }
   }
-
+ 
   /* ─── ACTIONS ─── */
   .actions-wrap {
     padding: 16px;
@@ -557,7 +557,7 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
-
+ 
   .btn-action {
     flex: 1;
     min-width: 90px;
@@ -575,28 +575,28 @@
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 0.01em;
   }
-
+ 
   .btn-reset {
     background: var(--red-bg);
     color: var(--red);
     border-color: rgba(255,77,109,0.2);
   }
   .btn-reset:hover { background: rgba(255,77,109,0.2); border-color: rgba(255,77,109,0.4); }
-
+ 
   .btn-export {
     background: rgba(245,166,35,0.1);
     color: var(--accent);
     border-color: rgba(245,166,35,0.2);
   }
   .btn-export:hover { background: rgba(245,166,35,0.2); border-color: rgba(245,166,35,0.4); }
-
+ 
   .btn-copy {
     background: rgba(77,159,255,0.1);
     color: var(--blue);
     border-color: rgba(77,159,255,0.2);
   }
   .btn-copy:hover { background: rgba(77,159,255,0.2); border-color: rgba(77,159,255,0.4); }
-
+ 
   .btn-edit {
     background: var(--purple-bg);
     color: var(--purple);
@@ -608,7 +608,7 @@
     border-color: rgba(167,139,250,0.5);
     box-shadow: 0 0 16px rgba(167,139,250,0.15);
   }
-
+ 
   /* ─── EMOJI PICKER ─── */
   .emoji-picker {
     position: fixed;
@@ -623,9 +623,9 @@
     box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
     max-width: 270px;
   }
-
+ 
   .emoji-picker.visible { display: flex; }
-
+ 
   .emoji-picker-title {
     font-size: 9px;
     color: var(--muted);
@@ -633,7 +633,7 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
-
+ 
   .emoji-picker-input {
     background: var(--bg);
     border: 1px solid var(--border2);
@@ -647,18 +647,18 @@
     text-align: center;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-
+ 
   .emoji-picker-input:focus {
     border-color: var(--purple);
     box-shadow: 0 0 0 3px rgba(167,139,250,0.12);
   }
-
+ 
   .emoji-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
   }
-
+ 
   .emoji-opt {
     font-size: 19px;
     text-align: center;
@@ -668,14 +668,14 @@
     transition: background 0.12s;
     -webkit-tap-highlight-color: transparent;
   }
-
+ 
   .emoji-opt:hover { background: var(--surface3); }
-
+ 
   .emoji-picker-actions {
     display: flex;
     gap: 6px;
   }
-
+ 
   .emoji-btn {
     flex: 1;
     padding: 8px;
@@ -687,21 +687,21 @@
     font-family: 'Sarabun', sans-serif;
     transition: all 0.15s;
   }
-
+ 
   .emoji-btn-ok {
     background: rgba(167,139,250,0.15);
     color: var(--purple);
     border-color: rgba(167,139,250,0.3);
   }
   .emoji-btn-ok:hover { background: rgba(167,139,250,0.3); }
-
+ 
   .emoji-btn-cancel {
     background: var(--surface3);
     color: var(--muted);
     border-color: var(--border);
   }
   .emoji-btn-cancel:hover { background: var(--border2); color: var(--text2); }
-
+ 
   /* ─── TOAST ─── */
   .toast {
     position: fixed;
@@ -727,14 +727,14 @@
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
-
+ 
   /* ─── SECTION DIVIDER ─── */
   .section-divider {
     height: 1px;
     background: linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
     margin: 8px 16px 0;
   }
-
+ 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 520px) {
     header { padding: 0 14px; height: 54px; }
@@ -752,7 +752,7 @@
 </style>
 </head>
 <body>
-
+ 
 <!-- HEADER -->
 <header>
   <div class="header-brand">
@@ -762,9 +762,9 @@
       <div class="header-sub">Traffic Counter</div>
     </div>
   </div>
-
+ 
   <div class="header-divider"></div>
-
+ 
   <div class="header-meta">
     <div class="meta-field">
       <span class="meta-label">SITE</span>
@@ -779,10 +779,10 @@
       <input class="meta-input" id="name" type="text" placeholder="ชื่อผู้นับ">
     </div>
   </div>
-
+ 
   <div class="save-dot" id="saveDot" title="บันทึกแล้ว"></div>
 </header>
-
+ 
 <!-- TOTAL BAR -->
 <div class="total-bar">
   <div class="total-left">
@@ -794,16 +794,16 @@
   </div>
   <div class="total-count" id="grandTotal">0</div>
 </div>
-
+ 
 <!-- EDIT BANNER -->
 <div class="edit-banner" id="editBanner">
   <div class="edit-banner-dot"></div>
   <span>EDIT MODE — แตะชื่อรถหรือ emoji เพื่อแก้ไข · กด + เพื่อเพิ่มรายการ</span>
 </div>
-
+ 
 <!-- SECTIONS -->
 <div id="sections"></div>
-
+ 
 <!-- ACTIONS (fixed bottom) -->
 <div class="actions-wrap">
   <button class="btn-action btn-edit"   id="btnEdit">✏️ แก้ไขรายการ</button>
@@ -811,9 +811,9 @@
   <button class="btn-action btn-copy"   id="btnCopy">📋 คัดลอก</button>
   <button class="btn-action btn-export" id="btnExport">📥 CSV</button>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <!-- EMOJI PICKER -->
 <div class="emoji-picker" id="emojiPicker">
   <div class="emoji-picker-title">เลือก Emoji / พิมพ์เอง</div>
@@ -824,7 +824,7 @@
     <button class="emoji-btn emoji-btn-cancel" id="emojiCancel">ยกเลิก</button>
   </div>
 </div>
-
+ 
 <script>
 /* ─── DEFAULT DATA ─── */
 const DEFAULT_SECTIONS = [
@@ -857,41 +857,41 @@ const DEFAULT_SECTIONS = [
     ]
   }
 ];
-
+ 
 const EMOJI_PRESETS = [
   '🚗','🚕','🚙','🚌','🚍','🚎','🚐','🚑','🚒','🚓',
   '🏍️','🛵','🚲','🛴','🚛','🚚','🚜','🏎️','🚂','✈️',
   '🚢','⛴️','🚤','🛻','🚑','🚒','🚘','🚖','🚡','🚠',
 ];
-
+ 
 /* ─── STATE ─── */
 const LS_SECTIONS = 'traffic_sections_v2';
 const LS_COUNTS   = 'traffic_counts_v2';
 const LS_META     = 'traffic_meta';
-
+ 
 let sections = loadSections();
 let counts   = loadCounts();
 let editMode = false;
 let uidCounter = Date.now();
 function uid() { return 'v' + (uidCounter++); }
-
+ 
 function loadSections() {
   try { const r = localStorage.getItem(LS_SECTIONS); if (r) return JSON.parse(r); } catch(e) {}
   return JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
 }
-
+ 
 function loadCounts() {
   try { const r = localStorage.getItem(LS_COUNTS); if (r) return JSON.parse(r); } catch(e) {}
   return {};
 }
-
+ 
 function saveSections() {
   if (editMode) pullNamesFromInputs();
   localStorage.setItem(LS_SECTIONS, JSON.stringify(sections));
   localStorage.setItem(LS_COUNTS,   JSON.stringify(counts));
   flashSaveDot();
 }
-
+ 
 function pullNamesFromInputs() {
   sections.forEach(sec => {
     const si = document.getElementById('sec-input-' + sec.id);
@@ -902,19 +902,19 @@ function pullNamesFromInputs() {
     });
   });
 }
-
+ 
 /* ─── RENDER ─── */
 function renderAll() {
   const container = document.getElementById('sections');
   container.innerHTML = '';
-
+ 
   sections.forEach((sec, idx) => {
     if (idx > 0) {
       const div = document.createElement('div');
       div.className = 'section-divider';
       container.appendChild(div);
     }
-
+ 
     const row = document.createElement('div');
     row.className = 'section-row';
     row.innerHTML = `
@@ -931,7 +931,7 @@ function renderAll() {
       <button class="btn-add-vehicle" onclick="addVehicle('${sec.id}')">＋ เพิ่มรายการ</button>
     `;
     container.appendChild(row);
-
+ 
     row.querySelector('.section-name-display').addEventListener('click', () => {
       if (!editMode) return;
       document.getElementById('sec-display-' + sec.id).style.display = 'none';
@@ -939,7 +939,7 @@ function renderAll() {
       inp.style.display = 'inline-block';
       inp.focus(); inp.select();
     });
-
+ 
     document.getElementById('sec-input-' + sec.id).addEventListener('blur', () => {
       const inp = document.getElementById('sec-input-' + sec.id);
       const val = inp.value.trim() || sec.name;
@@ -950,34 +950,34 @@ function renderAll() {
       inp.style.display = 'none';
       saveSections();
     });
-
+ 
     const grid = document.createElement('div');
     grid.className = 'grid';
     grid.id = 'grid-' + sec.id;
     sec.vehicles.forEach(v => grid.appendChild(buildCard(v)));
     container.appendChild(grid);
   });
-
+ 
   updateTotal();
 }
-
+ 
 function esc(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
+ 
 function buildCard(v) {
   const cnt = counts[v.id] ?? 0;
   const card = document.createElement('div');
   card.className = 'card' + (cnt > 0 ? ' active' : '');
   card.id = 'card-' + v.id;
-
+ 
   let dotsHtml = '';
   const show = Math.min(cnt, 20);
   for (let i = 0; i < show; i++) dotsHtml += '<div class="dot"></div>';
   if (cnt > 20) dotsHtml += `<span style="font-size:9px;color:var(--muted);margin-left:4px;font-family:'JetBrains Mono',monospace">+${cnt-20}</span>`;
-
+ 
   card.innerHTML = `
     <button class="btn-delete-card" title="ลบรายการนี้" onclick="deleteVehicle('${v.id}')">✕</button>
     <div class="card-header">
@@ -996,16 +996,16 @@ function buildCard(v) {
     </div>
     <div class="history-track" id="hist-${v.id}">${dotsHtml}</div>
   `;
-
+ 
   card.querySelector('.card-icon').addEventListener('click', (e) => {
     if (!editMode) return;
     e.stopPropagation();
     openEmojiPicker(v.id, card.querySelector('.card-icon'));
   });
-
+ 
   return card;
 }
-
+ 
 function liveUpdateName(id, val) {
   const sec = sections.find(s => s.vehicles.some(v => v.id === id));
   if (!sec) return;
@@ -1017,7 +1017,7 @@ function liveUpdateName(id, val) {
   }
   saveSections();
 }
-
+ 
 /* ─── COUNT LOGIC ─── */
 function adjust(id, delta) {
   counts[id] = Math.max(0, (counts[id] ?? 0) + delta);
@@ -1025,14 +1025,14 @@ function adjust(id, delta) {
   updateTotal();
   saveSections();
 }
-
+ 
 function renderCard(id) {
   const cnt = counts[id] ?? 0;
   const countEl = document.getElementById('count-' + id);
   if (countEl) countEl.textContent = cnt;
   const card = document.getElementById('card-' + id);
   if (card) card.classList.toggle('active', cnt > 0);
-
+ 
   const hist = document.getElementById('hist-' + id);
   if (!hist) return;
   hist.innerHTML = '';
@@ -1046,12 +1046,12 @@ function renderCard(id) {
     hist.innerHTML += `<span style="font-size:9px;color:var(--muted);margin-left:4px;font-family:'JetBrains Mono',monospace">+${cnt-20}</span>`;
   }
 }
-
+ 
 function updateTotal() {
   const total = sections.flatMap(s => s.vehicles).reduce((a, v) => a + (counts[v.id] ?? 0), 0);
   document.getElementById('grandTotal').textContent = total;
 }
-
+ 
 /* ─── EDIT MODE ─── */
 function toggleEditMode() {
   if (editMode) {
@@ -1072,7 +1072,7 @@ function toggleEditMode() {
     document.getElementById('editBanner').classList.add('visible');
   }
 }
-
+ 
 /* ─── ADD / DELETE ─── */
 function addVehicle(secId) {
   const sec = sections.find(s => s.id === secId);
@@ -1090,7 +1090,7 @@ function addVehicle(secId) {
   }
   saveSections();
 }
-
+ 
 function deleteVehicle(id) {
   if (!confirm('ลบรายการนี้ออก?')) return;
   sections.forEach(sec => { sec.vehicles = sec.vehicles.filter(v => v.id !== id); });
@@ -1100,10 +1100,10 @@ function deleteVehicle(id) {
   updateTotal();
   saveSections();
 }
-
+ 
 /* ─── EMOJI PICKER ─── */
 let emojiTargetId = null;
-
+ 
 function openEmojiPicker(id, anchorEl) {
   emojiTargetId = id;
   const sec = sections.find(s => s.vehicles.some(v => v.id === id));
@@ -1111,7 +1111,7 @@ function openEmojiPicker(id, anchorEl) {
   const picker = document.getElementById('emojiPicker');
   const input  = document.getElementById('emojiInput');
   input.value  = v?.icon ?? '🚗';
-
+ 
   const grid = document.getElementById('emojiGrid');
   grid.innerHTML = '';
   EMOJI_PRESETS.forEach(em => {
@@ -1121,14 +1121,14 @@ function openEmojiPicker(id, anchorEl) {
     span.addEventListener('click', () => { input.value = em; });
     grid.appendChild(span);
   });
-
+ 
   const rect = anchorEl.getBoundingClientRect();
   picker.style.top  = (rect.bottom + window.scrollY + 8) + 'px';
   picker.style.left = Math.min(rect.left, window.innerWidth - 280) + 'px';
   picker.classList.add('visible');
   input.focus();
 }
-
+ 
 document.getElementById('emojiOk').addEventListener('click', () => {
   if (!emojiTargetId) return;
   const val = document.getElementById('emojiInput').value.trim();
@@ -1144,19 +1144,19 @@ document.getElementById('emojiOk').addEventListener('click', () => {
   emojiTargetId = null;
   saveSections();
 });
-
+ 
 document.getElementById('emojiCancel').addEventListener('click', () => {
   document.getElementById('emojiPicker').classList.remove('visible');
   emojiTargetId = null;
 });
-
+ 
 document.addEventListener('click', (e) => {
   const picker = document.getElementById('emojiPicker');
   if (!picker.contains(e.target) && !e.target.closest('.card-icon')) {
     picker.classList.remove('visible');
   }
 });
-
+ 
 /* ─── META ─── */
 const savedMeta = JSON.parse(localStorage.getItem(LS_META) || '{}');
 document.getElementById('site').value = savedMeta.site ?? '';
@@ -1165,7 +1165,7 @@ document.getElementById('name').value = savedMeta.name ?? '';
 ['site','date','name'].forEach(id => {
   document.getElementById(id).addEventListener('input', saveMeta);
 });
-
+ 
 function saveMeta() {
   localStorage.setItem(LS_META, JSON.stringify({
     site: document.getElementById('site').value,
@@ -1174,7 +1174,7 @@ function saveMeta() {
   }));
   flashSaveDot();
 }
-
+ 
 /* ─── RESET / COPY / EXPORT ─── */
 function resetAll() {
   if (!confirm('รีเซ็ตตัวนับทั้งหมดใช่ไหม?')) return;
@@ -1183,7 +1183,7 @@ function resetAll() {
   renderAll();
   showToast('🔄 รีเซ็ตแล้ว');
 }
-
+ 
 function getMeta() {
   return {
     site: document.getElementById('site').value || '-',
@@ -1191,7 +1191,7 @@ function getMeta() {
     name: document.getElementById('name').value || '-',
   };
 }
-
+ 
 function copyData() {
   const { site, date, name } = getMeta();
   let text = `SITE: ${site}  DATE: ${date}  NAME: ${name}\n`;
@@ -1208,7 +1208,7 @@ function copyData() {
   text += `รวม: ${total}`;
   navigator.clipboard.writeText(text).then(() => showToast('✅ คัดลอกแล้ว!'));
 }
-
+ 
 function exportCSV() {
   const { site, date, name } = getMeta();
   let csv = `SITE,DATE,NAME\n"${site}","${date}","${name}"\n\n`;
@@ -1228,7 +1228,7 @@ function exportCSV() {
   a.click();
   showToast('📥 ดาวน์โหลดแล้ว!');
 }
-
+ 
 /* ─── UTILS ─── */
 let saveDotTimer;
 function flashSaveDot() {
@@ -1237,20 +1237,20 @@ function flashSaveDot() {
   clearTimeout(saveDotTimer);
   saveDotTimer = setTimeout(() => dot.classList.remove('on'), 1200);
 }
-
+ 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
-
+ 
 /* ─── EVENTS ─── */
 document.getElementById('btnEdit').addEventListener('click', toggleEditMode);
 document.getElementById('btnReset').addEventListener('click', resetAll);
 document.getElementById('btnCopy').addEventListener('click', copyData);
 document.getElementById('btnExport').addEventListener('click', exportCSV);
-
+ 
 // Touch support for count buttons (prevent double-fire with click)
 document.addEventListener('touchend', function(e) {
   const btn = e.target.closest('.btn-count');
@@ -1258,13 +1258,13 @@ document.addEventListener('touchend', function(e) {
   e.preventDefault();
   adjust(btn.dataset.id, +btn.dataset.delta);
 }, { passive: false });
-
+ 
 document.addEventListener('click', function(e) {
   const btn = e.target.closest('.btn-count');
   if (!btn) return;
   adjust(btn.dataset.id, +btn.dataset.delta);
 });
-
+ 
 /* ─── INIT ─── */
 renderAll();
 </script>
