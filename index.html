@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Control Panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -26,10 +26,15 @@
   }
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{height:100%;}
 body{
   font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);
-  min-height:100vh;transition:background 0.3s,color 0.3s;
+  min-height:100vh;min-height:100dvh;
+  transition:background 0.3s,color 0.3s;
   touch-action:manipulation;
+  /* safe area for notch/home bar */
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
 }
 #loginWrapper{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
 .login-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:40px;width:100%;max-width:400px;box-shadow:var(--shadow-lg);}
@@ -67,7 +72,7 @@ body{
 #quickAccessInput:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(37,99,235,0.12);}
 #quickAccessBtn{padding:9px 16px;}
 
-#dashboard{display:none;min-height:100vh;flex-direction:column;}
+#dashboard{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;}
 #dashboard.active{display:flex;}
 .topbar{position:sticky;top:0;z-index:40;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);}
 .topbar-brand{font-size:16px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-0.2px;}
@@ -77,7 +82,7 @@ body{
 .topbar-search:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(37,99,235,0.1);background-color:var(--bg-input);}
 #userBadge{font-size:13px;font-weight:500;color:var(--text-muted);background:var(--bg-panel);border:1px solid var(--border);padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
 #userBadge.is-admin{color:var(--accent);border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.07);}
-.dash-content{flex:1;padding:32px 24px;max-width:1200px;width:100%;margin:0 auto;}
+.dash-content{flex:1;padding:24px;width:100%;}
 .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
 .dash-header-left h1{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.3px;}
 #dashGreeting{font-size:14px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-bottom:24px;}
@@ -169,15 +174,15 @@ body{
 }
 .fab.active{opacity:1;pointer-events:auto;}
 .fab:hover{box-shadow:var(--shadow-lg);}
-#scoreFab {bottom:136px;left:24px;background:var(--accent);color:#fff;border-color:var(--accent);}
-#utilFab  {bottom:80px;left:24px;}
-#binFab   {bottom:24px;left:24px;}
-#secFab   {bottom:24px;right:24px;border-color:rgba(220,38,38,0.3);color:var(--danger);}
-#exitSecFab{bottom:24px;right:24px;border-color:rgba(22,163,74,0.3);color:var(--success);}
+#scoreFab {bottom:calc(136px + env(safe-area-inset-bottom,0px));left:24px;background:var(--accent);color:#fff;border-color:var(--accent);}
+#utilFab  {bottom:calc(80px + env(safe-area-inset-bottom,0px));left:24px;}
+#binFab   {bottom:calc(24px + env(safe-area-inset-bottom,0px));left:24px;}
+#secFab   {bottom:calc(24px + env(safe-area-inset-bottom,0px));right:24px;border-color:rgba(220,38,38,0.3);color:var(--danger);}
+#exitSecFab{bottom:calc(24px + env(safe-area-inset-bottom,0px));right:24px;border-color:rgba(22,163,74,0.3);color:var(--success);}
 #logoutBtn{display:none;}
 #logoutBtn.show{display:inline-flex;}
 
-#scorePage{display:none;min-height:100vh;flex-direction:column;background:var(--bg);}
+#scorePage{display:none;min-height:100vh;min-height:100dvh;flex-direction:column;background:var(--bg);}
 #scorePage.active{display:flex;}
 .score-topbar{position:sticky;top:0;z-index:40;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);}
 .score-back-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text-muted);font-family:'Inter',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:6px;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
@@ -186,7 +191,7 @@ body{
 .score-board-title{font-size:17px;font-weight:700;color:var(--text);cursor:pointer;border-bottom:1.5px dashed var(--border);padding-bottom:1px;transition:border-color 0.2s,color 0.2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;touch-action:manipulation;user-select:none;-webkit-user-select:none;}
 .score-board-title:hover{border-color:var(--accent);color:var(--accent);}
 .score-edit-icon{font-size:12px;color:var(--text-muted);flex-shrink:0;}
-.score-content{flex:1;padding:20px;max-width:960px;width:100%;margin:0 auto;}
+.score-content{flex:1;padding:16px;width:100%;}
 .score-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
 .score-toolbar-info{font-size:13px;color:var(--text-muted);flex:1;font-family:'JetBrains Mono',monospace;}
 .car-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:16px;}
@@ -228,17 +233,130 @@ body{
 .add-car-card span{font-size:13px;color:var(--text-muted);font-weight:500;}
 .add-car-card:hover .plus,.add-car-card:hover span{color:var(--accent);}
 
-@media(max-width:640px){
+/* ══ RESPONSIVE ══════════════════════════════════════════════════════ */
+
+/* จอใหญ่ desktop ≥ 1280px */
+@media(min-width:1280px){
+  .dash-content{padding:36px 40px;}
+  .link-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+  .car-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+  .score-content{padding:24px 40px;}
+  #utilityPanel{width:320px;}
+  #secondaryPanel{width:320px;}
+}
+
+/* tablet landscape / small desktop 768–1279px */
+@media(min-width:768px) and (max-width:1279px){
+  .dash-content{padding:28px 28px;}
+  .link-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+  .car-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+  .score-content{padding:20px 28px;}
+}
+
+/* tablet portrait 481–767px */
+@media(min-width:481px) and (max-width:767px){
   .dash-content{padding:20px 16px;}
   .topbar{padding:0 16px;}
-  .topbar-search{width:160px;}
+  .topbar-search{width:180px;}
   .link-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
   #userBadge{display:none;}
   .binary-grid{grid-template-columns:1fr;}
-  #binaryModal{padding:16px;}
-  .car-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
-  .score-content{padding:14px;}
-  .car-score{font-size:44px;}
+  #binaryModal{padding:20px;}
+  .car-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .score-content{padding:16px;}
+  .car-score{font-size:46px;}
+  #utilityPanel{width:280px;}
+  #secondaryPanel{width:280px;}
+  /* FAB stack ใกล้ขอบ */
+  #scoreFab{bottom:136px;left:16px;}
+  #utilFab{bottom:80px;left:16px;}
+  #binFab{bottom:24px;left:16px;}
+  #secFab,#exitSecFab{bottom:24px;right:16px;}
+}
+
+/* มือถือ ≤ 480px */
+@media(max-width:480px){
+  html,body{height:100%;overflow-x:hidden;}
+
+  /* topbar compact */
+  .topbar{padding:0 12px;height:52px;gap:10px;}
+  .topbar-brand{font-size:14px;}
+  .topbar-search{width:130px;font-size:13px;padding:6px 10px 6px 30px;}
+  #userBadge{display:none;}
+  #logoutBtn.show{padding:6px 10px;font-size:12px;}
+
+  /* dashboard */
+  .dash-content{padding:12px;}
+  .dash-header{margin-bottom:12px;}
+  .dash-header-left h1{font-size:18px;}
+  #dashGreeting{font-size:12px;margin-bottom:14px;}
+  .link-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
+  .link-card{padding:12px 8px;gap:6px;border-radius:8px;}
+  .link-favicon,.link-favicon-placeholder{width:24px;height:24px;font-size:11px;}
+  .link-name{font-size:11px;}
+
+  /* scoreboard */
+  .score-topbar{height:52px;padding:0 10px;gap:8px;}
+  .score-back-btn{padding:6px 10px;font-size:12px;}
+  .score-board-title{font-size:14px;}
+  #scoreResetBtn{font-size:11px;padding:5px 10px;}
+  #scoreTotalBadge{font-size:12px;padding:4px 10px;}
+  .score-content{padding:10px;}
+  .score-toolbar{margin-bottom:10px;}
+  .score-toolbar-info{font-size:11px;}
+  #scoreSortBtn{font-size:11px;padding:5px 10px;}
+
+  /* car cards — 2 คอลัมน์เต็มหน้าจอ */
+  .car-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+    margin-bottom:80px; /* กันปุ่ม FAB ทับ */
+  }
+  .car-card{padding:12px 8px;gap:6px;border-radius:10px;}
+  .car-score{font-size:36px;}
+  .car-name{font-size:12px;}
+  .car-rank{font-size:10px;top:7px;left:8px;}
+  .car-del-btn{top:7px;right:7px;width:17px;height:17px;font-size:10px;}
+  .sc-btn{width:38px;height:38px;font-size:20px;}
+  .score-btns{gap:8px;}
+
+  .add-car-card{min-height:120px;padding:14px 8px;}
+  .add-car-card .plus{font-size:22px;}
+  .add-car-card span{font-size:11px;}
+
+  /* modals */
+  .modal-box{padding:20px;}
+  .modal-title{font-size:14px;}
+  .binary-grid{grid-template-columns:1fr;}
+  #binaryModal{padding:14px;}
+
+  /* panels */
+  #utilityPanel{
+    left:8px;right:8px;width:auto;bottom:72px;
+  }
+  #secondaryPanel{
+    right:8px;left:auto;width:260px;bottom:72px;
+  }
+
+  /* FAB ขนาดเล็กลงนิด ชิดขอบ */
+  .fab{width:40px;height:40px;font-size:16px;}
+  #scoreFab{bottom:124px;left:12px;font-size:11px;}
+  #utilFab{bottom:72px;left:12px;}
+  #binFab{bottom:20px;left:12px;}
+  #secFab,#exitSecFab{bottom:20px;right:12px;}
+
+  /* quick login */
+  #quickLoginUI{bottom:20px;}
+  #quickAccessInput{width:170px;font-size:13px;}
+}
+
+/* มือถือจอเล็กมาก ≤ 360px */
+@media(max-width:360px){
+  .link-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;}
+  .car-grid{grid-template-columns:repeat(2,1fr);gap:6px;}
+  .car-score{font-size:32px;}
+  .sc-btn{width:34px;height:34px;font-size:18px;}
+  .topbar-search{width:110px;}
 }
 </style>
 </head>
@@ -482,80 +600,7 @@ const BASE_LINKS = [
   {name:"word",         url:"https://word.cloud.microsoft/"},
   {name:"tinyurl",      url:"https://tinyurl.com/"},
 ];
-const HIDDEN_LINKS = [
-   { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/ykypfzsr" },
-    { name: "ม.ปลาย บนรถ เย็ดไปทะเลาะไป",
- url: "https://tinyurl.com/4xsetj9v" },
-    { name: "SECTOR I",
- url: "https://tinyurl.com/ynnxny77" },
-    { name: "SECTOR II",
- url: "https://tinyurl.com/3bexuvbb" },
-    { name: "ยุวะ", 
- url: "https://tinyurl.com/muwmjv76" },
-    { name: "ขอดูหีเพื่อนตื่นเต้นกันใหญ่",
- url: "https://tinyurl.com/5ahrmpra" },
-    { name: " แล้วแหวกกางเกงในเย็ดคาชุดนักเรียน", 
- url: "https://tinyurl.com/2nkecsr7" },
-    { name: " เนตรนารีน้องกิ่งนัดแฟนลูกเสือมาโม๊คควย", 
- url: "https://tinyurl.com/mcjfwzrc" },
-    { name: "เย็ดคาชุดยุวกาชาด", 
- url: "https://tinyurl.com/yc4k3am3" },
-    { name: "เนตรนารีโม๊คควยให้แฟนรุ่นพี่มหาลัย",
- url: "https://tinyurl.com/4yh3z5jw" },
-    { name: "แหวกกางเกงในเย็ดสด",
- url: "https://tinyurl.com/mamtk7ze" },
-    { name: "ใช้ดิลโด้แหย่หีตอนเย็นหลังเลิกเรียน",
- url: "https://tinyurl.com/3m2yydrj" },
-    { name: "บังคับแรงงานเขมร อยากจะดูแต่หี ",
- url: "https://tinyurl.com/yduvzjzz" },
-    { name: "สาวมัธยมผมสั้นน่ารักโม๊คควยแล้วขย่มให้ก่อนพลิกท่าหมาแตกใน",
- url: "https://tinyurl.com/4vuz9eua" },
-    { name: "เย็ดไประแวงไป กลัวแม่จะขึ้นมาเห็น ",
- url: "https://tinyurl.com/46h36m6z" },
-    { name: "แตกคาปากในห้องน้ำห้างสรรพสินค้า",
- url: "https://tinyurl.com/2yvcahs8" },
-    { name: "ไข่มุก",
- url: "https://tinyurl.com/2sx9tws8" },
-    { name: "ปิดเทอมตะแคงเย็ดเสร็จแล้วแตกใส่ปาก",
- url: "https://tinyurl.com/32tj522z" },
-    { name: "อายุแค่นี้อยากลองเสียว แอบเย็ดกับรุ่นพี่หลังเลิกเรียน",
- url: "https://tinyurl.com/2nt48mwm" },
-    { name: "นักเรียนสาวมัธยมแอบเย็ดกับรุ่นพี่หนุ่มเทคนิคใน ห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/7a37smmh" },
-    { name: "โดนเสี่ยเงินหน้าซื้อบริการไปเย็ด จับเย็ดคาชุด",
- url: "https://tinyurl.com/f65794vd" },
-    { name: "เย็ดสดแตกในคาชุด นักเรียน",
- url: "https://tinyurl.com/ytjx3vbj" },
-    { name: "หนุ่มเงี่ยน ให้แฟนมาอมควยให้ ในห้องน้ำโรงเรียน ทั้งอมทั้งดูด",
- url: "https://tinyurl.com/9vc2dwfb" },
-    { name: "ปวส.2 โดนแอบถ่าย ล่อหีกันในห้องน้ำ",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "โดนเย็ดคาชุด สาวน่ารักขึ้นขย่มควย แหวกหี คร่อมควยโคตรเด็ด",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "แอบเล่นเสียวกันในโรงเรียน ขอเย็ดก่อนน้องกลับบ้าน",
- url: "https://tinyurl.com/3dpnp9y5" },
-    { name: "เสียงไทยชัด นั่งอมควยให้รุ่นพี่ โม๊คควยเด็ด",
- url: "https://tinyurl.com/4taj57m8" },
-    { name: "แตกคาปาก",
- url: "https://tinyurl.com/n5433z52" },
-    { name: "เผลอแตกใน",
- url: "https://tinyurl.com/e7xfwkcb" },
-    { name: "เย้ดน้องสาว",
- url: "https://tinyurl.com/2jnatfz2" },
-    { name: "เงี่ยนหลังเลิกเรียนกลับมาอัดคลิปช่วยตัวเอง",
- url: "https://tinyurl.com/4njufwmb" },
-    { name: "แตกคาปากจีน",
- url: "https://tinyurl.com/3pbyuppu" },
-    { name: "พาสาวรุ่นน้องมาเย็ดหีในห้องน้ำชายของโรงเรียน",
- url: "https://tinyurl.com/4w6wbrsw" },
-    { name: "-นักเรียนขายตัว",
- url: "https://tinyurl.com/yyd7c62u" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/3pwd9e7w" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/5n8hxhf3" },
-];
+const HIDDEN_LINKS = [];
 let secretMode = false;
 
 // ===== UTILS =====
