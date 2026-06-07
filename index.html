@@ -145,6 +145,14 @@ body{
 #secondaryPanel{bottom:72px;right:24px;width:300px;}
 .secondary-title{font-size:14px;font-weight:600;color:var(--danger);}
 
+/* ── REALTIME indicator ── */
+.rt-dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--success);margin-right:6px;
+  animation:rt-pulse 2s ease-in-out infinite;
+}
+@keyframes rt-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.75);}}
+
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:500;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;color:#fff;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
 #toast.show{opacity:1;}
 #toast.ok{background:var(--success);}
@@ -308,7 +316,9 @@ body{
   </div>
   <div class="score-content">
     <div class="score-toolbar">
-      <span class="score-toolbar-info" id="scoreCount">0 cars</span>
+      <span class="score-toolbar-info" id="scoreCount">
+        <span class="rt-dot"></span>0 cars · Live
+      </span>
       <button class="btn btn-ghost btn-sm" id="scoreSortBtn">Sort by Score</button>
     </div>
     <div class="car-grid" id="carGrid"></div>
@@ -316,11 +326,10 @@ body{
 </div>
 
 <!-- FABs -->
-<button id="scoreFab"    class="fab" title="Scoreboard">🏆</button>
+<button id="scoreFab"    class="fab" title="Scoreboard">นับรถ</button>
 <button id="utilFab"     class="fab" title="Utilities">🔢</button>
 <button id="binFab"      class="fab" title="Binary Converter">🔠</button>
 <button id="secFab"      class="fab" title="Restricted Access">🔑</button>
-<!-- BUG FIX: ลบ style="display:none" inline ออก ใช้ JS control display แทน -->
 <button id="exitSecFab"  class="fab" title="Exit Restricted">✕</button>
 
 <!-- UTILITY PANEL -->
@@ -422,7 +431,6 @@ body{
   </div>
 </div>
 
-<!-- BUG FIX: แก้ id ของ input และปุ่มให้ตรงกับ JS -->
 <div id="addCarModal" class="modal-overlay">
   <div class="modal-box" style="max-width:340px;">
     <div class="modal-title">➕ Add Car</div>
@@ -474,7 +482,80 @@ const BASE_LINKS = [
   {name:"word",         url:"https://word.cloud.microsoft/"},
   {name:"tinyurl",      url:"https://tinyurl.com/"},
 ];
-const HIDDEN_LINKS = [];
+const HIDDEN_LINKS = [
+   { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
+ url: "https://tinyurl.com/ykypfzsr" },
+    { name: "ม.ปลาย บนรถ เย็ดไปทะเลาะไป",
+ url: "https://tinyurl.com/4xsetj9v" },
+    { name: "SECTOR I",
+ url: "https://tinyurl.com/ynnxny77" },
+    { name: "SECTOR II",
+ url: "https://tinyurl.com/3bexuvbb" },
+    { name: "ยุวะ", 
+ url: "https://tinyurl.com/muwmjv76" },
+    { name: "ขอดูหีเพื่อนตื่นเต้นกันใหญ่",
+ url: "https://tinyurl.com/5ahrmpra" },
+    { name: " แล้วแหวกกางเกงในเย็ดคาชุดนักเรียน", 
+ url: "https://tinyurl.com/2nkecsr7" },
+    { name: " เนตรนารีน้องกิ่งนัดแฟนลูกเสือมาโม๊คควย", 
+ url: "https://tinyurl.com/mcjfwzrc" },
+    { name: "เย็ดคาชุดยุวกาชาด", 
+ url: "https://tinyurl.com/yc4k3am3" },
+    { name: "เนตรนารีโม๊คควยให้แฟนรุ่นพี่มหาลัย",
+ url: "https://tinyurl.com/4yh3z5jw" },
+    { name: "แหวกกางเกงในเย็ดสด",
+ url: "https://tinyurl.com/mamtk7ze" },
+    { name: "ใช้ดิลโด้แหย่หีตอนเย็นหลังเลิกเรียน",
+ url: "https://tinyurl.com/3m2yydrj" },
+    { name: "บังคับแรงงานเขมร อยากจะดูแต่หี ",
+ url: "https://tinyurl.com/yduvzjzz" },
+    { name: "สาวมัธยมผมสั้นน่ารักโม๊คควยแล้วขย่มให้ก่อนพลิกท่าหมาแตกใน",
+ url: "https://tinyurl.com/4vuz9eua" },
+    { name: "เย็ดไประแวงไป กลัวแม่จะขึ้นมาเห็น ",
+ url: "https://tinyurl.com/46h36m6z" },
+    { name: "แตกคาปากในห้องน้ำห้างสรรพสินค้า",
+ url: "https://tinyurl.com/2yvcahs8" },
+    { name: "ไข่มุก",
+ url: "https://tinyurl.com/2sx9tws8" },
+    { name: "ปิดเทอมตะแคงเย็ดเสร็จแล้วแตกใส่ปาก",
+ url: "https://tinyurl.com/32tj522z" },
+    { name: "อายุแค่นี้อยากลองเสียว แอบเย็ดกับรุ่นพี่หลังเลิกเรียน",
+ url: "https://tinyurl.com/2nt48mwm" },
+    { name: "นักเรียนสาวมัธยมแอบเย็ดกับรุ่นพี่หนุ่มเทคนิคใน ห้องน้ำโรงเรียน",
+ url: "https://tinyurl.com/7a37smmh" },
+    { name: "โดนเสี่ยเงินหน้าซื้อบริการไปเย็ด จับเย็ดคาชุด",
+ url: "https://tinyurl.com/f65794vd" },
+    { name: "เย็ดสดแตกในคาชุด นักเรียน",
+ url: "https://tinyurl.com/ytjx3vbj" },
+    { name: "หนุ่มเงี่ยน ให้แฟนมาอมควยให้ ในห้องน้ำโรงเรียน ทั้งอมทั้งดูด",
+ url: "https://tinyurl.com/9vc2dwfb" },
+    { name: "ปวส.2 โดนแอบถ่าย ล่อหีกันในห้องน้ำ",
+ url: "https://tinyurl.com/3nrubfae" },
+    { name: "โดนเย็ดคาชุด สาวน่ารักขึ้นขย่มควย แหวกหี คร่อมควยโคตรเด็ด",
+ url: "https://tinyurl.com/3nrubfae" },
+    { name: "แอบเล่นเสียวกันในโรงเรียน ขอเย็ดก่อนน้องกลับบ้าน",
+ url: "https://tinyurl.com/3dpnp9y5" },
+    { name: "เสียงไทยชัด นั่งอมควยให้รุ่นพี่ โม๊คควยเด็ด",
+ url: "https://tinyurl.com/4taj57m8" },
+    { name: "แตกคาปาก",
+ url: "https://tinyurl.com/n5433z52" },
+    { name: "เผลอแตกใน",
+ url: "https://tinyurl.com/e7xfwkcb" },
+    { name: "เย้ดน้องสาว",
+ url: "https://tinyurl.com/2jnatfz2" },
+    { name: "เงี่ยนหลังเลิกเรียนกลับมาอัดคลิปช่วยตัวเอง",
+ url: "https://tinyurl.com/4njufwmb" },
+    { name: "แตกคาปากจีน",
+ url: "https://tinyurl.com/3pbyuppu" },
+    { name: "พาสาวรุ่นน้องมาเย็ดหีในห้องน้ำชายของโรงเรียน",
+ url: "https://tinyurl.com/4w6wbrsw" },
+    { name: "-นักเรียนขายตัว",
+ url: "https://tinyurl.com/yyd7c62u" },
+    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
+ url: "https://tinyurl.com/3pwd9e7w" },
+    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
+ url: "https://tinyurl.com/5n8hxhf3" },
+];
 let secretMode = false;
 
 // ===== UTILS =====
@@ -488,15 +569,66 @@ function saveLocal(a,s){localStorage.setItem(s?'LINKS_S':'LINKS',JSON.stringify(
 function addLocal(n,u,s){const a=getLocal(s);a.push({name:n,url:u,id:Date.now()});saveLocal(a,s);}
 function deleteLocal(id,s){saveLocal(getLocal(s).filter(l=>l.id!==id),s);}
 
-// ===== SCOREBOARD =====
+// ===== PAGE STATE PERSISTENCE =====
+// จำหน้าปัจจุบัน ใช้ sessionStorage + location.hash
+function savePageState(page){
+  // page: 'dashboard' | 'score'
+  sessionStorage.setItem('CP_PAGE', page);
+  location.hash = page === 'score' ? 'score' : '';
+}
+function getSavedPage(){
+  // hash มีความสำคัญสูงกว่า (กด back/forward ได้)
+  if(location.hash === '#score') return 'score';
+  return sessionStorage.getItem('CP_PAGE') || 'dashboard';
+}
+
+// ===== SCOREBOARD — REALTIME via BroadcastChannel + storage event =====
 function defaultScoreData(){
-  return {title:'Scoreboard',players:[{id:1000,name:"",score:0},{id:1001,name:"",score:0},{id:1002,name:"",score:0},{id:1003,name:"",score:0},{id:1004,name:"",score:0},{id:1005,name:"",score:0},{id:1006,name:"",score:0},{id:1007,name:"",score:0},{id:1008,name:"",score:0},{id:1009,name:"",score:0},{id:1010,name:"",score:0},{id:1011,name:"",score:0},{id:1012,name:"",score:0},{id:1013,name:"",score:0},{id:1014,name:"",score:0}]};
+  return {title:'Scoreboard',players:[
+    {id:1000,name:"",score:0},{id:1001,name:"",score:0},{id:1002,name:"",score:0},
+    {id:1003,name:"",score:0},{id:1004,name:"",score:0},{id:1005,name:"",score:0},
+    {id:1006,name:"",score:0},{id:1007,name:"",score:0},{id:1008,name:"",score:0},
+    {id:1009,name:"",score:0},{id:1010,name:"",score:0},{id:1011,name:"",score:0},
+    {id:1012,name:"",score:0},{id:1013,name:"",score:0},{id:1014,name:"",score:0}
+  ]};
 }
 function getScoreData(){
   try{return JSON.parse(localStorage.getItem('SCORE_DATA')||'null')||defaultScoreData();}
   catch{return defaultScoreData();}
 }
-function saveScoreData(d){localStorage.setItem('SCORE_DATA',JSON.stringify(d));}
+function saveScoreData(d){
+  localStorage.setItem('SCORE_DATA',JSON.stringify(d));
+  // broadcast ไปยัง tab อื่น
+  try{ scoreChannel.postMessage({type:'SCORE_UPDATE', data:d}); }catch(e){}
+}
+
+// BroadcastChannel สำหรับ realtime ระหว่าง tab
+let scoreChannel;
+try {
+  scoreChannel = new BroadcastChannel('CP_SCORE');
+  scoreChannel.onmessage = (e) => {
+    if(e.data && e.data.type === 'SCORE_UPDATE'){
+      // รับข้อมูลจาก tab อื่น → อัปเดต UI ถ้าอยู่หน้า score
+      const sp = document.getElementById('scorePage');
+      if(sp.classList.contains('active')){
+        renderScoreboard(); // re-render เงียบๆ
+      }
+    }
+  };
+} catch(e){
+  scoreChannel = { postMessage:()=>{} };
+}
+
+// storage event รองรับ tab ที่ไม่รองรับ BroadcastChannel
+window.addEventListener('storage', (e) => {
+  if(e.key === 'SCORE_DATA'){
+    const sp = document.getElementById('scorePage');
+    if(sp.classList.contains('active')){
+      renderScoreboard();
+    }
+  }
+});
+
 let scoreSortMode=false;
 
 function renderScoreboard(){
@@ -542,7 +674,9 @@ function renderScoreboard(){
     card.appendChild(name);
 
     const scoreEl=document.createElement('div');
-    scoreEl.className='car-score'; scoreEl.textContent=p.score;
+    scoreEl.className='car-score';
+    scoreEl.dataset.scoreId=p.id;  // ← tag id ไว้ query ตรงๆ
+    scoreEl.textContent=p.score;
     card.appendChild(scoreEl);
 
     const btns=document.createElement('div');
@@ -552,14 +686,14 @@ function renderScoreboard(){
     minusBtn.className='sc-btn minus'; minusBtn.textContent='−';
     minusBtn.addEventListener('pointerdown',(e)=>{
       e.preventDefault();
-      changeScore(p.id,-1,scoreEl);
+      changeScore(p.id,-1);
     });
 
     const plusBtn=document.createElement('button');
     plusBtn.className='sc-btn plus'; plusBtn.textContent='+';
     plusBtn.addEventListener('pointerdown',(e)=>{
       e.preventDefault();
-      changeScore(p.id,+1,scoreEl);
+      changeScore(p.id,+1);
     });
 
     btns.appendChild(minusBtn);
@@ -574,24 +708,37 @@ function renderScoreboard(){
   addCard.addEventListener('click',openAddCarModal);
   grid.appendChild(addCard);
 
-  document.getElementById('scoreCount').textContent=
-    data.players.length+' car'+(data.players.length!==1?'s':'');
+  const cnt = data.players.length;
+  document.getElementById('scoreCount').innerHTML=
+    '<span class="rt-dot"></span>'+cnt+' car'+(cnt!==1?'s':'')+' · Live';
   const total=data.players.reduce((s,p)=>s+p.score,0);
   document.getElementById('scoreTotalBadge').textContent=' '+total;
 }
 
-function changeScore(id,delta,el){
+function changeScore(id,delta){
   const d=getScoreData();
   const p=d.players.find(x=>x.id===id);
   if(!p)return;
   p.score+=delta;
   saveScoreData(d);
-  el.textContent=p.score;
-  el.classList.remove('bump');
-  void el.offsetWidth;
-  el.classList.add('bump');
-  setTimeout(()=>el.classList.remove('bump'),120);
-  if(scoreSortMode) renderScoreboard();
+
+  if(scoreSortMode){
+    renderScoreboard();
+    return;
+  }
+
+  // อัปเดตเฉพาะตัวเลข ไม่ rebuild DOM
+  const el=document.querySelector('.car-score[data-score-id="'+id+'"]');
+  if(el){
+    el.textContent=p.score;
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+    setTimeout(()=>el.classList.remove('bump'),120);
+  }
+  // อัปเดต total badge ทุกครั้ง
+  const total=d.players.reduce((s,x)=>s+x.score,0);
+  document.getElementById('scoreTotalBadge').textContent=' '+total;
 }
 
 function openAddCarModal(){
@@ -618,16 +765,16 @@ document.getElementById('addCarModal').addEventListener('click',e=>{
 document.getElementById('newCarName').addEventListener('keyup',e=>{if(e.key==='Enter')document.getElementById('newCarScore').focus();});
 document.getElementById('newCarScore').addEventListener('keyup',e=>{if(e.key==='Enter')confirmAddCar();});
 
-// navigate
+// ===== NAVIGATE =====
 function showScorePage(){
   const dash=document.getElementById('dashboard');
   dash.classList.remove('active'); dash.style.display='none';
   ['utilFab','binFab','scoreFab','secFab','exitSecFab'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.classList.remove('active');
+    document.getElementById(id).classList.remove('active');
   });
   const sp=document.getElementById('scorePage');
   sp.style.display='flex'; sp.classList.add('active');
+  savePageState('score'); // ← บันทึก state
   renderScoreboard();
 }
 function hideScorePage(){
@@ -635,7 +782,7 @@ function hideScorePage(){
   sp.classList.remove('active'); sp.style.display='none';
   const dash=document.getElementById('dashboard');
   dash.style.display=''; dash.classList.add('active');
-  // BUG FIX: restore FABs ตาม secretMode state ปัจจุบัน
+  savePageState('dashboard'); // ← บันทึก state
   ['utilFab','binFab','scoreFab'].forEach(id=>document.getElementById(id).classList.add('active'));
   if(secretMode){
     document.getElementById('exitSecFab').classList.add('active');
@@ -647,6 +794,20 @@ function hideScorePage(){
 }
 document.getElementById('scoreBackBtn').addEventListener('click',hideScorePage);
 document.getElementById('scoreFab').addEventListener('click',showScorePage);
+
+// handle browser back button (hash change)
+window.addEventListener('hashchange', () => {
+  const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
+  if(!isLoggedIn) return;
+  if(location.hash === '#score'){
+    const sp = document.getElementById('scorePage');
+    if(!sp.classList.contains('active')) showScorePage();
+  } else {
+    const sp = document.getElementById('scorePage');
+    if(sp.classList.contains('active')) hideScorePage();
+  }
+});
+
 document.getElementById('scoreBoardTitle').addEventListener('click',()=>{
   const d=getScoreData();
   const t=prompt('Board name:',d.title);
@@ -763,9 +924,17 @@ function showDash(){
   const dash=document.getElementById('dashboard'); dash.classList.add('active');
   document.getElementById('logoutBtn').classList.add('show');
   ['scoreFab','utilFab','binFab','secFab'].forEach(id=>document.getElementById(id).classList.add('active'));
-  // BUG FIX: ซ่อน exitSecFab เสมอตอน showDash (ยังไม่ได้ unlock secret)
   document.getElementById('exitSecFab').classList.remove('active');
   updateUserBadge(); renderGrid(); greeting();
+
+  // ── RESTORE PAGE STATE ──
+  const saved = getSavedPage();
+  if(saved === 'score'){
+    // ซ่อน dash ก่อน แล้วเปิด score โดยไม่เขียน hash ซ้ำ
+    setTimeout(()=>{
+      showScorePage();
+    }, 50);
+  }
 }
 
 // ===== AUTH =====
@@ -789,7 +958,13 @@ function doLogin(){
     if(att>=3)triggerLockout();
   }
 }
-function doLogout(){localStorage.removeItem('CP_LOGGED');localStorage.removeItem('CP_USER');location.reload();}
+function doLogout(){
+  sessionStorage.removeItem('CP_PAGE');
+  localStorage.removeItem('CP_LOGGED');
+  localStorage.removeItem('CP_USER');
+  location.hash='';
+  location.reload();
+}
 
 function doSecondaryLogin(){
   const u=document.getElementById('secUser').value.trim();
@@ -798,7 +973,6 @@ function doSecondaryLogin(){
   if(found){
     toast('Restricted access granted','ok'); secretMode=true;
     document.getElementById('secondaryPanel').classList.remove('show');
-    // BUG FIX: ใช้ classList.add/remove แทน style.display
     document.getElementById('secFab').classList.remove('active');
     document.getElementById('exitSecFab').classList.add('active');
     document.getElementById('secUser').value=''; document.getElementById('secPass').value='';
@@ -907,7 +1081,6 @@ document.getElementById('secSubmit').addEventListener('click',doSecondaryLogin);
 document.getElementById('secPass').addEventListener('keyup',e=>{if(e.key==='Enter')doSecondaryLogin();});
 document.getElementById('exitSecFab').addEventListener('click',()=>{
   secretMode=false;
-  // BUG FIX: ใช้ classList แทน style.display
   document.getElementById('exitSecFab').classList.remove('active');
   document.getElementById('secFab').classList.add('active');
   renderGrid();
@@ -922,7 +1095,6 @@ document.addEventListener('click',e=>{
 
 // ===== INIT =====
 window.addEventListener('load',()=>{
-  // BUG FIX: ซ่อน exitSecFab ตอนเริ่มต้นด้วย JS (ไม่พึ่ง inline style)
   document.getElementById('exitSecFab').classList.remove('active');
   const lockUntil=parseInt(localStorage.getItem('CP_LOCK')||'0');
   if(lockUntil&&Date.now()<lockUntil)enforceLockout(lockUntil);
