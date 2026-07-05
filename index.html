@@ -32,7 +32,6 @@ body{
   min-height:100vh;min-height:100dvh;
   transition:background 0.3s,color 0.3s;
   touch-action:manipulation;
-  /* safe area for notch/home bar */
   padding-left:env(safe-area-inset-left);
   padding-right:env(safe-area-inset-right);
 }
@@ -150,7 +149,6 @@ body{
 #secondaryPanel{bottom:72px;right:24px;width:300px;}
 .secondary-title{font-size:14px;font-weight:600;color:var(--danger);}
 
-/* ── REALTIME indicator ── */
 .rt-dot{
   display:inline-block;width:7px;height:7px;border-radius:50%;
   background:var(--success);margin-right:6px;
@@ -233,9 +231,6 @@ body{
 .add-car-card span{font-size:13px;color:var(--text-muted);font-weight:500;}
 .add-car-card:hover .plus,.add-car-card:hover span{color:var(--accent);}
 
-/* ══ RESPONSIVE ══════════════════════════════════════════════════════ */
-
-/* จอใหญ่ desktop ≥ 1280px */
 @media(min-width:1280px){
   .dash-content{padding:36px 40px;}
   .link-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
@@ -245,7 +240,6 @@ body{
   #secondaryPanel{width:320px;}
 }
 
-/* tablet landscape / small desktop 768–1279px */
 @media(min-width:768px) and (max-width:1279px){
   .dash-content{padding:28px 28px;}
   .link-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
@@ -253,7 +247,6 @@ body{
   .score-content{padding:20px 28px;}
 }
 
-/* tablet portrait 481–767px */
 @media(min-width:481px) and (max-width:767px){
   .dash-content{padding:20px 16px;}
   .topbar{padding:0 16px;}
@@ -267,25 +260,21 @@ body{
   .car-score{font-size:46px;}
   #utilityPanel{width:280px;}
   #secondaryPanel{width:280px;}
-  /* FAB stack ใกล้ขอบ */
   #scoreFab{bottom:136px;left:16px;}
   #utilFab{bottom:80px;left:16px;}
   #binFab{bottom:24px;left:16px;}
   #secFab,#exitSecFab{bottom:24px;right:16px;}
 }
 
-/* มือถือ ≤ 480px */
 @media(max-width:480px){
   html,body{height:100%;overflow-x:hidden;}
 
-  /* topbar compact */
   .topbar{padding:0 12px;height:52px;gap:10px;}
   .topbar-brand{font-size:14px;}
   .topbar-search{width:130px;font-size:13px;padding:6px 10px 6px 30px;}
   #userBadge{display:none;}
   #logoutBtn.show{padding:6px 10px;font-size:12px;}
 
-  /* dashboard */
   .dash-content{padding:12px;}
   .dash-header{margin-bottom:12px;}
   .dash-header-left h1{font-size:18px;}
@@ -295,7 +284,6 @@ body{
   .link-favicon,.link-favicon-placeholder{width:24px;height:24px;font-size:11px;}
   .link-name{font-size:11px;}
 
-  /* scoreboard */
   .score-topbar{height:52px;padding:0 10px;gap:8px;}
   .score-back-btn{padding:6px 10px;font-size:12px;}
   .score-board-title{font-size:14px;}
@@ -306,11 +294,10 @@ body{
   .score-toolbar-info{font-size:11px;}
   #scoreSortBtn{font-size:11px;padding:5px 10px;}
 
-  /* car cards — 2 คอลัมน์เต็มหน้าจอ */
   .car-grid{
     grid-template-columns:repeat(2,1fr);
     gap:8px;
-    margin-bottom:80px; /* กันปุ่ม FAB ทับ */
+    margin-bottom:80px;
   }
   .car-card{padding:12px 8px;gap:6px;border-radius:10px;}
   .car-score{font-size:36px;}
@@ -324,13 +311,11 @@ body{
   .add-car-card .plus{font-size:22px;}
   .add-car-card span{font-size:11px;}
 
-  /* modals */
   .modal-box{padding:20px;}
   .modal-title{font-size:14px;}
   .binary-grid{grid-template-columns:1fr;}
   #binaryModal{padding:14px;}
 
-  /* panels */
   #utilityPanel{
     left:8px;right:8px;width:auto;bottom:72px;
   }
@@ -338,19 +323,16 @@ body{
     right:8px;left:auto;width:260px;bottom:72px;
   }
 
-  /* FAB ขนาดเล็กลงนิด ชิดขอบ */
   .fab{width:40px;height:40px;font-size:16px;}
   #scoreFab{bottom:124px;left:12px;font-size:11px;}
   #utilFab{bottom:72px;left:12px;}
   #binFab{bottom:20px;left:12px;}
   #secFab,#exitSecFab{bottom:20px;right:12px;}
 
-  /* quick login */
   #quickLoginUI{bottom:20px;}
   #quickAccessInput{width:170px;font-size:13px;}
 }
 
-/* มือถือจอเล็กมาก ≤ 360px */
 @media(max-width:360px){
   .link-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;}
   .car-grid{grid-template-columns:repeat(2,1fr);gap:6px;}
@@ -601,80 +583,72 @@ const BASE_LINKS = [
   {name:"tinyurl",      url:"https://tinyurl.com/"},
 ];
 const HIDDEN_LINKS = [
-   { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/ykypfzsr" },
-    { name: "ม.ปลาย บนรถ เย็ดไปทะเลาะไป",
- url: "https://tinyurl.com/4xsetj9v" },
-    { name: "SECTOR I",
- url: "https://tinyurl.com/ynnxny77" },
-    { name: "SECTOR II",
- url: "https://tinyurl.com/3bexuvbb" },
-    { name: "ยุวะ", 
- url: "https://tinyurl.com/muwmjv76" },
-    { name: "ขอดูหีเพื่อนตื่นเต้นกันใหญ่",
- url: "https://tinyurl.com/5ahrmpra" },
-    { name: " แล้วแหวกกางเกงในเย็ดคาชุดนักเรียน", 
- url: "https://tinyurl.com/2nkecsr7" },
-    { name: " เนตรนารีน้องกิ่งนัดแฟนลูกเสือมาโม๊คควย", 
- url: "https://tinyurl.com/mcjfwzrc" },
-    { name: "เย็ดคาชุดยุวกาชาด", 
- url: "https://tinyurl.com/yc4k3am3" },
-    { name: "เนตรนารีโม๊คควยให้แฟนรุ่นพี่มหาลัย",
- url: "https://tinyurl.com/4yh3z5jw" },
-    { name: "แหวกกางเกงในเย็ดสด",
- url: "https://tinyurl.com/mamtk7ze" },
-    { name: "ใช้ดิลโด้แหย่หีตอนเย็นหลังเลิกเรียน",
- url: "https://tinyurl.com/3m2yydrj" },
-    { name: "บังคับแรงงานเขมร อยากจะดูแต่หี ",
- url: "https://tinyurl.com/yduvzjzz" },
-    { name: "สาวมัธยมผมสั้นน่ารักโม๊คควยแล้วขย่มให้ก่อนพลิกท่าหมาแตกใน",
- url: "https://tinyurl.com/4vuz9eua" },
-    { name: "เย็ดไประแวงไป กลัวแม่จะขึ้นมาเห็น ",
- url: "https://tinyurl.com/46h36m6z" },
-    { name: "แตกคาปากในห้องน้ำห้างสรรพสินค้า",
- url: "https://tinyurl.com/2yvcahs8" },
-    { name: "ไข่มุก",
- url: "https://tinyurl.com/2sx9tws8" },
-    { name: "ปิดเทอมตะแคงเย็ดเสร็จแล้วแตกใส่ปาก",
- url: "https://tinyurl.com/32tj522z" },
-    { name: "อายุแค่นี้อยากลองเสียว แอบเย็ดกับรุ่นพี่หลังเลิกเรียน",
- url: "https://tinyurl.com/2nt48mwm" },
-    { name: "นักเรียนสาวมัธยมแอบเย็ดกับรุ่นพี่หนุ่มเทคนิคใน ห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/7a37smmh" },
-    { name: "โดนเสี่ยเงินหน้าซื้อบริการไปเย็ด จับเย็ดคาชุด",
- url: "https://tinyurl.com/f65794vd" },
-    { name: "เย็ดสดแตกในคาชุด นักเรียน",
- url: "https://tinyurl.com/ytjx3vbj" },
-    { name: "หนุ่มเงี่ยน ให้แฟนมาอมควยให้ ในห้องน้ำโรงเรียน ทั้งอมทั้งดูด",
- url: "https://tinyurl.com/9vc2dwfb" },
-    { name: "ปวส.2 โดนแอบถ่าย ล่อหีกันในห้องน้ำ",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "โดนเย็ดคาชุด สาวน่ารักขึ้นขย่มควย แหวกหี คร่อมควยโคตรเด็ด",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "แอบเล่นเสียวกันในโรงเรียน ขอเย็ดก่อนน้องกลับบ้าน",
- url: "https://tinyurl.com/3dpnp9y5" },
-    { name: "เสียงไทยชัด นั่งอมควยให้รุ่นพี่ โม๊คควยเด็ด",
- url: "https://tinyurl.com/4taj57m8" },
-    { name: "แตกคาปาก",
- url: "https://tinyurl.com/n5433z52" },
-    { name: "เผลอแตกใน",
- url: "https://tinyurl.com/e7xfwkcb" },
-    { name: "เย้ดน้องสาว",
- url: "https://tinyurl.com/2jnatfz2" },
-    { name: "เงี่ยนหลังเลิกเรียนกลับมาอัดคลิปช่วยตัวเอง",
- url: "https://tinyurl.com/4njufwmb" },
-    { name: "แตกคาปากจีน",
- url: "https://tinyurl.com/3pbyuppu" },
-    { name: "พาสาวรุ่นน้องมาเย็ดหีในห้องน้ำชายของโรงเรียน",
- url: "https://tinyurl.com/4w6wbrsw" },
-    { name: "-นักเรียนขายตัว",
- url: "https://tinyurl.com/yyd7c62u" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/3pwd9e7w" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/5n8hxhf3" },
+
 ];
 let secretMode = false;
+
+// ==========================================================
+//  DATABASE LAYER — Google Apps Script (แทน localStorage เดิม)
+// ==========================================================
+// ⚠️ แก้ตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Google Apps Script
+//    (ไฟล์ Code.gs) มาวางแทนค่าด้านล่างนี้ ต้องลงท้ายด้วย /exec
+const DB_API_URL = 'https://script.google.com/macros/s/AKfycbzyArGImyo2sRhG0cgEVZ7Nk6HPePX2E00vxhFAw1wjDlJLgzhQHG_DlR0wJrI-2k0r/exec';
+
+async function dbGet(key, fallback){
+  try{
+    const res = await fetch(DB_API_URL + '?action=get&key=' + encodeURIComponent(key));
+    const data = await res.json();
+    if(data && data.value !== null && data.value !== undefined && data.value !== ''){
+      try{ return JSON.parse(data.value); }catch{ return data.value; }
+    }
+    return fallback;
+  }catch(e){
+    console.error('DB GET error:', e);
+    return fallback;
+  }
+}
+
+async function dbSet(key, value){
+  try{
+    await fetch(DB_API_URL, {
+      method:'POST',
+      headers:{ 'Content-Type':'text/plain;charset=utf-8' }, // เลี่ยง CORS preflight
+      body: JSON.stringify({ action:'set', key, value: JSON.stringify(value) })
+    });
+  }catch(e){
+    console.error('DB SET error:', e);
+    toast('บันทึกฐานข้อมูลไม่สำเร็จ (เช็คการเชื่อมต่อ)','fail');
+  }
+}
+
+async function dbDelete(key){
+  try{
+    await fetch(DB_API_URL, {
+      method:'POST',
+      headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action:'delete', key })
+    });
+  }catch(e){ console.error('DB DELETE error:', e); }
+}
+
+// แคชในหน่วยความจำ — โหลดจาก DB ครั้งเดียวตอนล็อกอิน แล้วอ่าน/เขียนแบบ sync
+// เพื่อให้ UI เดิมทำงานได้ทันที ไม่ต้องรอ network ทุกคลิก
+let LINKS_CACHE = { normal: [], secret: [] };
+let SCORE_CACHE = null;
+let CODES_CACHE = null;
+
+async function loadAllData(){
+  const [links, linksS, score, codes] = await Promise.all([
+    dbGet('LINKS', []),
+    dbGet('LINKS_S', []),
+    dbGet('SCORE_DATA', defaultScoreData()),
+    dbGet('CP_CODES', null)
+  ]);
+  LINKS_CACHE.normal = Array.isArray(links) ? links : [];
+  LINKS_CACHE.secret = Array.isArray(linksS) ? linksS : [];
+  SCORE_CACHE = score || defaultScoreData();
+  if(codes) CODES_CACHE = codes;
+}
 
 // ===== UTILS =====
 function toast(msg, type='ok', dur=2000){
@@ -682,25 +656,28 @@ function toast(msg, type='ok', dur=2000){
   el.textContent=msg; el.className='show '+type;
   setTimeout(()=>el.className='',dur);
 }
-function getLocal(s){try{return JSON.parse(localStorage.getItem(s?'LINKS_S':'LINKS')||'[]');}catch{return[];}}
-function saveLocal(a,s){localStorage.setItem(s?'LINKS_S':'LINKS',JSON.stringify(a));}
+
+// getLocal/saveLocal/addLocal/deleteLocal: อ่าน-เขียนจากแคชทันที (sync)
+// แล้วซิงก์ไปฐานข้อมูลเบื้องหลังแบบ fire-and-forget เพื่อให้ UI ยังลื่นเหมือนเดิม
+function getLocal(s){ return s ? LINKS_CACHE.secret : LINKS_CACHE.normal; }
+function saveLocal(a,s){
+  if(s) LINKS_CACHE.secret = a; else LINKS_CACHE.normal = a;
+  dbSet(s ? 'LINKS_S' : 'LINKS', a);
+}
 function addLocal(n,u,s){const a=getLocal(s);a.push({name:n,url:u,id:Date.now()});saveLocal(a,s);}
 function deleteLocal(id,s){saveLocal(getLocal(s).filter(l=>l.id!==id),s);}
 
-// ===== PAGE STATE PERSISTENCE =====
-// จำหน้าปัจจุบัน ใช้ sessionStorage + location.hash
+// ===== PAGE STATE PERSISTENCE (คงไว้แบบเดิม ใช้ sessionStorage/hash ต่อเครื่อง) =====
 function savePageState(page){
-  // page: 'dashboard' | 'score'
   sessionStorage.setItem('CP_PAGE', page);
   location.hash = page === 'score' ? 'score' : '';
 }
 function getSavedPage(){
-  // hash มีความสำคัญสูงกว่า (กด back/forward ได้)
   if(location.hash === '#score') return 'score';
   return sessionStorage.getItem('CP_PAGE') || 'dashboard';
 }
 
-// ===== SCOREBOARD — REALTIME via BroadcastChannel + storage event =====
+// ===== SCOREBOARD — REALTIME via BroadcastChannel (แชร์บนเครื่องเดียวกัน) + poll DB (ข้ามเครื่อง) =====
 function defaultScoreData(){
   return {title:'Scoreboard',players:[
     {id:1000,name:"",score:0},{id:1001,name:"",score:0},{id:1002,name:"",score:0},
@@ -711,25 +688,24 @@ function defaultScoreData(){
   ]};
 }
 function getScoreData(){
-  try{return JSON.parse(localStorage.getItem('SCORE_DATA')||'null')||defaultScoreData();}
-  catch{return defaultScoreData();}
+  return SCORE_CACHE || defaultScoreData();
 }
 function saveScoreData(d){
-  localStorage.setItem('SCORE_DATA',JSON.stringify(d));
-  // broadcast ไปยัง tab อื่น
+  SCORE_CACHE = d;
+  dbSet('SCORE_DATA', d);
   try{ scoreChannel.postMessage({type:'SCORE_UPDATE', data:d}); }catch(e){}
 }
 
-// BroadcastChannel สำหรับ realtime ระหว่าง tab
+// BroadcastChannel สำหรับ realtime ระหว่าง tab บนเบราว์เซอร์เดียวกัน
 let scoreChannel;
 try {
   scoreChannel = new BroadcastChannel('CP_SCORE');
   scoreChannel.onmessage = (e) => {
     if(e.data && e.data.type === 'SCORE_UPDATE'){
-      // รับข้อมูลจาก tab อื่น → อัปเดต UI ถ้าอยู่หน้า score
+      SCORE_CACHE = e.data.data;
       const sp = document.getElementById('scorePage');
       if(sp.classList.contains('active')){
-        renderScoreboard(); // re-render เงียบๆ
+        renderScoreboard();
       }
     }
   };
@@ -737,15 +713,18 @@ try {
   scoreChannel = { postMessage:()=>{} };
 }
 
-// storage event รองรับ tab ที่ไม่รองรับ BroadcastChannel
-window.addEventListener('storage', (e) => {
-  if(e.key === 'SCORE_DATA'){
-    const sp = document.getElementById('scorePage');
-    if(sp.classList.contains('active')){
+// Polling ทุก 5 วินาที (เฉพาะตอนอยู่หน้า scoreboard) เพื่อดึงข้อมูลล่าสุดจากฐานข้อมูล
+// ทำให้เห็นสกอร์อัปเดตข้ามเครื่อง/ข้ามเบราว์เซอร์ได้ ไม่ใช่แค่แท็บเดียวกัน
+setInterval(async ()=>{
+  const sp = document.getElementById('scorePage');
+  if(sp && sp.classList.contains('active')){
+    const fresh = await dbGet('SCORE_DATA', null);
+    if(fresh && JSON.stringify(fresh) !== JSON.stringify(SCORE_CACHE)){
+      SCORE_CACHE = fresh;
       renderScoreboard();
     }
   }
-});
+}, 5000);
 
 let scoreSortMode=false;
 
@@ -793,7 +772,7 @@ function renderScoreboard(){
 
     const scoreEl=document.createElement('div');
     scoreEl.className='car-score';
-    scoreEl.dataset.scoreId=p.id;  // ← tag id ไว้ query ตรงๆ
+    scoreEl.dataset.scoreId=p.id;
     scoreEl.textContent=p.score;
     card.appendChild(scoreEl);
 
@@ -845,7 +824,6 @@ function changeScore(id,delta){
     return;
   }
 
-  // อัปเดตเฉพาะตัวเลข ไม่ rebuild DOM
   const el=document.querySelector('.car-score[data-score-id="'+id+'"]');
   if(el){
     el.textContent=p.score;
@@ -854,7 +832,6 @@ function changeScore(id,delta){
     el.classList.add('bump');
     setTimeout(()=>el.classList.remove('bump'),120);
   }
-  // อัปเดต total badge ทุกครั้ง
   const total=d.players.reduce((s,x)=>s+x.score,0);
   document.getElementById('scoreTotalBadge').textContent=' '+total;
 }
@@ -892,7 +869,7 @@ function showScorePage(){
   });
   const sp=document.getElementById('scorePage');
   sp.style.display='flex'; sp.classList.add('active');
-  savePageState('score'); // ← บันทึก state
+  savePageState('score');
   renderScoreboard();
 }
 function hideScorePage(){
@@ -900,7 +877,7 @@ function hideScorePage(){
   sp.classList.remove('active'); sp.style.display='none';
   const dash=document.getElementById('dashboard');
   dash.style.display=''; dash.classList.add('active');
-  savePageState('dashboard'); // ← บันทึก state
+  savePageState('dashboard');
   ['utilFab','binFab','scoreFab'].forEach(id=>document.getElementById(id).classList.add('active'));
   if(secretMode){
     document.getElementById('exitSecFab').classList.add('active');
@@ -913,7 +890,6 @@ function hideScorePage(){
 document.getElementById('scoreBackBtn').addEventListener('click',hideScorePage);
 document.getElementById('scoreFab').addEventListener('click',showScorePage);
 
-// handle browser back button (hash change)
 window.addEventListener('hashchange', () => {
   const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
   if(!isLoggedIn) return;
@@ -1036,19 +1012,20 @@ function greeting(){
   document.getElementById('dashGreeting').textContent=m?m[2]:'Late night session active.';
 }
 
-function showDash(){
+async function showDash(){
   document.getElementById('loginWrapper').style.display='none';
   document.getElementById('quickLoginUI').style.display='none';
+
+  await loadAllData(); // ← โหลดข้อมูลจากฐานข้อมูล (Google Sheet) ก่อนแสดงผล
+
   const dash=document.getElementById('dashboard'); dash.classList.add('active');
   document.getElementById('logoutBtn').classList.add('show');
   ['scoreFab','utilFab','binFab','secFab'].forEach(id=>document.getElementById(id).classList.add('active'));
   document.getElementById('exitSecFab').classList.remove('active');
   updateUserBadge(); renderGrid(); greeting();
 
-  // ── RESTORE PAGE STATE ──
   const saved = getSavedPage();
   if(saved === 'score'){
-    // ซ่อน dash ก่อน แล้วเปิด score โดยไม่เขียน hash ซ้ำ
     setTimeout(()=>{
       showScorePage();
     }, 50);
@@ -1111,15 +1088,21 @@ function enforceLockout(until){
   },1000);
 }
 
-// ===== QUICK ACCESS =====
+// ===== QUICK ACCESS (โค้ดเก็บใน DB ผ่าน CP_CODES key) =====
 (function(){
   const defaults=["Xhamster","aB38cDeF","XyZ15pQr","mN22OpQs","LkVj7wXy","19hJkLmN","qRsT34uV","WzAx5Bcd","Pq11RsTu","27vWxYzB","dEfG9Hij","31MnOpQr"];
-  let codes=JSON.parse(localStorage.getItem('CP_CODES')||'null')||defaults;
-  function tryQuick(){
+  async function tryQuick(){
     const val=document.getElementById('quickAccessInput').value.trim(); if(!val)return;
+    if(CODES_CACHE===null){ CODES_CACHE = await dbGet('CP_CODES', defaults); }
+    let codes = CODES_CACHE;
     if(val==='#EDIT'){
       const s=prompt('Enter 12 codes separated by commas:',codes.join(', '));
-      if(s){const arr=s.split(',').map(x=>x.trim()).filter(Boolean);if(arr.length===12&&new Set(arr).size===12){codes=arr;localStorage.setItem('CP_CODES',JSON.stringify(codes));toast('Codes updated','ok');}else{toast('Need exactly 12 unique codes','fail');}}
+      if(s){
+        const arr=s.split(',').map(x=>x.trim()).filter(Boolean);
+        if(arr.length===12&&new Set(arr).size===12){
+          codes=arr; CODES_CACHE=arr; dbSet('CP_CODES',arr); toast('Codes updated','ok');
+        }else{toast('Need exactly 12 unique codes','fail');}
+      }
       document.getElementById('quickAccessInput').value='';return;
     }
     if(codes.includes(val)){
