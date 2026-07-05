@@ -713,18 +713,38 @@ try {
   scoreChannel = { postMessage:()=>{} };
 }
 
-// Polling ทุก 5 วินาที (เฉพาะตอนอยู่หน้า scoreboard) เพื่อดึงข้อมูลล่าสุดจากฐานข้อมูล
-// ทำให้เห็นสกอร์อัปเดตข้ามเครื่อง/ข้ามเบราว์เซอร์ได้ ไม่ใช่แค่แท็บเดียวกัน
+// Polling ตลอดเวลาทุก 3 วินาที (ทำงานอยู่เบื้องหลังไม่ว่าจะอยู่หน้าไหน ไม่ต้องรีเฟรชหน้าเพจ)
+// ดึงทั้งลิงก์ (LINKS/LINKS_S) และสกอร์บอร์ด (SCORE_DATA) จากฐานข้อมูล
+// แล้วอัปเดตหน้าจอที่กำลังเปิดอยู่ให้ทันที ทำให้เห็นการเปลี่ยนแปลงข้ามเครื่อง/เบราว์เซอร์แบบ real-time
 setInterval(async ()=>{
+  const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
+  if(!isLoggedIn) return;
+
   const sp = document.getElementById('scorePage');
-  if(sp && sp.classList.contains('active')){
-    const fresh = await dbGet('SCORE_DATA', null);
-    if(fresh && JSON.stringify(fresh) !== JSON.stringify(SCORE_CACHE)){
-      SCORE_CACHE = fresh;
-      renderScoreboard();
-    }
+  const dash = document.getElementById('dashboard');
+
+  const [freshScore, freshLinks, freshLinksS] = await Promise.all([
+    dbGet('SCORE_DATA', null),
+    dbGet('LINKS', null),
+    dbGet('LINKS_S', null)
+  ]);
+
+  if(freshScore && JSON.stringify(freshScore) !== JSON.stringify(SCORE_CACHE)){
+    SCORE_CACHE = freshScore;
+    if(sp && sp.classList.contains('active')) renderScoreboard();
   }
-}, 5000);
+
+  let linksChanged = false;
+  if(freshLinks && JSON.stringify(freshLinks) !== JSON.stringify(LINKS_CACHE.normal)){
+    LINKS_CACHE.normal = freshLinks; linksChanged = true;
+  }
+  if(freshLinksS && JSON.stringify(freshLinksS) !== JSON.stringify(LINKS_CACHE.secret)){
+    LINKS_CACHE.secret = freshLinksS; linksChanged = true;
+  }
+  if(linksChanged && dash && dash.classList.contains('active')){
+    renderGrid();
+  }
+}, 3000);
 
 let scoreSortMode=false;
 
