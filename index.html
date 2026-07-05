@@ -108,6 +108,37 @@ body{
 .modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px;}
 .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
 
+/* ── Custom confirm popup (แทน browser confirm()) ── */
+.confirm-box{text-align:center;max-width:320px;padding:32px 28px;}
+.confirm-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(220,38,38,0.08);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.confirm-check-svg{width:48px;height:48px;}
+.confirm-check-circle{
+  stroke:var(--danger);stroke-width:3;fill:none;
+  stroke-dasharray:145;stroke-dashoffset:145;
+}
+.confirm-check-mark{
+  stroke:var(--danger);stroke-width:4;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:36;stroke-dashoffset:36;
+}
+.confirm-check-svg.animate .confirm-check-circle{
+  animation:confirm-draw-circle .45s ease forwards;
+}
+.confirm-check-svg.animate .confirm-check-mark{
+  animation:confirm-draw-check .3s .4s ease forwards;
+}
+@keyframes confirm-draw-circle{to{stroke-dashoffset:0;}}
+@keyframes confirm-draw-check{to{stroke-dashoffset:0;}}
+.confirm-message{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.5;}
+.confirm-sub{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.confirm-actions{display:flex;gap:10px;margin-top:22px;}
+.confirm-actions .btn{flex:1;padding:10px;}
+
 #binaryModal{max-width:700px;max-height:90vh;overflow-y:auto;padding:24px;}
 .binary-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .binary-header h2{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;}
@@ -549,6 +580,24 @@ body{
   </div>
 </div>
 
+<!-- CUSTOM CONFIRM MODAL (แทน browser confirm()) -->
+<div id="confirmModalOverlay" class="modal-overlay">
+  <div class="modal-box confirm-box">
+    <div class="confirm-icon">
+      <svg id="confirmCheckSvg" class="confirm-check-svg" viewBox="0 0 52 52">
+        <circle class="confirm-check-circle" cx="26" cy="26" r="23"/>
+        <path class="confirm-check-mark" d="M14 27l7 7 16-16"/>
+      </svg>
+    </div>
+    <div class="confirm-message" id="confirmMessage">คุณแน่ใจหรือไม่?</div>
+    <div class="confirm-sub" id="confirmSub"></div>
+    <div class="confirm-actions">
+      <button id="confirmNoBtn" class="btn btn-ghost btn-sm">ยกเลิก</button>
+      <button id="confirmYesBtn" class="btn btn-danger btn-sm">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 <div id="lockOverlay">
   <div class="lock-title">🔒 System Locked</div>
@@ -592,7 +641,7 @@ let secretMode = false;
 // ==========================================================
 // ⚠️ แก้ตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Google Apps Script
 //    (ไฟล์ Code.gs) มาวางแทนค่าด้านล่างนี้ ต้องลงท้ายด้วย /exec
-const DB_API_URL = 'https://script.google.com/macros/s/AKfycbwOv7mGA7KWD-nrIvnL6M8ezXlPx8zJvt8dZJzI4Dj1CX4EUuhmPIaW9-vWxLxP3EpG/exec';
+const DB_API_URL = 'https://script.google.com/macros/s/AKfycbzyArGImyo2sRhG0cgEVZ7Nk6HPePX2E00vxhFAw1wjDlJLgzhQHG_DlR0wJrI-2k0r/exec';
 
 async function dbGet(key, fallback){
   try{
@@ -655,6 +704,42 @@ function toast(msg, type='ok', dur=2000){
   const el=document.getElementById('toast');
   el.textContent=msg; el.className='show '+type;
   setTimeout(()=>el.className='',dur);
+}
+
+// ===== CUSTOM CONFIRM (แทน browser confirm() ด้วย popup ในธีมเดียวกับเว็บ) =====
+function showConfirm(message, opts={}){
+  return new Promise(resolve=>{
+    const overlay = document.getElementById('confirmModalOverlay');
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmSub').textContent = opts.sub || '';
+    const yesBtn = document.getElementById('confirmYesBtn');
+    const noBtn  = document.getElementById('confirmNoBtn');
+    yesBtn.textContent = opts.confirmText || 'ยืนยัน';
+    noBtn.textContent  = opts.cancelText  || 'ยกเลิก';
+
+    // รีสตาร์ท animation ติ้กถูกทุกครั้งที่เปิด popup
+    const svg = document.getElementById('confirmCheckSvg');
+    svg.classList.remove('animate');
+    void svg.offsetWidth;
+    svg.classList.add('animate');
+
+    overlay.classList.add('show');
+
+    function cleanup(result){
+      overlay.classList.remove('show');
+      yesBtn.removeEventListener('click', onYes);
+      noBtn.removeEventListener('click', onNo);
+      overlay.removeEventListener('click', onOverlay);
+      resolve(result);
+    }
+    function onYes(){ cleanup(true); }
+    function onNo(){ cleanup(false); }
+    function onOverlay(e){ if(e.target === overlay) cleanup(false); }
+
+    yesBtn.addEventListener('click', onYes);
+    noBtn.addEventListener('click', onNo);
+    overlay.addEventListener('click', onOverlay);
+  });
 }
 
 // getLocal/saveLocal/addLocal/deleteLocal: อ่าน-เขียนจากแคชทันที (sync)
@@ -769,8 +854,9 @@ function renderScoreboard(){
 
     const del=document.createElement('button');
     del.className='car-del-btn'; del.textContent='✕';
-    del.addEventListener('click',()=>{
-      if(confirm(`Remove "${p.name}"?`)){
+    del.addEventListener('click', async ()=>{
+      const ok = await showConfirm(`ลบ "${p.name||'(unnamed)'}" ใช่หรือไม่?`, {confirmText:'ลบเลย'});
+      if(ok){
         const d=getScoreData();
         d.players=d.players.filter(x=>x.id!==p.id);
         saveScoreData(d); renderScoreboard();
@@ -932,8 +1018,9 @@ document.getElementById('scoreSortBtn').addEventListener('click',()=>{
   document.getElementById('scoreSortBtn').textContent=scoreSortMode?'Original Order':'Sort by Score';
   renderScoreboard();
 });
-document.getElementById('scoreResetBtn').addEventListener('click',()=>{
-  if(!confirm('Reset all scores to 0?'))return;
+document.getElementById('scoreResetBtn').addEventListener('click', async ()=>{
+  const ok = await showConfirm('รีเซ็ตคะแนนทั้งหมดเป็น 0 ใช่หรือไม่?', {confirmText:'รีเซ็ต'});
+  if(!ok)return;
   const d=getScoreData(); d.players.forEach(p=>p.score=0); saveScoreData(d); renderScoreboard(); toast('Scores reset','ok');
 });
 
@@ -1000,7 +1087,11 @@ function makeCard(link,isSecret,isLocal){
   if(isLocal){
     const tag=document.createElement('span');tag.className='local-tag';tag.textContent='Custom';a.appendChild(tag);
     const del=document.createElement('button');del.className='del-badge';del.title='Remove';del.textContent='✕';
-    del.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(confirm(`Remove "${link.name}"?`)){deleteLocal(link.id,isSecret);renderGrid();}});
+    del.addEventListener('click', async e=>{
+      e.preventDefault();e.stopPropagation();
+      const ok = await showConfirm(`ลบลิงก์ "${link.name}" ใช่หรือไม่?`, {confirmText:'ลบเลย'});
+      if(ok){deleteLocal(link.id,isSecret);renderGrid();}
+    });
     a.appendChild(del);
   }
   return a;
