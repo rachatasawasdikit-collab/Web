@@ -108,7 +108,6 @@ body{
 .modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px;}
 .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
 
-/* ── Custom confirm popup (แทน browser confirm()) ── */
 .confirm-box{text-align:center;max-width:320px;padding:32px 28px;}
 .confirm-icon{
   width:64px;height:64px;border-radius:50%;
@@ -399,7 +398,7 @@ body{
       </div>
     </div>
     <button id="loginBtn" class="btn btn-primary">Sign In</button>
-    <div class="login-footer">Version 2.7</div>
+    <div class="login-footer">Version 3.0</div>
   </div>
 </div>
 
@@ -580,7 +579,7 @@ body{
   </div>
 </div>
 
-<!-- CUSTOM CONFIRM MODAL (แทน browser confirm()) -->
+<!-- CUSTOM CONFIRM MODAL -->
 <div id="confirmModalOverlay" class="modal-overlay">
   <div class="modal-box confirm-box">
     <div class="confirm-icon">
@@ -631,128 +630,80 @@ const BASE_LINKS = [
   {name:"word",         url:"https://word.cloud.microsoft/"},
   {name:"tinyurl",      url:"https://tinyurl.com/"},
 ];
-const HIDDEN_LINKS = [
-   { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/ykypfzsr" },
-    { name: "ม.ปลาย บนรถ เย็ดไปทะเลาะไป",
- url: "https://tinyurl.com/4xsetj9v" },
-    { name: "SECTOR I",
- url: "https://tinyurl.com/ynnxny77" },
-    { name: "SECTOR II",
- url: "https://tinyurl.com/3bexuvbb" },
-    { name: "ยุวะ", 
- url: "https://tinyurl.com/muwmjv76" },
-    { name: "ขอดูหีเพื่อนตื่นเต้นกันใหญ่",
- url: "https://tinyurl.com/5ahrmpra" },
-    { name: " แล้วแหวกกางเกงในเย็ดคาชุดนักเรียน", 
- url: "https://tinyurl.com/2nkecsr7" },
-    { name: " เนตรนารีน้องกิ่งนัดแฟนลูกเสือมาโม๊คควย", 
- url: "https://tinyurl.com/mcjfwzrc" },
-    { name: "เย็ดคาชุดยุวกาชาด", 
- url: "https://tinyurl.com/yc4k3am3" },
-    { name: "เนตรนารีโม๊คควยให้แฟนรุ่นพี่มหาลัย",
- url: "https://tinyurl.com/4yh3z5jw" },
-    { name: "แหวกกางเกงในเย็ดสด",
- url: "https://tinyurl.com/mamtk7ze" },
-    { name: "ใช้ดิลโด้แหย่หีตอนเย็นหลังเลิกเรียน",
- url: "https://tinyurl.com/3m2yydrj" },
-    { name: "บังคับแรงงานเขมร อยากจะดูแต่หี ",
- url: "https://tinyurl.com/yduvzjzz" },
-    { name: "สาวมัธยมผมสั้นน่ารักโม๊คควยแล้วขย่มให้ก่อนพลิกท่าหมาแตกใน",
- url: "https://tinyurl.com/4vuz9eua" },
-    { name: "เย็ดไประแวงไป กลัวแม่จะขึ้นมาเห็น ",
- url: "https://tinyurl.com/46h36m6z" },
-    { name: "แตกคาปากในห้องน้ำห้างสรรพสินค้า",
- url: "https://tinyurl.com/2yvcahs8" },
-    { name: "ไข่มุก",
- url: "https://tinyurl.com/2sx9tws8" },
-    { name: "ปิดเทอมตะแคงเย็ดเสร็จแล้วแตกใส่ปาก",
- url: "https://tinyurl.com/32tj522z" },
-    { name: "อายุแค่นี้อยากลองเสียว แอบเย็ดกับรุ่นพี่หลังเลิกเรียน",
- url: "https://tinyurl.com/2nt48mwm" },
-    { name: "นักเรียนสาวมัธยมแอบเย็ดกับรุ่นพี่หนุ่มเทคนิคใน ห้องน้ำโรงเรียน",
- url: "https://tinyurl.com/7a37smmh" },
-    { name: "โดนเสี่ยเงินหน้าซื้อบริการไปเย็ด จับเย็ดคาชุด",
- url: "https://tinyurl.com/f65794vd" },
-    { name: "เย็ดสดแตกในคาชุด นักเรียน",
- url: "https://tinyurl.com/ytjx3vbj" },
-    { name: "หนุ่มเงี่ยน ให้แฟนมาอมควยให้ ในห้องน้ำโรงเรียน ทั้งอมทั้งดูด",
- url: "https://tinyurl.com/9vc2dwfb" },
-    { name: "ปวส.2 โดนแอบถ่าย ล่อหีกันในห้องน้ำ",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "โดนเย็ดคาชุด สาวน่ารักขึ้นขย่มควย แหวกหี คร่อมควยโคตรเด็ด",
- url: "https://tinyurl.com/3nrubfae" },
-    { name: "แอบเล่นเสียวกันในโรงเรียน ขอเย็ดก่อนน้องกลับบ้าน",
- url: "https://tinyurl.com/3dpnp9y5" },
-    { name: "เสียงไทยชัด นั่งอมควยให้รุ่นพี่ โม๊คควยเด็ด",
- url: "https://tinyurl.com/4taj57m8" },
-    { name: "แตกคาปาก",
- url: "https://tinyurl.com/n5433z52" },
-    { name: "เผลอแตกใน",
- url: "https://tinyurl.com/e7xfwkcb" },
-    { name: "เย้ดน้องสาว",
- url: "https://tinyurl.com/2jnatfz2" },
-    { name: "เงี่ยนหลังเลิกเรียนกลับมาอัดคลิปช่วยตัวเอง",
- url: "https://tinyurl.com/4njufwmb" },
-    { name: "แตกคาปากจีน",
- url: "https://tinyurl.com/3pbyuppu" },
-    { name: "พาสาวรุ่นน้องมาเย็ดหีในห้องน้ำชายของโรงเรียน",
- url: "https://tinyurl.com/4w6wbrsw" },
-    { name: "-นักเรียนขายตัว",
- url: "https://tinyurl.com/yyd7c62u" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/3pwd9e7w" },
-    { name: "เงี่ยนมาหลายวันจากเข้าค่าย",
- url: "https://tinyurl.com/5n8hxhf3" },
-];
+const HIDDEN_LINKS = [];
 let secretMode = false;
 
 // ==========================================================
-//  DATABASE LAYER — Google Apps Script (แทน localStorage เดิม)
+//  LOCAL CACHE LAYER (instant UI on load/reload)
 // ==========================================================
-// ⚠️ แก้ตรงนี้: นำ Web App URL ที่ได้จากการ Deploy Google Apps Script
-//    (ไฟล์ Code.gs) มาวางแทนค่าด้านล่างนี้ ต้องลงท้ายด้วย /exec
-const DB_API_URL = 'https://script.google.com/macros/s/AKfycbxBSiI3GoK1SojjjuNSOXugW2rIcGnnvZ0DodKPP2zntuh2NKOmcLWtpcKdQtZHUEXJ/exec';
+const LS_LINKS   = 'cp_cache_links';
+const LS_LINKS_S = 'cp_cache_links_s';
+const LS_SCORE   = 'cp_cache_score';
+const LS_CODES   = 'cp_cache_codes';
+
+function lsGet(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  }catch(e){ return fallback; }
+}
+function lsSet(key, value){
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+}
+
+// ==========================================================
+//  DATABASE LAYER — Google Apps Script (full sync)
+// ==========================================================
+const DB_API_URL = 'https://script.google.com/macros/s/AKfycbz2fCNsVGy0M6nSklTm75fhFI-oZyKzV1BnIhnwwjjbas1QDEah_DARitgiUs3_pKY/exec';
 
 async function dbGet(key, fallback){
   try{
     const res = await fetch(DB_API_URL + '?action=get&key=' + encodeURIComponent(key));
     const data = await res.json();
+    if(data && data.error){
+      console.error('DB GET ['+key+']:', data.error);
+      return fallback;
+    }
     if(data && data.value !== null && data.value !== undefined && data.value !== ''){
       try{ return JSON.parse(data.value); }catch{ return data.value; }
     }
     return fallback;
   }catch(e){
-    console.error('DB GET error:', e);
+    console.error('DB GET ['+key+']:', e);
     return fallback;
   }
 }
 
 async function dbSet(key, value){
   try{
-    await fetch(DB_API_URL, {
+    const res = await fetch(DB_API_URL, {
       method:'POST',
-      headers:{ 'Content-Type':'text/plain;charset=utf-8' }, // เลี่ยง CORS preflight
+      headers:{ 'Content-Type':'text/plain;charset=utf-8' },
       body: JSON.stringify({ action:'set', key, value: JSON.stringify(value) })
     });
+    const data = await res.json().catch(()=>null);
+    if(data && data.error){
+      console.error('DB SET ['+key+']:', data.error);
+      return false;
+    }
+    return true;
   }catch(e){
-    console.error('DB SET error:', e);
-    toast('บันทึกฐานข้อมูลไม่สำเร็จ (เช็คการเชื่อมต่อ)','fail');
+    console.error('DB SET ['+key+']:', e);
+    return false;
   }
 }
 
 async function dbDelete(key){
   try{
-    await fetch(DB_API_URL, {
+    const res = await fetch(DB_API_URL, {
       method:'POST',
       headers:{ 'Content-Type':'text/plain;charset=utf-8' },
       body: JSON.stringify({ action:'delete', key })
     });
-  }catch(e){ console.error('DB DELETE error:', e); }
+  }catch(e){ console.error('DB DELETE ['+key+']:', e); }
 }
 
-// แคชในหน่วยความจำ — โหลดจาก DB ครั้งเดียวตอนล็อกอิน แล้วอ่าน/เขียนแบบ sync
-// เพื่อให้ UI เดิมทำงานได้ทันที ไม่ต้องรอ network ทุกคลิก
+// ── In-memory cache (synced via Apps Script) ────────────────────────────
 let LINKS_CACHE = { normal: [], secret: [] };
 let SCORE_CACHE = null;
 let CODES_CACHE = null;
@@ -777,7 +728,6 @@ function toast(msg, type='ok', dur=2000){
   setTimeout(()=>el.className='',dur);
 }
 
-// ===== CUSTOM CONFIRM (แทน browser confirm() ด้วย popup ในธีมเดียวกับเว็บ) =====
 function showConfirm(message, opts={}){
   return new Promise(resolve=>{
     const overlay = document.getElementById('confirmModalOverlay');
@@ -788,7 +738,6 @@ function showConfirm(message, opts={}){
     yesBtn.textContent = opts.confirmText || 'ยืนยัน';
     noBtn.textContent  = opts.cancelText  || 'ยกเลิก';
 
-    // รีสตาร์ท animation ติ้กถูกทุกครั้งที่เปิด popup
     const svg = document.getElementById('confirmCheckSvg');
     svg.classList.remove('animate');
     void svg.offsetWidth;
@@ -813,17 +762,16 @@ function showConfirm(message, opts={}){
   });
 }
 
-// getLocal/saveLocal/addLocal/deleteLocal: อ่าน-เขียนจากแคชทันที (sync)
-// แล้วซิงก์ไปฐานข้อมูลเบื้องหลังแบบ fire-and-forget เพื่อให้ UI ยังลื่นเหมือนเดิม
 function getLocal(s){ return s ? LINKS_CACHE.secret : LINKS_CACHE.normal; }
 function saveLocal(a,s){
   if(s) LINKS_CACHE.secret = a; else LINKS_CACHE.normal = a;
-  dbSet(s ? 'LINKS_S' : 'LINKS', a);
+  const key = s ? 'LINKS_S' : 'LINKS';
+  dbSet(key, a);
+  lsSet(s ? LS_LINKS_S : LS_LINKS, a);
 }
 function addLocal(n,u,s){const a=getLocal(s);a.push({name:n,url:u,id:Date.now()});saveLocal(a,s);}
 function deleteLocal(id,s){saveLocal(getLocal(s).filter(l=>l.id!==id),s);}
 
-// ===== PAGE STATE PERSISTENCE (คงไว้แบบเดิม ใช้ sessionStorage/hash ต่อเครื่อง) =====
 function savePageState(page){
   sessionStorage.setItem('CP_PAGE', page);
   location.hash = page === 'score' ? 'score' : '';
@@ -833,7 +781,7 @@ function getSavedPage(){
   return sessionStorage.getItem('CP_PAGE') || 'dashboard';
 }
 
-// ===== SCOREBOARD — REALTIME via BroadcastChannel (แชร์บนเครื่องเดียวกัน) + poll DB (ข้ามเครื่อง) =====
+// ===== SCOREBOARD =====
 function defaultScoreData(){
   return {title:'Scoreboard',players:[
     {id:1000,name:"",score:0},{id:1001,name:"",score:0},{id:1002,name:"",score:0},
@@ -849,10 +797,10 @@ function getScoreData(){
 function saveScoreData(d){
   SCORE_CACHE = d;
   dbSet('SCORE_DATA', d);
+  lsSet(LS_SCORE, d);
   try{ scoreChannel.postMessage({type:'SCORE_UPDATE', data:d}); }catch(e){}
 }
 
-// BroadcastChannel สำหรับ realtime ระหว่าง tab บนเบราว์เซอร์เดียวกัน
 let scoreChannel;
 try {
   scoreChannel = new BroadcastChannel('CP_SCORE');
@@ -860,47 +808,71 @@ try {
     if(e.data && e.data.type === 'SCORE_UPDATE'){
       SCORE_CACHE = e.data.data;
       const sp = document.getElementById('scorePage');
-      if(sp.classList.contains('active')){
-        renderScoreboard();
-      }
+      if(sp.classList.contains('active')) renderScoreboard();
     }
   };
 } catch(e){
   scoreChannel = { postMessage:()=>{} };
 }
 
-// Polling ตลอดเวลาทุก 3 วินาที (ทำงานอยู่เบื้องหลังไม่ว่าจะอยู่หน้าไหน ไม่ต้องรีเฟรชหน้าเพจ)
-// ดึงทั้งลิงก์ (LINKS/LINKS_S) และสกอร์บอร์ด (SCORE_DATA) จากฐานข้อมูล
-// แล้วอัปเดตหน้าจอที่กำลังเปิดอยู่ให้ทันที ทำให้เห็นการเปลี่ยนแปลงข้ามเครื่อง/เบราว์เซอร์แบบ real-time
-setInterval(async ()=>{
-  const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
-  if(!isLoggedIn) return;
+// ── Polling via single-tab coordinator ──────────────────────────────────
+// ให้แค่ 1 tab ทำการ poll (บาก BroadcastChannel) เพื่อลด request ไปที่ Apps Script
+const POLL_INTERVAL_MS = 12000; // 12 วิ - หน่วยเวลาสั้น + ลด load
+let isPollMaster = false;
+let lastDataHash = '';
 
-  const sp = document.getElementById('scorePage');
-  const dash = document.getElementById('dashboard');
-
-  const [freshScore, freshLinks, freshLinksS] = await Promise.all([
-    dbGet('SCORE_DATA', null),
-    dbGet('LINKS', null),
-    dbGet('LINKS_S', null)
-  ]);
-
-  if(freshScore && JSON.stringify(freshScore) !== JSON.stringify(SCORE_CACHE)){
-    SCORE_CACHE = freshScore;
-    if(sp && sp.classList.contains('active')) renderScoreboard();
+async function startPolling(){
+  // ประกาศว่า tab นี้เป็น master หรือไม่ ผ่าน sessionStorage
+  if(!sessionStorage.getItem('CP_POLL_MASTER')){
+    isPollMaster = true;
+    sessionStorage.setItem('CP_POLL_MASTER', '1');
+    
+    // ถ้า tab ปิด ให้ clear flag
+    window.addEventListener('beforeunload', ()=>{
+      sessionStorage.removeItem('CP_POLL_MASTER');
+    });
+  } else {
+    isPollMaster = false;
   }
 
-  let linksChanged = false;
-  if(freshLinks && JSON.stringify(freshLinks) !== JSON.stringify(LINKS_CACHE.normal)){
-    LINKS_CACHE.normal = freshLinks; linksChanged = true;
-  }
-  if(freshLinksS && JSON.stringify(freshLinksS) !== JSON.stringify(LINKS_CACHE.secret)){
-    LINKS_CACHE.secret = freshLinksS; linksChanged = true;
-  }
-  if(linksChanged && dash && dash.classList.contains('active')){
-    renderGrid();
-  }
-}, 3000);
+  // Master tab polling
+  setInterval(async ()=>{
+    if(!isPollMaster) return;
+    const isLoggedIn = sessionStorage.getItem('CP_LOGGED') === '1';
+    if(!isLoggedIn) return;
+
+    const sp = document.getElementById('scorePage');
+    const dash = document.getElementById('dashboard');
+
+    const [freshScore, freshLinks, freshLinksS] = await Promise.all([
+      dbGet('SCORE_DATA', null),
+      dbGet('LINKS', null),
+      dbGet('LINKS_S', null)
+    ]);
+
+    // ส่งให้ tabs อื่นรู้ทาง BroadcastChannel
+    if(freshScore && JSON.stringify(freshScore) !== lastDataHash){
+      lastDataHash = JSON.stringify(freshScore);
+      SCORE_CACHE = freshScore;
+      lsSet(LS_SCORE, freshScore);
+      try{ scoreChannel.postMessage({type:'SCORE_UPDATE', data:freshScore}); }catch(e){}
+      if(sp && sp.classList.contains('active')) renderScoreboard();
+    }
+
+    let linksChanged = false;
+    if(freshLinks && JSON.stringify(freshLinks) !== JSON.stringify(LINKS_CACHE.normal)){
+      LINKS_CACHE.normal = freshLinks; linksChanged = true;
+      lsSet(LS_LINKS, freshLinks);
+    }
+    if(freshLinksS && JSON.stringify(freshLinksS) !== JSON.stringify(LINKS_CACHE.secret)){
+      LINKS_CACHE.secret = freshLinksS; linksChanged = true;
+      lsSet(LS_LINKS_S, freshLinksS);
+    }
+    if(linksChanged && dash && dash.classList.contains('active')){
+      renderGrid();
+    }
+  }, POLL_INTERVAL_MS);
+}
 
 let scoreSortMode=false;
 
@@ -1068,7 +1040,7 @@ document.getElementById('scoreBackBtn').addEventListener('click',hideScorePage);
 document.getElementById('scoreFab').addEventListener('click',showScorePage);
 
 window.addEventListener('hashchange', () => {
-  const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
+  const isLoggedIn = sessionStorage.getItem('CP_LOGGED') === '1';
   if(!isLoggedIn) return;
   if(location.hash === '#score'){
     const sp = document.getElementById('scorePage');
@@ -1131,7 +1103,7 @@ function closeBinaryModal(){document.getElementById('binaryModalOverlay').classL
 // ===== USER BADGE =====
 function updateUserBadge(){
   const badge=document.getElementById('userBadge');
-  const u=localStorage.getItem('CP_USER')||'?';
+  const u=sessionStorage.getItem('CP_USER')||'?';
   const isAdmin=FULL_USERS.some(x=>x.user===u);
   badge.textContent=u+' · '+(isAdmin?'Admin':'Normal');
   badge.classList.toggle('is-admin',isAdmin);
@@ -1198,7 +1170,11 @@ async function showDash(){
   document.getElementById('loginWrapper').style.display='none';
   document.getElementById('quickLoginUI').style.display='none';
 
-  await loadAllData(); // ← โหลดข้อมูลจากฐานข้อมูล (Google Sheet) ก่อนแสดงผล
+  // 1) โหลดจาก local cache ก่อนทันที เพื่อให้ UI ขึ้นเร็วเหมือนเดิม ไม่ต้องรอ Apps Script
+  LINKS_CACHE.normal = lsGet(LS_LINKS, []);
+  LINKS_CACHE.secret = lsGet(LS_LINKS_S, []);
+  SCORE_CACHE = lsGet(LS_SCORE, defaultScoreData());
+  CODES_CACHE = lsGet(LS_CODES, null);
 
   const dash=document.getElementById('dashboard'); dash.classList.add('active');
   document.getElementById('logoutBtn').classList.add('show');
@@ -1206,12 +1182,28 @@ async function showDash(){
   document.getElementById('exitSecFab').classList.remove('active');
   updateUserBadge(); renderGrid(); greeting();
 
+  startPolling();
+
   const saved = getSavedPage();
   if(saved === 'score'){
     setTimeout(()=>{
       showScorePage();
     }, 50);
   }
+
+  // 2) ดึงข้อมูลจริงจาก database (Google Apps Script) แบบ background
+  //    ไม่ await ตรงนี้ เพื่อไม่ให้บล็อกการแสดงผลหน้าจอ — พอข้อมูลมาแล้วค่อย re-render
+  loadAllData().then(()=>{
+    lsSet(LS_LINKS, LINKS_CACHE.normal);
+    lsSet(LS_LINKS_S, LINKS_CACHE.secret);
+    lsSet(LS_SCORE, SCORE_CACHE);
+    if(CODES_CACHE) lsSet(LS_CODES, CODES_CACHE);
+
+    const dashActive = document.getElementById('dashboard').classList.contains('active');
+    if(dashActive) renderGrid();
+    const sp = document.getElementById('scorePage');
+    if(sp.classList.contains('active')) renderScoreboard();
+  });
 }
 
 // ===== AUTH =====
@@ -1226,19 +1218,20 @@ function doLogin(){
   submitForm(u,p);
   const found=ALL_USERS.find(x=>x.user===u&&x.pass===p);
   if(found){
-    localStorage.setItem('CP_LOGGED','1');localStorage.setItem('CP_USER',u);
+    sessionStorage.setItem('CP_LOGGED','1');sessionStorage.setItem('CP_USER',u);
     toast('Access granted','ok');setTimeout(showDash,500);
   }else{
-    let att=parseInt(localStorage.getItem('CP_ATT')||'0')+1;
-    localStorage.setItem('CP_ATT',att);toast('Invalid credentials','fail');
+    let att=parseInt(sessionStorage.getItem('CP_ATT')||'0')+1;
+    sessionStorage.setItem('CP_ATT',att);toast('Invalid credentials','fail');
     document.getElementById('pass').value='';
     if(att>=3)triggerLockout();
   }
 }
 function doLogout(){
   sessionStorage.removeItem('CP_PAGE');
-  localStorage.removeItem('CP_LOGGED');
-  localStorage.removeItem('CP_USER');
+  sessionStorage.removeItem('CP_LOGGED');
+  sessionStorage.removeItem('CP_USER');
+  sessionStorage.removeItem('CP_POLL_MASTER');
   location.hash='';
   location.reload();
 }
@@ -1258,38 +1251,41 @@ function doSecondaryLogin(){
 }
 
 // ===== LOCKOUT =====
-function triggerLockout(ms=60000){const until=Date.now()+ms;localStorage.setItem('CP_LOCK',until);enforceLockout(until);}
+function triggerLockout(ms=60000){const until=Date.now()+ms;sessionStorage.setItem('CP_LOCK',until);enforceLockout(until);}
 function enforceLockout(until){
   const overlay=document.getElementById('lockOverlay'); overlay.style.display='flex';
   const inp=document.getElementById('quickAccessInput'); const btn=document.getElementById('quickAccessBtn');
   if(inp){inp.disabled=true;btn.disabled=true;}
   const iv=setInterval(()=>{
     const rem=Math.ceil((until-Date.now())/1000);
-    if(rem<=0){clearInterval(iv);overlay.style.display='none';localStorage.removeItem('CP_LOCK');localStorage.removeItem('CP_ATT');if(inp){inp.disabled=false;btn.disabled=false;}}
+    if(rem<=0){clearInterval(iv);overlay.style.display='none';sessionStorage.removeItem('CP_LOCK');sessionStorage.removeItem('CP_ATT');if(inp){inp.disabled=false;btn.disabled=false;}}
     else{document.getElementById('lockTimer').textContent=`Unlocks in ${rem}s`;}
   },1000);
 }
 
-// ===== QUICK ACCESS (โค้ดเก็บใน DB ผ่าน CP_CODES key) =====
+// ===== QUICK ACCESS =====
 (function(){
   const defaults=["Xhamster","aB38cDeF","XyZ15pQr","mN22OpQs","LkVj7wXy","19hJkLmN","qRsT34uV","WzAx5Bcd","Pq11RsTu","27vWxYzB","dEfG9Hij","31MnOpQr"];
   async function tryQuick(){
     const val=document.getElementById('quickAccessInput').value.trim(); if(!val)return;
-    if(CODES_CACHE===null){ CODES_CACHE = await dbGet('CP_CODES', defaults); }
+    if(CODES_CACHE===null){
+      CODES_CACHE = lsGet(LS_CODES, null);
+      if(CODES_CACHE===null){ CODES_CACHE = await dbGet('CP_CODES', defaults); lsSet(LS_CODES, CODES_CACHE); }
+    }
     let codes = CODES_CACHE;
     if(val==='#EDIT'){
       const s=prompt('Enter 12 codes separated by commas:',codes.join(', '));
       if(s){
         const arr=s.split(',').map(x=>x.trim()).filter(Boolean);
         if(arr.length===12&&new Set(arr).size===12){
-          codes=arr; CODES_CACHE=arr; dbSet('CP_CODES',arr); toast('Codes updated','ok');
+          codes=arr; CODES_CACHE=arr; dbSet('CP_CODES',arr); lsSet(LS_CODES,arr); toast('Codes updated','ok');
         }else{toast('Need exactly 12 unique codes','fail');}
       }
       document.getElementById('quickAccessInput').value='';return;
     }
     if(codes.includes(val)){
-      localStorage.setItem('CP_LOGGED','1');localStorage.setItem('CP_USER','quick');
-      localStorage.removeItem('CP_ATT');toast('Quick access granted','ok');setTimeout(showDash,400);
+      sessionStorage.setItem('CP_LOGGED','1');sessionStorage.setItem('CP_USER','quick');
+      sessionStorage.removeItem('CP_ATT');toast('Quick access granted','ok');setTimeout(showDash,400);
     }else{triggerLockout(60000);document.getElementById('quickAccessInput').value='';}
   }
   document.getElementById('quickAccessBtn').addEventListener('click',tryQuick);
@@ -1379,9 +1375,9 @@ document.addEventListener('click',e=>{
 // ===== INIT =====
 window.addEventListener('load',()=>{
   document.getElementById('exitSecFab').classList.remove('active');
-  const lockUntil=parseInt(localStorage.getItem('CP_LOCK')||'0');
+  const lockUntil=parseInt(sessionStorage.getItem('CP_LOCK')||'0');
   if(lockUntil&&Date.now()<lockUntil)enforceLockout(lockUntil);
-  if(localStorage.getItem('CP_LOGGED')==='1')showDash();
+  if(sessionStorage.getItem('CP_LOGGED')==='1')showDash();
 });
 </script>
 </body>
