@@ -630,8 +630,8 @@ const BASE_LINKS = [
   {name:"word",         url:"https://word.cloud.microsoft/"},
   {name:"tinyurl",      url:"https://tinyurl.com/"},
 ];
-const HIDDEN_LINKS = [  
-    { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
+const HIDDEN_LINKS = [
+     { name: "ตั้งกล่องถ่ายคลิปเย็ดในห้องน้ำโรงเรียน",
  url: "https://tinyurl.com/ykypfzsr" },
     { name: "ม.ปลาย บนรถ เย็ดไปทะเลาะไป",
  url: "https://tinyurl.com/4xsetj9v" },
@@ -911,7 +911,7 @@ async function startPolling(){
   // Master tab polling
   setInterval(async ()=>{
     if(!isPollMaster) return;
-    const isLoggedIn = sessionStorage.getItem('CP_LOGGED') === '1';
+    const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
     if(!isLoggedIn) return;
 
     const sp = document.getElementById('scorePage');
@@ -1113,7 +1113,7 @@ document.getElementById('scoreBackBtn').addEventListener('click',hideScorePage);
 document.getElementById('scoreFab').addEventListener('click',showScorePage);
 
 window.addEventListener('hashchange', () => {
-  const isLoggedIn = sessionStorage.getItem('CP_LOGGED') === '1';
+  const isLoggedIn = localStorage.getItem('CP_LOGGED') === '1';
   if(!isLoggedIn) return;
   if(location.hash === '#score'){
     const sp = document.getElementById('scorePage');
@@ -1176,7 +1176,7 @@ function closeBinaryModal(){document.getElementById('binaryModalOverlay').classL
 // ===== USER BADGE =====
 function updateUserBadge(){
   const badge=document.getElementById('userBadge');
-  const u=sessionStorage.getItem('CP_USER')||'?';
+  const u=localStorage.getItem('CP_USER')||'?';
   const isAdmin=FULL_USERS.some(x=>x.user===u);
   badge.textContent=u+' · '+(isAdmin?'Admin':'Normal');
   badge.classList.toggle('is-admin',isAdmin);
@@ -1291,7 +1291,10 @@ function doLogin(){
   submitForm(u,p);
   const found=ALL_USERS.find(x=>x.user===u&&x.pass===p);
   if(found){
-    sessionStorage.setItem('CP_LOGGED','1');sessionStorage.setItem('CP_USER',u);
+    // ล้อกอินแบบถาวร: เก็บสถานะไว้ใน localStorage แทน sessionStorage
+    // เพื่อให้ยังคงล้อกอินอยู่แม้ปิด/เปิดเบราว์เซอร์ใหม่
+    localStorage.setItem('CP_LOGGED','1');localStorage.setItem('CP_USER',u);
+    sessionStorage.removeItem('CP_ATT');
     toast('Access granted','ok');setTimeout(showDash,500);
   }else{
     let att=parseInt(sessionStorage.getItem('CP_ATT')||'0')+1;
@@ -1302,8 +1305,8 @@ function doLogin(){
 }
 function doLogout(){
   sessionStorage.removeItem('CP_PAGE');
-  sessionStorage.removeItem('CP_LOGGED');
-  sessionStorage.removeItem('CP_USER');
+  localStorage.removeItem('CP_LOGGED');
+  localStorage.removeItem('CP_USER');
   sessionStorage.removeItem('CP_POLL_MASTER');
   location.hash='';
   location.reload();
@@ -1357,7 +1360,8 @@ function enforceLockout(until){
       document.getElementById('quickAccessInput').value='';return;
     }
     if(codes.includes(val)){
-      sessionStorage.setItem('CP_LOGGED','1');sessionStorage.setItem('CP_USER','quick');
+      // ล้อกอินแบบถาวรผ่าน quick access เช่นกัน
+      localStorage.setItem('CP_LOGGED','1');localStorage.setItem('CP_USER','quick');
       sessionStorage.removeItem('CP_ATT');toast('Quick access granted','ok');setTimeout(showDash,400);
     }else{triggerLockout(60000);document.getElementById('quickAccessInput').value='';}
   }
@@ -1450,7 +1454,7 @@ window.addEventListener('load',()=>{
   document.getElementById('exitSecFab').classList.remove('active');
   const lockUntil=parseInt(sessionStorage.getItem('CP_LOCK')||'0');
   if(lockUntil&&Date.now()<lockUntil)enforceLockout(lockUntil);
-  if(sessionStorage.getItem('CP_LOGGED')==='1')showDash();
+  if(localStorage.getItem('CP_LOGGED')==='1')showDash();
 });
 </script>
 </body>
